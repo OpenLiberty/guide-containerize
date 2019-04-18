@@ -1,5 +1,3 @@
-// ----------- BEGIN -----------
-//--** INSTRUCTION: The copyright statement must appear at the top of the file
 // Copyright (c) 2019 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
@@ -9,40 +7,23 @@
 //     IBM Corporation
 //
 :page-layout: guide-multipane
-//--** INSTRUCTION: The project id is the part of the git repository after the guide- and must be specified
-//--** :projectid: github repo name without the `guide-` prefix
-:projectid: template
-//--** INSTRUCTION: Provide an estimate of how long the guide will take to go through.
+:projectid: microservices-docker
 :page-duration: 15 minutes
-//--** INSTRUCTION: Provide the date when the guide is published.  Format is YYYY-MM-DD.
+//--** INSTRUCTION: Provide the date when the guide is published.  Format is YYYY-MM-DD.TO BE UPDATED!
 :page-releasedate: 2019-03-11
 //--** INSTRUCTION: Provide a description for the guide index page.
-:page-description: Learn how to create a todo list API as a REST service using JAX-RS, and Open Liberty.
+:page-description: Learn how to build a Docker image with Open Liberty.
 :guide-author: Open Liberty
-//--** INSTUCTION: Please provide relevant tags, try to avoid inventing new ones.
-//--** Use some of "MicroProfile, Maven, Docker, Kubernetes, Gradle, Java EE, Security".
-:page-tags: ['Java EE']
-//--** INSTRUCTION: Specify the unique name of the guide that is used in the permalink.
-:page-related-guides: ['cdi-intro', 'rest-intro']
-//--** INSTRUCTION: Set 'basic', 'microprofile', 'none'
-:page-guide-category: microprofile
-//--** INSTRUCTION: Places the guide into the essentials section of a category
-//--** Requirement: Must define :page-guide-category:
+:page-tags: ['Docker', 'Maven']
+:page-related-guides: ['docker', 'kube-intro']
+//OR NONE?
+:page-guide-category: 'basic'
 :page-essential: false
-//--** INSTRUCTION: Number is used to sort guide from left (lowest number) to right (highest number) in
-//--** the essentials section of a category
-//--** Requirement: Must have :page-essential: true
-:page-essential-order: 3
-//--** INSTRUCTION: Specify the slug in the website. This must be unique.
 :page-permalink: /guides/{projectid}
-//--** INSTRUCTION: Source the common page elements, clone `git@github.com:OpenLiberty/guides-common.git`.
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
-//--** INSTRUCTION: Update the SEO title for the guide
-:page-seo-title: Creating a REST service
-//--** INSTRUCTION: Update the SEO description for the guide
-:page-seo-description: Find out how to create a REST service on Open Liberty
-//--** INSTRUCTION: You can't have a new line between the attributes and the title.
-= Title of guide, starting with a gerund (Creating, Administering, and so on)
+:page-seo-title: Building a Docker image
+:page-seo-description: Find out how to build a Docker image on Open Liberty
+= Building a Docker image
 //--** EXAMPLE: Creating a REST API for a todo list application
 
 [.hidden]
