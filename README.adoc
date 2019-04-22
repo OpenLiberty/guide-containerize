@@ -9,14 +9,11 @@
 :page-layout: guide-multipane
 :projectid: microservices-docker
 :page-duration: 15 minutes
-//--** INSTRUCTION: Provide the date when the guide is published.  Format is YYYY-MM-DD.TO BE UPDATED!
 :page-releasedate: 2019-03-11
-//--** INSTRUCTION: Provide a description for the guide index page.
 :page-description: Learn how to build a Docker image with Open Liberty.
 :guide-author: Open Liberty
 :page-tags: ['Docker', 'Maven']
 :page-related-guides: ['docker', 'kube-intro']
-//OR NONE?
 :page-guide-category: 'basic'
 :page-essential: false
 :page-permalink: /guides/{projectid}
@@ -24,61 +21,41 @@
 :page-seo-title: Building a Docker image
 :page-seo-description: Find out how to build a Docker image on Open Liberty
 = Building a Docker image
-//--** EXAMPLE: Creating a REST API for a todo list application
-
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
 view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-//--** Start the introduction with "You'll explore how to..." or something similarly catchy.
-//--** Write no more than two sentences, with meaningful information on what the user can accomplish
-//--** with this guide.
-//--** Do not start the introduction with "This guide...".
-//--** EXAMPLE: Learn how to create a todo list API as a REST service using JAX-RS, CDI, and Open Liberty.
-
-
-
-
 == What you'll learn
 
-//--** Write about what the user will learn in a meaningful intro paragraph.
-//--** Follow the intro paragraph with more details of what the user will learn, but still keep it brief.
-//--** See the REST guide at as an exemplar guide.
-//--** https://openliberty.io/guides/rest-intro.html
-//--** https://github.com/OpenLiberty/guide-rest-intro
+You will learn how to create two Docker images from the Open Liberty image with two microservices on them using `Dockerfiles` and the `dockerfile-maven-plugin`.
+Then you will then run instances of those two images in two Docker containers using `docker run`.
 
-// EXAMPLE:
-// =============================================================================
-You'll learn how to create a todo list microservice using JAX-RS, CDI and Open Liberty.
-You will use Maven throughout the guide to build the microservice and deploy it
-to run on the Open Liberty application server.
+=== What is Docker?
 
-=== What is JAX-RS
-* Add a brief description of JAX-RS
+Docker is a tool that you can use to deploy and run applications with containers. You
+can think of Docker like a virtual machine that runs various applications. However, unlike a typical virtual
+machine, you can run these applications simultaneously on a single system and independent of
+one another.
 
-=== What is CDI
-* Add a brief description of CDI
+Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
-=== What is Open Liberty
-* Add brief description of Open Liberty, where applicable
+Learn how to install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
 
-Brief description of the todo list micrioservice
-// =============================================================================
+=== What is a container?
 
+A container is a lightweight, stand-alone package that contains a piece of software that is bundled together
+with the entire environment that it needs to run. Containers are small compared to regular images and can
+run on any environment where Docker is set up. Moreover, you can run multiple containers on a single
+machine at the same time in isolation from each other.
 
+Learn more about containers on the https://www.docker.com/what-container[official Docker page^].
 
 ///////////////////////////
 // Getting started
 ///////////////////////////
 
-//--** Add this getting started section to your guide if it is applicable.
-//--** Use the following include to pull in the git clone instructions from the guides-common repo.
-
 [role='command']
 link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
-//--** This include adoc will have the heading "Getting started".
-//--** If you are not using this command include statement, you'll need to add it as a subheading,
-//--** ie, "== Getting started".
 
 
 
@@ -87,15 +64,8 @@ link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone
 // Try what you’ll build
 ///////////////////////////
 
-//--** This is a subsection of the "Getting started" section above. It should briefly walk the user
-//--** through how to setup everything in the "finish" directory and try out the finished version of
-//--** what they will be building.
-
 [role='command']
 link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-intro.adoc[]
-//--** This include adoc will have the subheading "Try what you'll build".
-//--** If you are not using this command include statement, you'll need to add it as a subheading,
-//--** ie, "=== Try what you'll build".
 
 //--** Describe what user should run and expect to see after running the complete version of the application.
 Add a brief explanation on how to use the finished application.
@@ -106,113 +76,30 @@ link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhaty
 
 
 
-== Section title for this section, starting with a gerund like Creating, Building, etc
+== Creating your microservices
 
-//--** Add the various sections that are needed for a particular guide.
-
-//--** Start each additional section title with a meaningful gerund such as Creating, Building, Testing.
-//--** Follow the gerund with a meaningful noun phrase. For example: Creating a JAX-RS application
-//--** Have as many sections and section titles as needed.
-// EXAMPLES:
-
-* Building a todo list model
-
-* Creating an application manager
-
-* Creating the JAX-RS Resource
+* Creating System service 
+* Creating Inventory service 
+* Emphasize how the two services communicate 
+* Re-use the following if we are not going to ask users to create the microservices: 
+The starting Java project, which you can find in the start directory, is a multi-module Maven project that’s made up of the system and inventory microservices. Each microservice resides in its own directory, start/system and start/inventory. 
 
 
-//--** Write a sentence with the context like "Navigate to the `start` directory to begin." in the section
-//--** where user starts working with the implementation.
+== Creating your Dockerfiles
 
-
-//--** What to add for each section:
-//--** Start each section with a meaningful description about what the user is doing in the section.
-//--** Include code snippets.
-//--** Avoid making all the documentation a series of steps and tasks, bullets, or numbered lists.
-//--** Use tick marks around directories, files, values, class names, method names, and so on.
-//--** Example: `this-is-a-file`, `this/is/a/path`, `thisIsAMethod`.
-
-
-
-// EXAMPLE: The following block demonstrates how different sections look like for a todo application.
-// ======================================================================================================
-== EXAMPLE: Building a todo list model
-
-* Navigate to the `start` directory
-* Represent an entry in a todo list
+A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
 
 [role="code_command hotspot", subs="quotes"]
 ----
-#Create the `TodoModel` class.#
-`src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java`
+#Create the `inventory/Dockerfile`.
+`inventory/Dockerfile`
 ----
 
-TodoModel.java
-[source, Java, linenums, indent=0, role="code_column"]
+inventory/Dockerfile
+[source, Text, linenums, indent=0, role="code_column"]
 ----
-link:finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java[]
+link:finish/inventory/Dockerfile[]
 ----
-
-* Getters, setters, and default constructor such that the model can be serialized/deserialized easily
-
-== EXAMPLE: Creating an application manager
-
-* Create a manager that is injected into the JAX-RS resource
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Create the `TodoManager` interface.#
-`src/main/java/io/openliberty/guides/todo/managers/TodoManager.java`
-----
-
-TodoManager.java
-[source, Java, linenums, indent=0, role="code_column"]
-----
-link:finish/src/main/java/io/openliberty/guides/todolistSample/managers/TodoManager.java[]
-----
-
-* Next, create the sample todo manager class
-
-[role="code_command hotspot file=1", subs="quotes"]
-----
-#Create the `SampleTodoManager` class.#
-`src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java`
-----
-
-SampleTodoManager.java
-[source, Java, linenums, indent=0, role="code_column"]
-----
-link:finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[]
-----
-
-* Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`,
-[hotspot=47-57 file=1]`Update`, and [hotspot=60-68 file=1]`Delete`) operations.
-* Manager is [hotspot=14 file=1]`ApplicationScoped`, which essentially means that it is a singleton.
-
-== EXAMPLE: Creating the JAX-RS resource
-
-* Description of the technology, possibly with a link to learn more.
-* Use CDI to inject the todo manager into the resource
-
-[role="code_command hotspot", subs="quotes"]
-----
-#Create the `TodoResource` class.#
-`src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java`
-----
-
-TodoResource.java
-[source, Java, linenums, indent=0, role="code_column"]
-----
-link:finish/src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java[]
-----
-
-* The resource methods are accessible via HTTP
-* Use [hotspot=27-43]`GET`, [hotspot=45-54]`POST`, [hotspot=56-71]`PUT`,
-and [hotspot=73-83]`DELETE` verbs to handle reading, creating, updating,
-and deleting resources
-* Validate data models and send appropriate response accordingly
-// ======================================================================================================
 
 
 
