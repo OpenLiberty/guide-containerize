@@ -20,6 +20,7 @@
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :page-seo-title: Building a Docker image
 :page-seo-description: Find out how to build a Docker image on Open Liberty
+:guide-author: Open Liberty
 = Building a Docker image
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
@@ -174,7 +175,3 @@ EXAMPLE: You have just completed building a simple todo list application using J
 
 //--** Include the below from the guides-common repo to tell users how they can contribute to the guide
 link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
-
-//--** DO NO CREATE ANYMORE SECTIONS AT THIS POINT
-//--** Related guides will be added in automatically here if you included them in ":page-related-guides"
-// ------------ END ------------
