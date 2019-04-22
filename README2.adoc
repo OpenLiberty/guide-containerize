@@ -1,0 +1,177 @@
+// Copyright (c) 2019 IBM Corporation and others.
+// Licensed under Creative Commons Attribution-NoDerivatives
+// 4.0 International (CC BY-ND 4.0)
+//   https://creativecommons.org/licenses/by-nd/4.0/
+//
+// Contributors:
+//     IBM Corporation
+//
+:page-layout: guide-multipane
+:projectid: microservices-docker
+:page-duration: 15 minutes
+:page-releasedate: 2019-03-11
+:page-description: Learn how to build a Docker image with Open Liberty.
+:guide-author: Open Liberty
+:page-tags: ['Docker', 'Maven']
+:page-related-guides: ['docker', 'kube-intro']
+:page-guide-category: 'basic'
+:page-essential: false
+:page-permalink: /guides/{projectid}
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:page-seo-title: Building a Docker image
+:page-seo-description: Find out how to build a Docker image on Open Liberty
+:guide-author: Open Liberty
+= Building a Docker image
+[.hidden]
+NOTE: This repository contains the guide documentation source. To view the guide in published form,
+view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+
+== What you'll learn
+
+You will learn how to create two Docker images from the Open Liberty image with two microservices on them using `Dockerfiles` and the `dockerfile-maven-plugin`.
+Then you will then run instances of those two images in two Docker containers using `docker run`.
+
+=== What is Docker?
+
+Docker is a tool that you can use to deploy and run applications with containers. You
+can think of Docker like a virtual machine that runs various applications. However, unlike a typical virtual
+machine, you can run these applications simultaneously on a single system and independent of
+one another.
+
+Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
+
+Learn how to install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
+
+=== What is a container?
+
+A container is a lightweight, stand-alone package that contains a piece of software that is bundled together
+with the entire environment that it needs to run. Containers are small compared to regular images and can
+run on any environment where Docker is set up. Moreover, you can run multiple containers on a single
+machine at the same time in isolation from each other.
+
+Learn more about containers on the https://www.docker.com/what-container[official Docker page^].
+
+///////////////////////////
+// Getting started
+///////////////////////////
+
+[role='command']
+link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
+
+
+
+
+///////////////////////////
+// Try what you’ll build
+///////////////////////////
+
+[role='command']
+link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-intro.adoc[]
+
+//--** Describe what user should run and expect to see after running the complete version of the application.
+Add a brief explanation on how to use the finished application.
+
+[role='command']
+link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-end.adoc[]
+
+
+
+
+== Creating your microservices
+
+* Creating System service 
+* Creating Inventory service 
+* Emphasize how the two services communicate 
+* Re-use the following if we are not going to ask users to create the microservices: 
+The starting Java project, which you can find in the start directory, is a multi-module Maven project that’s made up of the system and inventory microservices. Each microservice resides in its own directory, start/system and start/inventory. 
+
+
+== Creating your Dockerfiles
+
+A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
+
+[role="code_command hotspot", subs="quotes"]
+----
+#Create the `inventory/Dockerfile`.
+`inventory/Dockerfile`
+----
+
+inventory/Dockerfile
+[source, Text, linenums, indent=0, role="code_column"]
+----
+link:finish/inventory/Dockerfile[]
+----
+
+
+
+
+//////////////////////////////////////////
+// Building and running the application
+//////////////////////////////////////////
+
+//--** Use the following include to pull in the Maven build instructions from the guides-common repo.
+[role='command']
+link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnbuild.adoc[]
+//--** This include adoc will have the subheading "Building and running the application".
+//--** If you are not using this command include statement, you'll need to add it as a subheading,
+//--** ie, "== Building and running the application".
+
+//--** In between here, you should state where you application can be found now that its running. ie. urls
+//--** Sample usage of the application
+//--** Suggestions for what changes the reader can make to explore the code
+
+//--** Use the following include to pull in the Maven rebuild instructions from the
+//--** guides-common repo.
+[role='command']
+link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvncompile.adoc[]
+
+
+
+
+== Testing the application
+
+//--** Show how to test your application.
+
+// EXAMPLE:
+// ======================================================================================================
+
+[role="code_command hotspot", subs="quotes"]
+----
+#Create the `TodoTest` class.#
+`finish/src/test/java/it/io/openliberty/guides/todo/TodoTest.java`
+----
+
+TodoTest.java
+[source, Java, linenums, indent=0, role="code_column"]
+----
+link:finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[]
+----
+
+* Explain what each [hotspot=13-20]`@Test` test case is testing
+* Explain key methods
+// ======================================================================================================
+
+//--** Include this for info on how to run the tests
+[role='command']
+link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnverify.adoc[]
+
+//--** Including a listing block with test results here
+//--** Show console output of the test results
+
+//--** OPTIONAL: after listing the test results, mention a simple change a user can make/introduce that
+//--** will cause the tests to fail. Be brief and don't give the users all of the instructions.
+//--** At this point, they should be comfortable enough to figure it out on their own.
+
+
+
+
+== Great work! You're done!
+
+//--** Briefly summarize what the user achieved in this guide (1-2 sentences).
+EXAMPLE: You have just completed building a simple todo list application using JAXRS and CDI services in Open Liberty.
+
+//--** OPTIONAL: briefly state what the user could do next now that they've learned the
+//--** technologies in this guide.
+
+//--** Include the below from the guides-common repo to tell users how they can contribute to the guide
+link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
