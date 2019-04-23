@@ -14,9 +14,9 @@
 :guide-author: Open Liberty
 :page-tags: ['Docker', 'Maven']
 :page-related-guides: ['docker', 'kube-intro']
-:page-guide-category: 'basic'
+:page-guide-category: basic
 :page-essential: false
-:page-permalink: /guides/{projectid}
+:page-permainclude:: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :page-seo-title: Building a Docker image
 :page-seo-description: Find out how to build a Docker image on Open Liberty
@@ -56,7 +56,7 @@ Learn more about containers on the https://www.docker.com/what-container[officia
 ///////////////////////////
 
 [role='command']
-link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
 
 
 
@@ -66,13 +66,13 @@ link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone
 ///////////////////////////
 
 [role='command']
-link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-intro.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-intro.adoc[]
 
 //--** Describe what user should run and expect to see after running the complete version of the application.
 Add a brief explanation on how to use the finished application.
 
 [role='command']
-link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-end.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-end.adoc[]
 
 
 
@@ -83,6 +83,7 @@ link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhaty
 * Creating Inventory service 
 * Emphasize how the two services communicate 
 * Re-use the following if we are not going to ask users to create the microservices: 
+
 The starting Java project, which you can find in the start directory, is a multi-module Maven project that’s made up of the system and inventory microservices. Each microservice resides in its own directory, start/system and start/inventory. 
 
 
@@ -92,15 +93,16 @@ A Dockerfile is a collection of instructions for building a Docker image that ca
 
 [role="code_command hotspot", subs="quotes"]
 ----
-#Create the `inventory/Dockerfile`.
+#Create the `inventory/Dockerfile`.#
 `inventory/Dockerfile`
 ----
 
 inventory/Dockerfile
 [source, Text, linenums, indent=0, role="code_column"]
 ----
-link:finish/inventory/Dockerfile[]
+include::finish/inventory/Dockerfile[]
 ----
+
 
 
 
@@ -111,7 +113,7 @@ link:finish/inventory/Dockerfile[]
 
 //--** Use the following include to pull in the Maven build instructions from the guides-common repo.
 [role='command']
-link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnbuild.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnbuild.adoc[]
 //--** This include adoc will have the subheading "Building and running the application".
 //--** If you are not using this command include statement, you'll need to add it as a subheading,
 //--** ie, "== Building and running the application".
@@ -123,7 +125,7 @@ link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnbuild
 //--** Use the following include to pull in the Maven rebuild instructions from the
 //--** guides-common repo.
 [role='command']
-link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvncompile.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvncompile.adoc[]
 
 
 
@@ -144,7 +146,7 @@ link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvncompi
 TodoTest.java
 [source, Java, linenums, indent=0, role="code_column"]
 ----
-link:finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[]
+include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[]
 ----
 
 * Explain what each [hotspot=13-20]`@Test` test case is testing
@@ -153,7 +155,7 @@ link:finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[
 
 //--** Include this for info on how to run the tests
 [role='command']
-link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnverify.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnverify.adoc[]
 
 //--** Including a listing block with test results here
 //--** Show console output of the test results
@@ -174,4 +176,4 @@ EXAMPLE: You have just completed building a simple todo list application using J
 //--** technologies in this guide.
 
 //--** Include the below from the guides-common repo to tell users how they can contribute to the guide
-link:https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
