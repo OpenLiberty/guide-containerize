@@ -103,8 +103,19 @@ inventory/Dockerfile
 include::finish/inventory/Dockerfile[]
 ----
 
+The [hotspot=1]`FROM` instruction initializes a new build stage and indicates the parent image from which your
+image is built. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
+base image. 
 
+In this case, you're using the `openliberty/open-liberty:javaee8`[https://github.com/OpenLiberty/ci.docker^] image as your parent
+image, which comes with the latest Open Liberty runtime.
 
+The `openliberty/open-liberty:javaee8` parent image has a `Dockerfile`[https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile^] itself. 
+The commands in this `Dockerfile` will be executed along with the rest of the commands in the `inventory/Dockerfile` that you just created. 
+
+The `COPY` instruction copies local files and directories into the destination within your Docker image. It is structured as `COPY <source> <destination>`. 
+In this case, the destination is a directory called `/config` which is a symlink created between `opt/ol/wlp/usr/servers/defaultServer` and the `/config` directory. 
+This symlink was created in the open-liberty `Dockerfile`[https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile^].
 
 
 //////////////////////////////////////////
