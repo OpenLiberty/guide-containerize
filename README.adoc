@@ -59,25 +59,7 @@ Learn more about containers on the https://www.docker.com/what-container[officia
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
 
 
-
-
-///////////////////////////
-// Try what you’ll build
-///////////////////////////
-
-[role='command']
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-intro.adoc[]
-
-//--** Describe what user should run and expect to see after running the complete version of the application.
-Add a brief explanation on how to use the finished application.
-
-[role='command']
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/trywhatyoubuild-end.adoc[]
-
-
-
-
-== Creating your microservices
+== Creating your microservices?
 
 * Creating System service 
 * Creating Inventory service 
@@ -91,6 +73,8 @@ The starting Java project, which you can find in the start directory, is a multi
 
 A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
 
+=== Dockerfiles for inventory and system services
+
 [role="code_command hotspot", subs="quotes"]
 ----
 #Create the `inventory/Dockerfile`.#
@@ -103,7 +87,7 @@ inventory/Dockerfile
 include::finish/inventory/Dockerfile[]
 ----
 
-The [hotspot=1]`FROM` instruction initializes a new build stage and indicates the parent image from which your
+The [hotspot=1 file=0]`FROM` instruction initializes a new build stage and indicates the parent image from which your
 image is built. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
 base image. 
 
@@ -119,58 +103,55 @@ This symlink was created in the open-liberty `Dockerfile`[https://github.com/Ope
 
 The `COPY` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image, without this the files and directories copied over would be owned by root.
 
+The `bootstrap.properties`, `server.env` and `server.xml` files contain configuration information such as http ports and features for the application.
+Finally, all `.war` files are copied over into `inventory.war`.
 
+The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that all the `.war` files are copied over into `system.war`.
 
+[role="code_command hotspot", subs="quotes"]
+----
+#Create the `system/Dockerfile`.#
+`system/Dockerfile`
+----
 
-//////////////////////////////////////////
-// Building and running the application
-//////////////////////////////////////////
+system/Dockerfile
+[source, Text, linenums, indent=0, role="code_column"]
+----
+include::finish/system/Dockerfile[]
+----
 
-//--** Use the following include to pull in the Maven build instructions from the guides-common repo.
+== Build your Docker images
+
+Now that your microservices are complete and you have written your Dockerfiles, you will build your Docker images. 
+
+To build your image, you need to have Docker installed. For installation
+instructions, see the https://docs.docker.com/install/[Official Docker Docs^].
+
+The `dockerfile-maven` plug-in automatically builds a Docker image from a `Dockerfile` that is located in the same
+directory as the [hotspot]`pom.xml` file.
+
+inventory/pom.xml
+[source, xml, linenums, indent=0, role="code_column"]
+----
+include::finish/inventory/pom.xml[]
+----
+
+To build and containerize the application, start your Docker daemon and run the following command:
+
 [role='command']
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnbuild.adoc[]
-//--** This include adoc will have the subheading "Building and running the application".
-//--** If you are not using this command include statement, you'll need to add it as a subheading,
-//--** ie, "== Building and running the application".
-
-//--** In between here, you should state where you application can be found now that its running. ie. urls
-//--** Sample usage of the application
-//--** Suggestions for what changes the reader can make to explore the code
-
-//--** Use the following include to pull in the Maven rebuild instructions from the
-//--** guides-common repo.
-[role='command']
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvncompile.adoc[]
-
-
+```
+mvn package
+```
 
 
 == Testing the application
 
+
 //--** Show how to test your application.
 
-// EXAMPLE:
-// ======================================================================================================
-
-[role="code_command hotspot", subs="quotes"]
-----
-#Create the `TodoTest` class.#
-`finish/src/test/java/it/io/openliberty/guides/todo/TodoTest.java`
-----
-
-TodoTest.java
-[source, Java, linenums, indent=0, role="code_column"]
-----
-include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[]
-----
-
-* Explain what each [hotspot=13-20]`@Test` test case is testing
-* Explain key methods
-// ======================================================================================================
 
 //--** Include this for info on how to run the tests
-[role='command']
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/mvnverify.adoc[]
+
 
 //--** Including a listing block with test results here
 //--** Show console output of the test results
