@@ -16,7 +16,7 @@
 :page-related-guides: ['docker', 'kube-intro']
 :page-guide-category: basic
 :page-essential: false
-:page-permainclude:: /guides/{projectid}
+:page-permalink: /guides/{projectid}
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :page-seo-title: Building a Docker image
 :page-seo-description: Find out how to build a Docker image on Open Liberty
@@ -116,6 +116,10 @@ The commands in this `Dockerfile` will be executed along with the rest of the co
 The `COPY` instruction copies local files and directories into the destination within your Docker image. It is structured as `COPY <source> <destination>`. 
 In this case, the destination is a directory called `/config` which is a symlink created between `opt/ol/wlp/usr/servers/defaultServer` and the `/config` directory. 
 This symlink was created in the open-liberty `Dockerfile`[https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile^].
+
+The `COPY` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image, without this the files and directories copied over would be owned by root.
+
+
 
 
 //////////////////////////////////////////
