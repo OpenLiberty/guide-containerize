@@ -19,8 +19,8 @@
 :page-seo-title: Building a Docker image
 :page-seo-description: Find out how to build a Docker image on Open Liberty
 :guide-author: Open Liberty
-
 = Building a Docker image
+
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
 view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
