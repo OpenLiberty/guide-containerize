@@ -58,14 +58,43 @@ Learn more about containers on the https://www.docker.com/what-container[officia
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
 
 
-== Creating your microservices?
-
-* Creating System service 
-* Creating Inventory service 
-* Emphasize how the two services communicate 
-* Re-use the following if we are not going to ask users to create the microservices: 
+== Building your microservices
 
 The starting Java project, which you can find in the start directory, is a multi-module Maven project that’s made up of the system and inventory microservices. Each microservice resides in its own directory, start/system and start/inventory. 
+
+The `system` service can be found in the `start/system` directory, 
+and the `inventory` service can be found in the `start/inventory` directory. 
+If you want to learn more about RESTful web services and how to build them, see
+https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service^] for details about how to build the `system` service.
+The `inventory` service is built in a similar way.
+
+The application that you will be working with is an `inventory` service,
+which stores the information about various JVMs that run on different systems.
+Whenever a request is made to the `inventory` service to retrieve the JVM
+system properties of a particular host, the `inventory` service communicates with the `system`
+service on that host to get these system properties. The system properties are then stored and returned.
+
+To try out the application, first navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
+```
+cd start
+mvn install liberty:start-server
+```
+
+Point your browser to the http://localhost:9080/inventory/systems[http://localhost:9080/inventory/systems^] URL. This is the starting point of the `inventory`
+service and it displays the current contents of the inventory. As you might expect, these are empty since
+nothing is stored in the inventory yet. Next, point your browser to the http://localhost:9080/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL.
+You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
+properties are automatically stored in the inventory. Go back to http://localhost:9080/inventory/systems[http://localhost:9080/inventory/systems^] and
+you see a new entry for `localhost`. For simplicity, only the OS name and username are shown here for
+each host. You can repeat this process for your own hostname or any other machine that is running
+the `system` service.
+
+After you are done checking out the application, stop the Open Liberty server:
+
+[role='command']
+```
+mvn liberty:stop-server
+```
 
 
 == Creating your Dockerfiles
