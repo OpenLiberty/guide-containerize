@@ -6,21 +6,20 @@
 // Contributors:
 //     IBM Corporation
 //
-:page-layout: guide-multipane
 :projectid: microservices-docker
+:page-layout: guide-multipane
 :page-duration: 15 minutes
 :page-releasedate: 2019-03-11
 :page-description: Learn how to build a Docker image with Open Liberty.
-:guide-author: Open Liberty
 :page-tags: ['Docker', 'Maven']
-:page-related-guides: ['docker', 'kube-intro']
-:page-guide-category: basic
-:page-essential: false
 :page-permalink: /guides/{projectid}
+:page-related-guides: ['docker', 'kube-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:source-highlighter: prettify
 :page-seo-title: Building a Docker image
 :page-seo-description: Find out how to build a Docker image on Open Liberty
 :guide-author: Open Liberty
+
 = Building a Docker image
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
@@ -146,7 +145,11 @@ mvn package
 
 == Testing the application
 
-
+SystemEndpointTest.java
+[source, java, linenums, indent=0, role="code_column"]
+----
+include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
+----
 //--** Show how to test your application.
 
 
