@@ -74,7 +74,7 @@ Whenever a request is made to the `inventory` service to retrieve the JVM
 system properties of a particular host, the `inventory` service communicates with the `system`
 service on that host to get these system properties. The system properties are then stored and returned.
 
-To try out the application, first navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
+To try out the application using Maven, first navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
 ```
 cd start
 mvn install liberty:start-server
@@ -99,6 +99,8 @@ mvn liberty:stop-server
 
 == Creating your Dockerfiles
 
+Next,  you will be creating two Docker images for the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
+
 A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
 
 === Dockerfiles for inventory and system services
@@ -119,11 +121,11 @@ The [hotspot=1 file=0]`FROM` instruction initializes a new build stage and indic
 image is built. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
 base image. 
 
-In this case, you're using the `openliberty/open-liberty:javaee8`[https://github.com/OpenLiberty/ci.docker^] image as your parent
-image, which comes with the latest Open Liberty runtime.
+In this case, you're using the `openliberty/open-liberty:javaee8` image as your parent
+image, which comes with the latest Open Liberty runtime. There are three different Open Liberty Docker image sets available on Docker Hub and you can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
 The `openliberty/open-liberty:javaee8` parent image has a `Dockerfile`[https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile^] itself. 
-The commands in this `Dockerfile` will be executed along with the rest of the commands in the `inventory/Dockerfile` that you just created. 
+The instructions in this `Dockerfile` will be executed along with the rest of the instructions in the `inventory/Dockerfile` that you just created. 
 
 The `COPY` instruction copies local files and directories into the destination within your Docker image. It is structured as `COPY <source> <destination>`. 
 In this case, the destination is a directory called `/config` which is a symlink created between `opt/ol/wlp/usr/servers/defaultServer` and the `/config` directory. 
