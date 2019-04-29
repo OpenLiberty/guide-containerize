@@ -75,7 +75,7 @@ system properties of a particular host, the `inventory` service communicates wit
 service on that host to get these system properties. The system properties are then stored and returned.
 
 To try out the application using Maven, first navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
-[role='code_command']
+[role='command']
 ```
 cd start
 mvn install liberty:start-server
@@ -252,7 +252,7 @@ You will find the address corresponding to IPv4Address:
 
 In this case, the address for `system` is 172.17.0.2, note the IP address for system in order to add the system properties to the inventory service. 
 
-Point your browser to the http://localhost:9081/inventory/systems/[system-ip-address][http://localhost:9080/inventory/systems/[system-ip-address]^] URL by replacing the `system-ip-address` with the value you obtained.
+Point your browser to the http://localhost:9081/inventory/systems/system-ip-address[http://localhost:9080/inventory/systems/system-ip-address^] URL by replacing the `system-ip-address` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9080/inventory/systems^] and
 you see a new entry for `localhost`. For simplicity, only the OS name and username are shown here for
@@ -276,29 +276,63 @@ SystemEndpointTest.java
 include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[tags=!copyright]
 ----
 
-//--** Show how to test your application.
+The [hotspot=52-61 file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
 
+[role="code_command hotspot", subs="quotes"]
+----
+#Create the `InventoryEndpointTest` class.#
+----
 
-//--** Include this for info on how to run the tests
+InventoryEndpointTest.java
+[source, java, linenums, indent=0, role="code_column"]
+----
+include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[tags=!copyright]
+----
 
+The [hotspot=69-81 file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
+The [hotspot=83-103 file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly and `testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
+Finally, [hotspot=133-149 file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
 
-//--** Including a listing block with test results here
-//--** Show console output of the test results
+The [hotspot=35 file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory`. 
+This value will also be passed in when you run the tests. 
 
-//--** OPTIONAL: after listing the test results, mention a simple change a user can make/introduce that
-//--** will cause the tests to fail. Be brief and don't give the users all of the instructions.
-//--** At this point, they should be comfortable enough to figure it out on their own.
+=== Running the tests
 
+Verify that the tests pass using the Maven `verify` goal:
+[role='command']
+```
+mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-ip-address]
+```
 
+If the tests pass, you will see a similar output to the following:
+[source, role="no_copy"]
+```
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.inventory.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.935 s - in it.io.openliberty.guides.inventory.InventoryEndpointTest
 
+Results:
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+```
+
+To stop your container, run the following command from the command line.
+[role='command']
+```
+docker stop rest-app
+```
+
+If a problem occurs and your container exits prematurely, the container won't appear in the container
+list that the `docker ps` command displays. Instead, your container appears with an `Exited`
+status when you run the `docker ps -a` command. Run the `docker logs rest-app` command to view the
+container logs for any potential problems and double-check that your Dockerfile is correct. When you
+find the cause of the issue, remove the faulty container with the `docker rm rest-app` command, rebuild
+your image, and start the container again.
 
 == Great work! You're done!
 
-//--** Briefly summarize what the user achieved in this guide (1-2 sentences).
-EXAMPLE: You have just completed building a simple todo list application using JAXRS and CDI services in Open Liberty.
+You have just completed building a Docker image with two microservices in Open Liberty. 
 
-//--** OPTIONAL: briefly state what the user could do next now that they've learned the
-//--** technologies in this guide.
-
-//--** Include the below from the guides-common repo to tell users how they can contribute to the guide
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]

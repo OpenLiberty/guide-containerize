@@ -59,17 +59,6 @@ public class SystemEndpointTest {
     public void teardown() {
         client.close();
     }
-    
-    // @Test
-    // public void testPodNameNotNull() {
-    //     response = this.getResponse(url);
-    //     this.assertResponse(url, response);
-    //     String greeting = response.getHeaderString("X-Pod-Name");
-        
-    //     assertNotNull(
-    //         "Container name should not be null but it was. The service is probably not running inside a container",
-    //         greeting);
-    // }
 
     @Test
     public void testGetProperties() {
@@ -82,32 +71,5 @@ public class SystemEndpointTest {
         assertEquals("Incorrect response code from " + url, 200, response.getStatus());
         response.close();
     }
-
-    // /**
-    //  * <p>
-    //  * Returns response information from the specified URL.
-    //  * </p>
-    //  * 
-    //  * @param url
-    //  *          - target URL.
-    //  * @return Response object with the response from the specified URL.
-    //  */
-    // private Response getResponse(String url) {
-    //     return client.target(url).request().get();
-    // }
-
-    // /**
-    //  * <p>
-    //  * Asserts that the given URL has the correct response code of 200.
-    //  * </p>
-    //  * 
-    //  * @param url
-    //  *          - target URL.
-    //  * @param response
-    //  *          - response received from the target URL.
-    //  */
-    // private void assertResponse(String url, Response response) {
-    //     assertEquals("Incorrect response code from " + url, 200, response.getStatus());
-    // }
-
+    
 }
