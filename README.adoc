@@ -96,7 +96,7 @@ After you are done checking out the application, stop the Open Liberty server:
 ```
 mvn liberty:stop-server
 ```
-== Build your Docker images
+== Building your Docker images
 
 === Creating your Dockerfiles
 
@@ -172,6 +172,7 @@ To build and containerize the application, start your Docker daemon and run the 
 mvn package
 ```
 
+== Running your microservices in Docker containers
 
 == Testing the application
 
