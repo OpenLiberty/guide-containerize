@@ -161,14 +161,16 @@ Now that your microservices are complete and you have written your Dockerfiles, 
 To build your image, you need to have Docker installed. For installation
 instructions, see the https://docs.docker.com/install/[Official Docker Docs^].
 
-The [hotspot=119-122 file=0]`dockerfile-maven` plug-in automatically builds a Docker image from a `Dockerfile` that is located in the same
-directory as the [hotspot]`pom.xml` file.
+You will build your Docker image using the `dockerfile-maven` plug-in. Add this plug-in to your `pom.xml` for your `inventory` and `system` services. 
 
 [role="code_command hotspot", subs="quotes"]
 ----
 #Replace the `inventory/pom.xml`.#
 `inventory/pom.xml`
 ----
+
+The [hotspot=119-122 file=0]`dockerfile-maven` plug-in automatically builds a Docker image from a `Dockerfile` that is located in the same
+directory as the [hotspot]`pom.xml` file.
 
 inventory/pom.xml
 [source, xml, linenums, indent=0, role="code_column"]
