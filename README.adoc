@@ -128,12 +128,12 @@ base image.
 In this case, you're using the `openliberty/open-liberty:javaee8` image as your parent
 image, which comes with the latest Open Liberty runtime. There are three different Open Liberty Docker image sets available on Docker Hub and you can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
-The `openliberty/open-liberty:javaee8` parent image has a Dockerfile[https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile^] itself. 
+The `openliberty/open-liberty:javaee8` parent image has a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself. 
 The instructions in this `Dockerfile` will be executed along with the rest of the instructions in the `inventory/Dockerfile` that you just created. 
 
 The [hotspot=3-7 file=0]`COPY` instruction copies local files and directories into the destination within your Docker image. It is structured as `COPY <source> <destination>`. 
 In this case, the destination is a directory called `/config` which is a symlink created between `opt/ol/wlp/usr/servers/defaultServer` and the `/config` directory. 
-This symlink was created in the open-liberty Dockerfile[https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile^].
+This symlink was created in the open-liberty https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^].
 
 The [hotspot=3-7 file=0]`COPY` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image, without this the files and directories copied over would be owned by root.
 
@@ -161,13 +161,31 @@ Now that your microservices are complete and you have written your Dockerfiles, 
 To build your image, you need to have Docker installed. For installation
 instructions, see the https://docs.docker.com/install/[Official Docker Docs^].
 
-The [hotspot=119-122]`dockerfile-maven` plug-in automatically builds a Docker image from a `Dockerfile` that is located in the same
+The [hotspot=119-122 file=0]`dockerfile-maven` plug-in automatically builds a Docker image from a `Dockerfile` that is located in the same
 directory as the [hotspot]`pom.xml` file.
+
+[role="code_command hotspot", subs="quotes"]
+----
+#Replace the `inventory/pom.xml`.#
+`inventory/pom.xml`
+----
 
 inventory/pom.xml
 [source, xml, linenums, indent=0, role="code_column"]
 ----
 include::finish/inventory/pom.xml[]
+----
+
+[role="code_command hotspot", subs="quotes"]
+----
+#Replace the `system/pom.xml`.#
+`system/pom.xml`
+----
+
+system/pom.xml
+[source, xml, linenums, indent=0, role="code_column"]
+----
+include::finish/system/pom.xml[]
 ----
 
 To build and containerize the application, start your Docker daemon and run the following command:
@@ -281,6 +299,7 @@ The [hotspot=52-61 file=0]`testGetProperties()` method checks for a `200` respon
 [role="code_command hotspot", subs="quotes"]
 ----
 #Create the `InventoryEndpointTest` class.#
+`inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java
 ----
 
 InventoryEndpointTest.java
