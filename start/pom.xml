@@ -181,7 +181,7 @@
                                     <include>**/it/**</include>
                                 </includes>
                                 <systemPropertyVariables>
-                                    <system.ip>${system.ip}</system.ip>
+                                    <!-- <system.ip>${system.ip}</system.ip> -->
                                     <system.http.port>${system.http.port}</system.http.port>
                                     <inventory.http.port>${inventory.http.port}</inventory.http.port>
                                 </systemPropertyVariables>

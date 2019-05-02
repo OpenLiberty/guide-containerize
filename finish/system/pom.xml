@@ -32,6 +32,10 @@
            <artifactId>microprofile-rest-client-api</artifactId>
        </dependency>
        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+       </dependency>
+       <dependency>
            <groupId>io.openliberty.features</groupId>
            <artifactId>mpConfig-1.3</artifactId>
            <type>esa</type>
@@ -44,6 +48,10 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-extension-providers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
