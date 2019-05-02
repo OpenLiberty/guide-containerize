@@ -27,26 +27,22 @@ view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty websi
 
 == What you'll learn
 
-You will learn how to create two Docker images from the Open Liberty image with two microservices on them using `Dockerfiles` and the `dockerfile-maven-plugin`.
-Then you will then run instances of those two images in two Docker containers using `docker run`.
+You will learn how to write `Dockerfiles`, how to use the `dockerfile-maven-plugin` to create Docker images and how to run instances of the images in Docker containers using `docker run`. 
 
-=== What is Docker?
+The application that you will be working with is an `inventory` service,
+which stores the information about various JVMs that run on different systems.
+Whenever a request is made to the `inventory` service to retrieve the JVM
+system properties of a particular host, the `inventory` service communicates with the `system`
+service on that host to get these system properties. The system properties are then stored and returned.
 
-Docker is a tool that you can use to deploy and run applications with containers. You
-can think of Docker like a virtual machine that runs various applications. However, unlike a typical virtual
-machine, you can run these applications simultaneously on a single system and independent of
-one another.
+=== What is a Docker image? 
+
+An image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
+instructions, called `Dockerfiles`, to create a complete and executable version of the application.
 
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
 Learn how to install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
-
-=== What is a container?
-
-A container is a lightweight, stand-alone package that contains a piece of software that is bundled together
-with the entire environment that it needs to run. Containers are small compared to regular images and can
-run on any environment where Docker is set up. Moreover, you can run multiple containers on a single
-machine at the same time in isolation from each other.
 
 Learn more about containers on the https://www.docker.com/what-container[official Docker page^].
 
@@ -67,12 +63,6 @@ and the `inventory` service can be found in the `start/inventory` directory.
 If you want to learn more about RESTful web services and how to build them, see
 https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service^] for details about how to build the `system` service.
 The `inventory` service is built in a similar way.
-
-The application that you will be working with is an `inventory` service,
-which stores the information about various JVMs that run on different systems.
-Whenever a request is made to the `inventory` service to retrieve the JVM
-system properties of a particular host, the `inventory` service communicates with the `system`
-service on that host to get these system properties. The system properties are then stored and returned.
 
 To try out the application using Maven, first navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
 [role='command']
