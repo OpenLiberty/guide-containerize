@@ -2,11 +2,16 @@
 
   <featureManager>
     <feature>jaxrs-2.1</feature>
-    <feature>cdi-2.0</feature>
     <feature>jsonp-1.1</feature>
+    <feature>cdi-2.0</feature>
   </featureManager>
 
-  <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
-  <webApplication location="system.war" contextRoot="/"/>
+  <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+      id="defaultHttpEndpoint" host="*" />
+
+  <webApplication location="system.war" contextRoot="/">
+  
+  </webApplication>
+
 </server>

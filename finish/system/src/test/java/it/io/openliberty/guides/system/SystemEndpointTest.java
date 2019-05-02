@@ -13,7 +13,6 @@
 package it.io.openliberty.guides.system;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -26,7 +25,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.json.JsonObject;
 import javax.ws.rs.client.WebTarget;
 import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 
@@ -39,7 +37,7 @@ public class SystemEndpointTest {
 
     @BeforeClass
     public static void oneTimeSetup() {
-        String port = System.getProperty("system.http.port");
+        String port = System.getProperty("sys.http.port");
         url = "http://localhost:" + port + "/system/properties/";
     }
     
