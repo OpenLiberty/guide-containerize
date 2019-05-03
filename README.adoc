@@ -275,7 +275,7 @@ SystemEndpointTest.java
 include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[tags=!copyright]
 ----
 
-The [hotspot=52-61 file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
+The [hotspot=50-59 file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -289,11 +289,11 @@ InventoryEndpointTest.java
 include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[tags=!copyright]
 ----
 
-The [hotspot=69-81 file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
-The [hotspot=83-103 file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly and `testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
-Finally, [hotspot=133-149 file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
+The [hotspot=68-80 file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
+The [hotspot=82-102 file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly and [hotspot=104-130 file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
+Finally, [hotspot=132-148 file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
 
-The [hotspot=35 file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory`. 
+The [hotspot=34 file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory`. 
 This value will also be passed in when you run the tests. 
 
 === Running the tests
