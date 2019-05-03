@@ -35,17 +35,6 @@ Whenever a request is made to the `inventory` service to retrieve the JVM
 system properties of a particular host, the `inventory` service communicates with the `system`
 service on that host to get these system properties. The system properties are then stored and returned.
 
-=== What is a Docker image? 
-
-An image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
-instructions, called `Dockerfiles`, to create a complete and executable version of the application.
-
-Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
-
-Learn how to install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
-
-Learn more about containers on the https://www.docker.com/what-container[official Docker page^].
-
 ///////////////////////////
 // Getting started
 ///////////////////////////
@@ -54,12 +43,10 @@ Learn more about containers on the https://www.docker.com/what-container[officia
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
 
 
-== Building your microservices
+== Checking out your microservices
 
-The starting Java project, which you can find in the start directory, is a multi-module Maven project that’s made up of the system and inventory microservices. Each microservice resides in its own directory, start/system and start/inventory. 
+The starting Java project, which you can find in the `start` directory, is a multi-module Maven project that’s made up of the `system` and `inventory` microservices. Each microservice resides in its own directory, `start/system` and `start/inventory`. 
 
-The `system` service can be found in the `start/system` directory, 
-and the `inventory` service can be found in the `start/inventory` directory. 
 If you want to learn more about RESTful web services and how to build them, see
 https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service^] for details about how to build the `system` service.
 The `inventory` service is built in a similar way.
@@ -71,19 +58,11 @@ cd start
 mvn install liberty:start-server
 ```
 
-Point your browser to the http://localhost:9081/inventory/systems[http://localhost:9080/inventory/systems^] URL. This is the starting point of the `inventory`
-service and it displays the current contents of the inventory. As you might expect, these are empty since
-nothing is stored in the inventory yet. 
+The starting point of the `inventory` service can be found at the http://localhost:9081/inventory/systems[http://localhost:9080/inventory/systems^] URL. It displays the current contents of the inventory.
 
-Point your browser to the http://localhost:9080/system/properties[^] URL. This is the `system` service which shows the system properties of your local JVM.
+The `system` service shows the system properties of your local JVM and can be found at the http://localhost:9080/system/properties[^] URL.
 
-
-Next, point your browser to the http://localhost:9081/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL.
-You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
-properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9080/inventory/systems^] and
-you see a new entry for `localhost`. For simplicity, only the OS name and username are shown here for
-each host. You can repeat this process for your own hostname or any other machine that is running
-the `system` service.
+The `system` can be added to the `inventory` by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL.
 
 After you are done checking out the application, stop the Open Liberty server:
 
@@ -93,9 +72,18 @@ mvn liberty:stop-server
 ```
 == Building your Docker images
 
+An Docker image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
+instructions, called `Dockerfiles`, to create a complete and executable version of the application.
+
+Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
+
+Learn how to install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
+
+Learn more about containers on the https://www.docker.com/what-container[official Docker page^].
+
 === Creating your Dockerfiles
 
-Next,  you will be creating two Docker images for the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
+You will be creating two Docker images to run the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
 
 A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
 
@@ -179,6 +167,8 @@ system/pom.xml
 ----
 include::finish/system/pom.xml[]
 ----
+
+=== Creating your Docker image
 
 To build and containerize the application, start your Docker daemon and run the following command:
 
