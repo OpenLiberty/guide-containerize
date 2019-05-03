@@ -55,7 +55,8 @@ To try out the application using Maven, first navigate to the `start` directory 
 [role='command']
 ```
 cd start
-mvn install liberty:start-server
+mvn install 
+mvn liberty:start-server
 ```
 
 The starting point of the `inventory` service can be found at the http://localhost:9081/inventory/systems[http://localhost:9080/inventory/systems^] URL. It displays the current contents of the inventory.
@@ -78,8 +79,6 @@ instructions, called `Dockerfiles`, to create a complete and executable version 
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
 Learn how to install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
-
-Learn more about containers on the https://www.docker.com/what-container[official Docker page^].
 
 === Creating your Dockerfiles
 
@@ -147,7 +146,7 @@ You will build your Docker image using the `dockerfile-maven` plug-in. Add this 
 `inventory/pom.xml`
 ----
 
-The [hotspot=119-122 file=0]`dockerfile-maven` plug-in automatically builds a Docker image from a `Dockerfile` that is located in the same
+The [hotspot=184-187 file=0]`dockerfile-maven` plug-in automatically builds a Docker image from a `Dockerfile` that is located in the same
 directory as the [hotspot]`pom.xml` file.
 
 inventory/pom.xml
@@ -281,7 +280,7 @@ The [hotspot=52-61 file=0]`testGetProperties()` method checks for a `200` respon
 [role="code_command hotspot", subs="quotes"]
 ----
 #Create the `InventoryEndpointTest` class.#
-`inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java
+`inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java`
 ----
 
 InventoryEndpointTest.java
@@ -322,7 +321,7 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 To stop your container, run the following command from the command line.
 [role='command']
 ```
-docker stop rest-app
+docker stop inventory system && docker rm inventory system
 ```
 
 If a problem occurs and your container exits prematurely, the container won't appear in the container
