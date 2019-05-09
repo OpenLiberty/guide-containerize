@@ -102,10 +102,10 @@ The [hotspot=1 file=0]`FROM` instruction initializes a new build stage and indic
 image is built. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
 base image. 
 
-In this case, you're using the `openliberty/open-liberty:javaee8` image as your parent
+In this case, you're using the `openliberty` image as your parent
 image, which comes with the latest Open Liberty runtime. There are three different Open Liberty Docker image sets available on Docker Hub and you can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
-The `openliberty/open-liberty:javaee8` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
+The `openliberty` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
 You are pulling the image from Docker Hub when you use `FROM` in your Dockerfile.
 
 The [hotspot=3-7 file=0]`COPY` instruction copies local files and directories into the destination within your Docker image. It is structured as `COPY <source> <destination>`. 
