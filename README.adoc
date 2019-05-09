@@ -59,11 +59,11 @@ mvn install
 mvn liberty:start-server
 ```
 
-The starting point of the `inventory` service can be found at the http://localhost:9081/inventory/systems[http://localhost:9080/inventory/systems^] URL. It displays the current contents of the inventory.
+The starting point of the `inventory` service can be found at the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. It displays the current contents of the inventory.
 
 The `system` service shows the system properties of your local JVM and can be found at the http://localhost:9080/system/properties[^] URL.
 
-The `system` can be added to the `inventory` by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9080/inventory/systems/localhost^] URL.
+The `system` can be added to the `inventory` by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^] URL.
 
 After you are done checking out the application, stop the Open Liberty server:
 
@@ -73,7 +73,7 @@ mvn liberty:stop-server
 ```
 == Building your Docker images
 
-An Docker image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
+A Docker image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
 instructions, called `Dockerfiles`, to create a complete and executable version of the application.
 
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
@@ -105,14 +105,14 @@ base image.
 In this case, you're using the `openliberty/open-liberty:javaee8` image as your parent
 image, which comes with the latest Open Liberty runtime. There are three different Open Liberty Docker image sets available on Docker Hub and you can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
-The `openliberty/open-liberty:javaee8` parent image has a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself. 
-The instructions in this `Dockerfile` will be executed along with the rest of the instructions in the `inventory/Dockerfile` that you just created. 
+The `openliberty/open-liberty:javaee8` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
+You are pulling the image from Docker Hub when you use `FROM` in your Dockerfile.
 
 The [hotspot=3-7 file=0]`COPY` instruction copies local files and directories into the destination within your Docker image. It is structured as `COPY <source> <destination>`. 
 In this case, the destination is a directory called `/config` which is a symlink created between `opt/ol/wlp/usr/servers/defaultServer` and the `/config` directory. 
 This symlink was created in the open-liberty https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^].
 
-The [hotspot=3-7 file=0]`COPY` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image, without this the files and directories copied over would be owned by root.
+The [hotspot=3-7 file=0]`COPY` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image. Without this, the files and directories copied over would be owned by root.
 
 The `bootstrap.properties`, `server.env` and `server.xml` files contain configuration information such as http ports and features for the application.
 Finally, all `.war` files are copied over into `inventory.war`.
@@ -131,11 +131,11 @@ system/Dockerfile
 include::finish/system/Dockerfile[]
 ----
 
-=== Using  Maven plugin to build your Docker images
+=== Using  Maven plug-in to build your Docker images
 
 Now that your microservices are complete and you have written your Dockerfiles, you will build your Docker images. 
 
-To build your image, you need to have Docker installed. For installation
+To build your image, you need Docker installed. For installation
 instructions, see the https://docs.docker.com/install/[Official Docker Docs^].
 
 You will build your Docker image using the `dockerfile-maven` plug-in. Add this plug-in to your `pom.xml` for your `inventory` and `system` services. 
@@ -185,9 +185,9 @@ docker images
 Your two images `inventory` and `system` should appear in the list of all Docker images:
 [source, role="no_copy"]
 ```
-REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
-inventory                                  1.0-SNAPSHOT        08fef024e986        4 minutes ago       471MB
-system                                     1.0-SNAPSHOT        1dff6d0b4f31        5 minutes ago       470MB
+REPOSITORY   TAG                 IMAGE ID            CREATED             SIZE
+inventory    1.0-SNAPSHOT        08fef024e986        4 minutes ago       471MB
+system       1.0-SNAPSHOT        1dff6d0b4f31        5 minutes ago       470MB
 ```
 
 
@@ -220,15 +220,15 @@ Make sure that your container is running and does not have `Exited` as its statu
 
 [source, role="no_copy"]
 ```
-CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                                        NAMES
-2b584282e0f5        inventory:1.0-SNAPSHOT   "/opt/ol/helpers/run…"   2 seconds ago       Up 1 second         9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
-99a98313705f        system:1.0-SNAPSHOT      "/opt/ol/helpers/run…"   3 seconds ago       Up 2 seconds        0.0.0.0:9080->9080/tcp, 9443/tcp             system
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS           PORTS                                        NAMES
+2b584282e0f5   inventory:1.0-SNAPSHOT "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
+99a98313705f   system:1.0-SNAPSHOT    "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
 ```
 
-To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9080/inventory/systems^] URL. As you might expect, these are empty since
+To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. As you might expect, these are empty since
 nothing is stored in the inventory yet. 
 
-Point your browser to the http://localhost:9080/system/properties[^] URL. This is the `system` service which shows the system properties of your local JVM.
+Point your browser to the http://localhost:9080/system/properties[^] URL. This is the `system` service, which shows the system properties of your local JVM.
 
 Next, you will to retrieve the `system` containers IP address. When you start Docker,  a default bridge network is created for running containers to be able to communicate. 
 Run the following command to retrieve the `system` IP address:
@@ -240,22 +240,22 @@ docker network inspect bridge
 You will find the address corresponding to IPv4Address:
 
 ```
-            "99a98313705fc9f8c21b8110900b8bee0427412373f8c3ef2d733c96d96ffb5f": {
-                "Name": "system",
-                "EndpointID": "e30b640eb214435c9bf08b23d7c3f851c88e909e4feffd1a893f14ae4d2f35a4",
-                "MacAddress": "02:42:ac:11:00:02",
-                "IPv4Address": "172.17.0.2/16",
-                "IPv6Address": ""
-            }
+"99a98313705fc9f8c21b8110900b8bee0427412373f8c3ef2d733c96d96ffb5f": {
+    "Name": "system",
+    "EndpointID": "e30b640eb214435c9bf08b23d7c3f851c88e909e4feffd1a893f14ae4d2f35a4",
+    "MacAddress": "02:42:ac:11:00:02",
+    "IPv4Address": "172.17.0.2/16",
+    "IPv6Address": ""
+}
 ```
 
 In this case, the address for `system` is 172.17.0.2, note the IP address for system in order to add the system properties to the inventory service. 
 
-Point your browser to the http://localhost:9081/inventory/systems/system-ip-address[http://localhost:9080/inventory/systems/system-ip-address^] URL by replacing the `system-ip-address` with the value you obtained.
+Point your browser to the http://localhost:9081/inventory/systems/[system-ip-address] URL by replacing the `system-ip-address` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
-properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9080/inventory/systems^] and
-you see a new entry for `localhost`. For simplicity, only the OS name and username are shown here for
-each host. You can repeat this process for your own hostname or any other machine that is running
+properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
+you see a new entry for `localhost`. For simplicity, only the OS name and user name are shown here for
+each host. You can repeat this process for your own host name or any other machine that is running
 the `system` service.
 
 
@@ -318,18 +318,19 @@ Results:
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 ```
 
-To stop your container, run the following command from the command line.
+To stop your containers, run the following command from the command line.
 [role='command']
 ```
-docker stop inventory system && docker rm inventory system
+docker stop inventory system 
+docker rm inventory system
 ```
 
-If a problem occurs and your container exits prematurely, the container won't appear in the container
-list that the `docker ps` command displays. Instead, your container appears with an `Exited`
-status when you run the `docker ps -a` command. Run the `docker logs rest-app` command to view the
-container logs for any potential problems and double-check that your Dockerfile is correct. When you
-find the cause of the issue, remove the faulty container with the `docker rm rest-app` command, rebuild
-your image, and start the container again.
+If a problem occurs and your containers exit prematurely, the containers won't appear in the container
+list that the `docker ps` command displays. Instead, your containers appears with an `Exited`
+status when you run the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
+container logs for any potential problems and double-check that your Dockerfiles are correct. When you
+find the cause of the issue, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
+your image, and start the containers again.
 
 == Great work! You're done!
 
