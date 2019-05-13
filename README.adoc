@@ -27,7 +27,7 @@ view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty websi
 
 == What you'll learn
 
-You will learn how to write `Dockerfiles`, how to use the `dockerfile-maven-plugin` to create Docker images and how to run instances of the images in Docker containers using `docker run`. 
+You will learn how to write `Dockerfiles`, how to use the `docker build` to create Docker images and how to run instances of the images in Docker containers using `docker run`. 
 
 The application that you will be working with is an `inventory` service,
 which stores the information about various JVMs that run on different systems.
@@ -131,51 +131,30 @@ system/Dockerfile
 include::finish/system/Dockerfile[]
 ----
 
-=== Using  Maven plug-in to build your Docker images
+=== Building your Docker images
 
 Now that your microservices are complete and you have written your Dockerfiles, you will build your Docker images. 
 
 To build your image, you need Docker installed. For installation
 instructions, see the https://docs.docker.com/install/[Official Docker Docs^].
 
-You will build your Docker image using the `dockerfile-maven` plug-in. Add this plug-in to your `pom.xml` for your `inventory` and `system` services. 
+You will build your Docker image using the `docker build` command.
 
-[role="code_command hotspot", subs="quotes"]
-----
-#Replace the `inventory/pom.xml`.#
-`inventory/pom.xml`
-----
 
-The [hotspot=184-187 file=0]`dockerfile-maven` plug-in automatically builds a Docker image from a `Dockerfile` that is located in the same
-directory as the [hotspot]`pom.xml` file.
-
-inventory/pom.xml
-[source, xml, linenums, indent=0, role="code_column"]
-----
-include::finish/inventory/pom.xml[]
-----
-
-[role="code_command hotspot", subs="quotes"]
-----
-#Replace the `system/pom.xml`.#
-`system/pom.xml`
-----
-
-system/pom.xml
-[source, xml, linenums, indent=0, role="code_column"]
-----
-include::finish/system/pom.xml[]
-----
 
 === Creating your Docker image
 
-To build and containerize the application, start your Docker daemon and run the following command:
+To build and containerize the application, start your Docker daemon and run the following commands:
 
 [role='command']
 ```
-mvn package
+docker build -t system system/.
+docker build -t inventory inventory/.
 ```
-To verify that the image is built, run the `docker images` command to list all local Docker images:
+
+The `-t` flag in the `docker build` command allows the docker images to be in `name:tag` format. 
+The tag for an image describes the specific image version. 
+To verify that the images are built, run the `docker images` command to list all local Docker images:
 
 [role='command']
 ```
@@ -186,8 +165,8 @@ Your two images `inventory` and `system` should appear in the list of all Docker
 [source, role="no_copy"]
 ```
 REPOSITORY   TAG                 IMAGE ID            CREATED             SIZE
-inventory    1.0-SNAPSHOT        08fef024e986        4 minutes ago       471MB
-system       1.0-SNAPSHOT        1dff6d0b4f31        5 minutes ago       470MB
+inventory    latest        08fef024e986        4 minutes ago       471MB
+system       latest        1dff6d0b4f31        5 minutes ago       470MB
 ```
 
 
@@ -196,8 +175,8 @@ system       1.0-SNAPSHOT        1dff6d0b4f31        5 minutes ago       470MB
 Now that you have your two images built, you will run your microservices in Docker containers:
 [role='command']
 ```
-docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
-docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
+docker run -d --name system -p 9080:9080 system:latest
+docker run -d --name inventory -p 9081:9081 inventory:latest
 ```
 
 The flags are described in the table below: 
@@ -221,8 +200,8 @@ Make sure that your container is running and does not have `Exited` as its statu
 [source, role="no_copy"]
 ```
 CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS           PORTS                                        NAMES
-2b584282e0f5   inventory:1.0-SNAPSHOT "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
-99a98313705f   system:1.0-SNAPSHOT    "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
+2b584282e0f5   inventory:latest "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
+99a98313705f   system:latest    "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
 ```
 
 To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. As you might expect, these are empty since
