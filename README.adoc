@@ -74,7 +74,7 @@ mvn liberty:stop-server
 == Building your Docker images
 
 A Docker image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
-instructions, called `Dockerfiles`, to create a complete and executable version of the application.
+instructions, called `Dockerfiles`, to create a containerized version of the application.
 
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
@@ -102,10 +102,10 @@ The [hotspot=1 file=0]`FROM` instruction initializes a new build stage and indic
 image is built. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
 base image. 
 
-In this case, you're using the `openliberty` image as your parent
+In this case, you're using the `open-liberty` image as your parent
 image, which comes with the latest Open Liberty runtime. There are three different Open Liberty Docker image sets available on Docker Hub and you can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
-The `openliberty` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
+The `open-liberty` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
 You are pulling the image from Docker Hub when you use `FROM` in your Dockerfile.
 
 The [hotspot=3-7 file=0]`COPY` instruction copies local files and directories into the destination within your Docker image. It is structured as `COPY <source> <destination>`. 
@@ -175,8 +175,8 @@ system       latest        1dff6d0b4f31        5 minutes ago       470MB
 Now that you have your two images built, you will run your microservices in Docker containers:
 [role='command']
 ```
-docker run -d --name system -p 9080:9080 system:latest
-docker run -d --name inventory -p 9081:9081 inventory:latest
+docker run -d --name system -p 9080:9080 system
+docker run -d --name inventory -p 9081:9081 inventory
 ```
 
 The flags are described in the table below: 
