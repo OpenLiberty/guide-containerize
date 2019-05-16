@@ -86,7 +86,7 @@ You will be creating two Docker images to run the `inventory` service and `syste
 
 A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the `inventory/Dockerfile`.#
 `inventory/Dockerfile`
@@ -119,7 +119,7 @@ Finally, all `.war` files are copied over into `inventory.war`.
 
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that all the `.war` files are copied over into `system.war`.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
 #Create the `system/Dockerfile`.#
 `system/Dockerfile`
@@ -209,7 +209,7 @@ nothing is stored in the inventory yet.
 
 Point your browser to the http://localhost:9080/system/properties[^] URL. This is the `system` service, which shows the system properties of your local JVM.
 
-Next, you will to retrieve the `system` containers IP address. When you start Docker,  a default bridge network is created for running containers to be able to communicate. 
+Next, you will retrieve the `system` containers IP address. When you start Docker,  a default bridge network is created for running containers to be able to communicate. 
 Run the following command to retrieve the `system` IP address:
 [role='command']
 ```
@@ -230,7 +230,7 @@ You will find the address corresponding to IPv4Address:
 
 In this case, the address for `system` is 172.17.0.2, note the IP address for system in order to add the system properties to the inventory service. 
 
-Point your browser to the http://localhost:9081/inventory/systems/\[system-ip-address] URL by replacing the `system-ip-address` with the value you obtained.
+Point your browser to the \http://localhost:9081/inventory/systems/[system-ip-address] URL by replacing the `system-ip-address` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
 you see a new entry for `localhost`. For simplicity, only the OS name and user name are shown here for
@@ -242,7 +242,7 @@ the `system` service.
 
 You can test your application manually, but automated tests ensure code quality because they trigger a failure whenever a code change introduces a defect.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the `SystemEndpointTest` class.#
 `system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java`
@@ -256,7 +256,7 @@ include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpo
 
 The [hotspot=50-59 file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
 #Create the `InventoryEndpointTest` class.#
 `inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java`
@@ -305,7 +305,7 @@ docker rm inventory system
 ```
 
 If a problem occurs and your containers exit prematurely, the containers won't appear in the container
-list that the `docker ps` command displays. Instead, your containers appears with an `Exited`
+list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
 status when you run the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
 container logs for any potential problems and double-check that your Dockerfiles are correct. When you
 find the cause of the issue, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
@@ -313,6 +313,6 @@ your image, and start the containers again.
 
 == Great work! You're done!
 
-You have just completed building a Docker image with two microservices in Open Liberty. 
+You have just built Docker images for two microservices in Open Liberty. 
 
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
