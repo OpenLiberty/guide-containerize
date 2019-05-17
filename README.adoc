@@ -45,13 +45,13 @@ include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitc
 
 == Checking out your microservices
 
-The starting Java project, which you can find in the `start` directory, is a multi-module Maven project that’s made up of the `system` and `inventory` microservices. Each microservice resides in its own directory, `start/system` and `start/inventory`. 
+The starting Java project, which you can find in the `start` directory, is a multi-module Maven project that’s made up of the `system` and `inventory` microservices. Each microservice resides in its own directory, `start/system` and `start/inventory`, respectively. 
 
 If you want to learn more about RESTful web services and how to build them, see
 https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service^] for details about how to build the `system` service.
 The `inventory` service is built in a similar way.
 
-To try out the application using Maven, first navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
+To try out the application using Maven, first, navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
 [role='command']
 ```
 cd start
@@ -63,7 +63,7 @@ The starting point of the `inventory` service can be found at the http://localho
 
 The `system` service shows the system properties of your local JVM and can be found at the http://localhost:9080/system/properties[^] URL.
 
-The `system` can be added to the `inventory` by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^] URL.
+The `system` can be added to the `inventory` service by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^] URL.
 
 After you are done checking out the application, stop the Open Liberty server:
 
@@ -76,6 +76,8 @@ mvn liberty:stop-server
 A Docker image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
 instructions, called `Dockerfiles`, to create a containerized version of the application.
 
+A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
+
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
 Learn how to install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
@@ -83,8 +85,6 @@ Learn how to install Docker on the https://docs.docker.com/engine/installation[o
 === Creating your Dockerfiles
 
 You will be creating two Docker images to run the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
-
-A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -98,12 +98,12 @@ inventory/Dockerfile
 include::finish/inventory/Dockerfile[]
 ----
 
-The [hotspot=1 file=0]`FROM` instruction initializes a new build stage and indicates the parent image from which your
-image is built. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
+The [hotspot=1 file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the
+image that  has been built. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
 base image. 
 
 In this case, you're using the `open-liberty` image as your parent
-image, which comes with the latest Open Liberty runtime. There are three different Open Liberty Docker image sets available on Docker Hub and you can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
+image, which comes with the latest Open Liberty runtime. There are three different Open Liberty Docker image sets available on Docker Hub. You can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
 The `open-liberty` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
 You are pulling the image from Docker Hub when you use `FROM` in your Dockerfile.
@@ -114,7 +114,7 @@ This symlink was created in the open-liberty https://github.com/OpenLiberty/ci.d
 
 The [hotspot=3-7 file=0]`COPY` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image. Without this, the files and directories copied over would be owned by root.
 
-The `bootstrap.properties`, `server.env` and `server.xml` files contain configuration information such as http ports and features for the application.
+The `bootstrap.properties`, `server.env` and `server.xml` files contain configuration information, such as http ports and features for the application.
 Finally, all `.war` files are copied over into `inventory.war`.
 
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that all the `.war` files are copied over into `system.war`.
@@ -228,7 +228,7 @@ You will find the address corresponding to IPv4Address:
 }
 ```
 
-In this case, the address for `system` is 172.17.0.2, note the IP address for system in order to add the system properties to the inventory service. 
+In this case, the address for `system` is `172.17.0.2`. Note down the [system-ip-address] in order to add the system properties to the inventory service. 
 
 Point your browser to the \http://localhost:9081/inventory/systems/[system-ip-address] URL by replacing the `system-ip-address` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
@@ -272,7 +272,7 @@ The [hotspot=68-80 file=1]`testEmptyInventory()` method checks that the `invento
 The [hotspot=82-102 file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly and [hotspot=104-130 file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
 Finally, [hotspot=132-148 file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
 
-The [hotspot=34 file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory`. 
+The [hotspot=34 file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory` service. 
 This value will also be passed in when you run the tests. 
 
 === Running the tests
@@ -306,7 +306,7 @@ docker rm inventory system
 
 If a problem occurs and your containers exit prematurely, the containers won't appear in the container
 list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
-status when you run the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
+status when running the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
 container logs for any potential problems and double-check that your Dockerfiles are correct. When you
 find the cause of the issue, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
 your image, and start the containers again.
