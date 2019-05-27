@@ -28,7 +28,7 @@ sleep 60
 systemStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9080/system/properties/")"
 inventoryStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9081/inventory/systems/")"
 
-if [ "$systemStatus" == "200"] && ["$inventoryStatus" == "200"]
+if [ "$systemStatus" == "200" ] && [ "$inventoryStatus" == "200" ]
 then
   echo ENDPOINT OK
 else
