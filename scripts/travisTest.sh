@@ -11,7 +11,7 @@ mvn -q clean install
 
 cd ../finish
 
-mvn -q clean install
+mvn -q clean install -DskipTests
 
 docker pull open-liberty
 
