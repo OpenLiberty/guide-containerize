@@ -11,6 +11,8 @@ mvn -q clean install
 
 cd ../finish
 
+mvn -q clean install
+
 docker pull open-liberty
 
 docker build -t system system/.
