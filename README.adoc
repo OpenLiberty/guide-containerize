@@ -108,16 +108,17 @@ image, which comes with the latest Open Liberty runtime. There are three differe
 The `open-liberty` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
 You are pulling the image from Docker Hub when you use `FROM` in your Dockerfile.
 
-The [hotspot=3-7 file=0]`COPY` instruction copies local files and directories into the destination within your Docker image. It is structured as `COPY <source> <destination>`. 
-In this case, the destination is a directory called `/config` which is a symlink created between `opt/ol/wlp/usr/servers/defaultServer` and the `/config` directory. 
-This symlink was created in the open-liberty https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^].
+The [hotspot=3-7 file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. It is structured as `ADD <source> <destination>`. 
+In this case, the source is a `tar.gz` file that was created from running `mvn install` and the destination is a directory called `/opt/ol` where the server will be started.
+The [hotspot=3-7 file=0]`ADD` instruction unpacks local `tar` archives into the destination directory specified in the `Dockerfile`. This is one of the aspects that makes it different from the `COPY` instruction. The `COPY` instruction would keep a layer of the zipped archive as well as the unzipped contents of the archive, whereas `ADD` only keeps the unzipped contents of the archive.
+This server is started in the open-liberty https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^].
 
-The [hotspot=3-7 file=0]`COPY` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image. Without this, the files and directories copied over would be owned by root.
+The [hotspot=3-7 file=0]`ADD` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image. Without this, the files and directories copied over would be owned by root.
 
 The `bootstrap.properties`, `server.env` and `server.xml` files contain configuration information, such as http ports and features for the application.
-Finally, all `.war` files are copied over into `inventory.war`.
+Finally, the `*.tar.gz` files are copied over into `/opt/ol`.
 
-The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that all the `.war` files are copied over into `system.war`.
+The `Dockerfile` for the `system` service follows the same instructions as `inventory` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----

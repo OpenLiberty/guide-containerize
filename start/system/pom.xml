@@ -11,6 +11,10 @@
     <artifactId>system</artifactId>
     <packaging>war</packaging>
 
+    <properties>
+        <app.name>system</app.name>
+    </properties>
+
     <dependencies>
         <!-- Open Liberty features -->
         <dependency>
