@@ -13,6 +13,8 @@ cd ../finish
 
 mvn -q clean install -DskipTests
 
+killall -9 java
+
 docker pull open-liberty
 
 docker build -t system system/.
