@@ -59,6 +59,7 @@ public class SystemEndpointTest {
     }
 
     @Test
+    // tag::testGetProperties[]
     public void testGetProperties() {
         Client client = ClientBuilder.newClient();
         client.register(JsrJsonpProvider.class);
@@ -69,5 +70,6 @@ public class SystemEndpointTest {
         assertEquals("Incorrect response code from " + url, 200, response.getStatus());
         response.close();
     }
+    // end::testGetProperties[]
     
 }

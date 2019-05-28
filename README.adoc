@@ -98,7 +98,7 @@ inventory/Dockerfile
 include::finish/inventory/Dockerfile[]
 ----
 
-The [hotspot=1 file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the
+The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the
 image that  has been built. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
 base image. 
 
@@ -108,14 +108,13 @@ image, which comes with the latest Open Liberty runtime. There are three differe
 The `open-liberty` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
 You are pulling the image from Docker Hub when you use `FROM` in your Dockerfile.
 
-The [hotspot=3-7 file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. It is structured as `ADD <source> <destination>`. 
+The [hotspot=add file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. It is structured as `ADD <source> <destination>`. 
 In this case, the source is a `tar.gz` file that was created from running `mvn install` and the destination is a directory called `/opt/ol` where the server will be started.
-The [hotspot=3-7 file=0]`ADD` instruction unpacks local `tar` archives into the destination directory specified in the `Dockerfile`. This is one of the aspects that makes it different from the `COPY` instruction. The `COPY` instruction would keep a layer of the zipped archive as well as the unzipped contents of the archive, whereas `ADD` only keeps the unzipped contents of the archive.
+The [hotspot=add file=0]`ADD` instruction unpacks local `tar` archives into the destination directory specified in the `Dockerfile`. This is one of the aspects that makes it different from the `COPY` instruction. The `COPY` instruction would keep a layer of the zipped archive as well as the unzipped contents of the archive, whereas `ADD` only keeps the unzipped contents of the archive.
 This server is started in the open-liberty https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^].
 
-The [hotspot=3-7 file=0]`ADD` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image. Without this, the files and directories copied over would be owned by root.
+The [hotspot=add file=0]`ADD` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image. Without this, the files and directories copied over would be owned by root.
 
-The `bootstrap.properties`, `server.env` and `server.xml` files contain configuration information, such as http ports and features for the application.
 Finally, the `*.tar.gz` files are copied over into `/opt/ol`.
 
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service.
@@ -231,7 +230,7 @@ You will find the address corresponding to IPv4Address:
 
 In this case, the address for `system` is `172.17.0.2`. Note down the [system-ip-address] in order to add the system properties to the inventory service. 
 
-Point your browser to the \http://localhost:9081/inventory/systems/[system-ip-address] URL by replacing the `system-ip-address` with the value you obtained.
+Point your browser to the `\http://localhost:9081/inventory/systems/\[system-ip-address]` URL by replacing the `system-ip-address` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
 you see a new entry for `localhost`. For simplicity, only the OS name and user name are shown here for
@@ -250,12 +249,12 @@ You can test your application manually, but automated tests ensure code quality 
 ----
 
 SystemEndpointTest.java
-[source, java, linenums, indent=0, role="code_column"]
+[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
-include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[tags=!copyright]
+include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
 ----
 
-The [hotspot=50-59 file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
+The [hotspot=testGetProperties file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -264,16 +263,16 @@ The [hotspot=50-59 file=0]`testGetProperties()` method checks for a `200` respon
 ----
 
 InventoryEndpointTest.java
-[source, java, linenums, indent=0, role="code_column"]
+[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
-include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[tags=!copyright]
+include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[]
 ----
 
-The [hotspot=68-80 file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
-The [hotspot=82-102 file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly and [hotspot=104-130 file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
-Finally, [hotspot=132-148 file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
+The [hotspot=testEmptyInventory file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
+The [hotspot=testHostRegistration file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly and [hotspot=testSystemPropertiesMatch file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
+Finally, [hotspot=testUnknownHost file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
 
-The [hotspot=34 file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory` service. 
+The [hotspot=systemServiceIp file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory` service. 
 This value will also be passed in when you run the tests. 
 
 === Running the tests
@@ -287,6 +286,16 @@ mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-ip-address]
 If the tests pass, you will see a similar output to the following:
 [source, role="no_copy"]
 ```
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.system.SystemEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.653 s - in it.io.openliberty.guides.system.SystemEndpointTest
+
+Results:
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------

@@ -43,7 +43,9 @@ public class InventoryEndpointTest {
         String invServPort = System.getProperty("inv.http.port");
         String sysServPort = System.getProperty("sys.http.port");
 
+        // tag::systemServiceIp[]
         systemServiceIp = System.getProperty("system.ip");
+        // end::systemServiceIp[]
 
         invUrl = "http://localhost" + ":" + invServPort + "/inventory/systems/";
         sysUrl = "http://localhost" + ":" + sysServPort + "/system/properties/";
@@ -76,7 +78,8 @@ public class InventoryEndpointTest {
         this.testSystemPropertiesMatch();
         this.testUnknownHost();
     }
-
+    
+    // tag::testEmptyInventory[]
     public void testEmptyInventory() {
         Response response = this.getResponse(invUrl);
         this.assertResponse(invUrl, response);
@@ -90,7 +93,9 @@ public class InventoryEndpointTest {
 
         response.close();
     }
+    // end::testEmptyInventory[]
 
+    // tag::testHostRegistration[]
     public void testHostRegistration() {
         this.visitSystemService();
 
@@ -112,7 +117,9 @@ public class InventoryEndpointTest {
 
         response.close();
     }
+    // end::testHostRegistration[]
 
+    // tag::testSystemPropertiesMatch[]
     public void testSystemPropertiesMatch() {
         Response invResponse = this.getResponse(invUrl);
         Response sysResponse = this.getResponse(sysUrl);
@@ -140,7 +147,9 @@ public class InventoryEndpointTest {
         invResponse.close();
         sysResponse.close();
     }
+    // end::testSystemPropertiesMatch[]
 
+    // tag::testUnknownHost[]
     public void testUnknownHost() {
         Response response = this.getResponse(invUrl);
         this.assertResponse(invUrl, response);
@@ -158,6 +167,7 @@ public class InventoryEndpointTest {
         response.close();
         badResponse.close();
     }
+    // end::testUnknownHost[]
 
     // Returns response information from the specified URL.
     private Response getResponse(String url) {
