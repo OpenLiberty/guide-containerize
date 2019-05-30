@@ -25,9 +25,11 @@
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
 view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
+Learn how to build a docker image.
 == What you'll learn
 
 You will learn how to write `Dockerfiles`, how to use the `docker build` to create Docker images and how to run instances of the images in Docker containers using `docker run`. 
+
 
 The application that you will be working with is an `inventory` service,
 which stores the information about various JVMs that run on different systems.
@@ -63,7 +65,7 @@ The starting point of the `inventory` service can be found at the http://localho
 
 The `system` service shows the system properties of your local JVM and can be found at the http://localhost:9080/system/properties[^] URL.
 
-The `system` can be added to the `inventory` service by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^] URL.
+The `system` can be added to the `inventory` by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^] URL.
 
 After you are done checking out the application, stop the Open Liberty server:
 
@@ -80,7 +82,7 @@ A Dockerfile is a collection of instructions for building a Docker image that ca
 
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
-Learn how to install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
+Install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
 
 === Creating your Dockerfiles
 
@@ -103,17 +105,16 @@ image that  has been built. If you don't need a parent image, then you can use `
 base image. 
 
 In this case, you're using the `open-liberty` image as your parent
-image, which comes with the latest Open Liberty runtime. There are three different Open Liberty Docker image sets available on Docker Hub. You can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
+image, which comes with the latest Open Liberty runtime by default. You can find all different official images at the https://hub.docker.com/_/open-liberty[open-liberty DockerHub^]. To pull different open-liberty image, like `kernel`, you may define the `FROM` instructions as `FROM open-liberty:kernel`.
 
-The `open-liberty` parent image has been built using a https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^] itself and pushed to Docker Hub.
-You are pulling the image from Docker Hub when you use `FROM` in your Dockerfile.
+There are three different Open Liberty Docker image sets available on Docker Hub. You can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
 The [hotspot=add file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. It is structured as `ADD <source> <destination>`. 
 In this case, the source is a `tar.gz` file that was created from running `mvn install` and the destination is a directory called `/opt/ol` where the server will be started.
 The [hotspot=add file=0]`ADD` instruction unpacks local `tar` archives into the destination directory specified in the `Dockerfile`. This is one of the aspects that makes it different from the `COPY` instruction. The `COPY` instruction would keep a layer of the zipped archive as well as the unzipped contents of the archive, whereas `ADD` only keeps the unzipped contents of the archive.
 This server is started in the open-liberty https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^].
 
-The [hotspot=add file=0]`ADD` instruction needs to use the user id `1001` and group `0` because that is the user id that is set up in the base image. Without this, the files and directories copied over would be owned by root.
+The [hotspot=add file=0]`ADD` instruction needs to use the user id `1001` and group `0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
 
 Finally, the `*.tar.gz` files are copied over into `/opt/ol`.
 
@@ -131,7 +132,7 @@ system/Dockerfile
 include::finish/system/Dockerfile[]
 ----
 
-=== Building your Docker images
+=== Creating your Docker image
 
 Now that your microservices are complete and you have written your Dockerfiles, you will build your Docker images. 
 
@@ -139,10 +140,6 @@ To build your image, you need Docker installed. For installation
 instructions, see the https://docs.docker.com/install/[Official Docker Docs^].
 
 You will build your Docker image using the `docker build` command.
-
-
-
-=== Creating your Docker image
 
 To build and containerize the application, start your Docker daemon and run the following commands:
 
@@ -164,7 +161,7 @@ docker images
 Your two images `inventory` and `system` should appear in the list of all Docker images:
 [source, role="no_copy"]
 ```
-REPOSITORY   TAG                 IMAGE ID            CREATED             SIZE
+REPOSITORY   TAG           IMAGE ID            CREATED             SIZE
 inventory    latest        08fef024e986        4 minutes ago       471MB
 system       latest        1dff6d0b4f31        5 minutes ago       470MB
 ```
