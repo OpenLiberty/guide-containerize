@@ -192,19 +192,19 @@ Next, run the `docker ps` command to verify that your containers are started:
 docker ps
 ```
 
-Make sure that your container is running and does not have `Exited` as its status:
+Make sure that your container is running and shows `Up x seconds` as its status:
 
-[source, role="no_copy"]
+[role="no_copy"]
 ```
-CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS           PORTS                                        NAMES
+CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS           PORTS                                        NAMES
 2b584282e0f5   inventory:latest "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
 99a98313705f   system:latest    "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
 ```
 
-To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. As you might expect, these are empty since
-nothing is stored in the inventory yet. 
+To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
+An empty list is expected because no system properties are stored in the inventory yet. 
 
-Point your browser to the http://localhost:9080/system/properties[^] URL. This is the `system` service, which shows the system properties of your local JVM.
+Point your browser to the http://localhost:9080/system/properties[^] URL. The `system` service shows the system properties of the `system` container JVM.
 
 Next, you will retrieve the `system` containers IP address. When you start Docker,  a default bridge network is created for running containers to be able to communicate. 
 Run the following command to retrieve the `system` IP address:
@@ -227,17 +227,21 @@ You will find the address corresponding to IPv4Address:
 
 In this case, the address for `system` is `172.17.0.2`. Note down the [system-ip-address] in order to add the system properties to the inventory service. 
 
-Point your browser to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing the `system-ip-address` with the value you obtained.
+Point your browser to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing the `[system-ip-address]` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
-you see a new entry for `localhost`. For simplicity, only the OS name and user name are shown here for
-each host. You can repeat this process for your own host name or any other machine that is running
-the `system` service.
+you see a new entry for `[system-ip-address]`. As you can see, the `os.name` is `Linux` because the base image was pulled from a `Linux` image.
 
+If a problem occurs and your containers exit prematurely, the containers won't appear in the container
+list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
+status when running the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
+container logs for any potential problems and double-check that your Dockerfiles are correct. When you
+find the cause of the issue, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
+your image, and start the containers again.
 
 == Testing the application
 
-You can test your application manually, but automated tests ensure code quality because they trigger a failure whenever a code change introduces a defect.
+You can test your application manually or with automated tests that test the microservices running locally and against the docker container.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -265,22 +269,21 @@ InventoryEndpointTest.java
 include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[]
 ----
 
-The [hotspot=testEmptyInventory file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
-The [hotspot=testHostRegistration file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly and [hotspot=testSystemPropertiesMatch file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
-Finally, [hotspot=testUnknownHost file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
-
-The [hotspot=systemServiceIp file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory` service. 
-This value will also be passed in when you run the tests. 
+* The [hotspot=testEmptyInventory file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
+* The [hotspot=testHostRegistration file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly.
+* The [hotspot=testSystemPropertiesMatch file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
+* The [hotspot=testUnknownHost file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
+* The [hotspot=systemServiceIp file=1]`systemServiceIp` is the same value that you retrieved in the previous section to manually add the `system` service into the `inventory` service. This value will also be passed in when you run the tests. 
 
 === Running the tests
 
-Verify that the tests pass using the Maven `verify` goal:
+Run the Maven `verify` goal to test the services running in the docker containers by replacing the `[system-ip-address]` with the value determined in the previous section.
 [role='command']
 ```
 mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-ip-address]
 ```
 
-If the tests pass, you will see a similar output to the following:
+If the tests pass, you will see a similar output as the following:
 [source, role="no_copy"]
 ```
 -------------------------------------------------------
@@ -304,19 +307,12 @@ Results:
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 ```
 
-To stop your containers, run the following command from the command line.
+When you are finished with the services, run the following commands to stop your containers.
 [role='command']
 ```
 docker stop inventory system 
 docker rm inventory system
 ```
-
-If a problem occurs and your containers exit prematurely, the containers won't appear in the container
-list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
-status when running the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
-container logs for any potential problems and double-check that your Dockerfiles are correct. When you
-find the cause of the issue, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
-your image, and start the containers again.
 
 == Great work! You're done!
 

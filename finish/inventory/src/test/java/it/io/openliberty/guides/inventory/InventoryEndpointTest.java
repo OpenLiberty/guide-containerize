@@ -106,8 +106,8 @@ public class InventoryEndpointTest {
 
         int expected = 1;
         int actual = obj.getInt("total");
-        assertEquals("The inventory should have one entry for the system service:" + systemServiceIp, expected,
-                    actual);
+        assertEquals("The inventory should have one entry for the system service:" 
+                                             + systemServiceIp, expected, actual);
 
         boolean serviceExists = obj.getJsonArray("systems").getJsonObject(0)
                                     .get("hostname").toString()
@@ -127,7 +127,8 @@ public class InventoryEndpointTest {
         this.assertResponse(invUrl, invResponse);
         this.assertResponse(sysUrl, sysResponse);
 
-        JsonObject jsonFromInventory = (JsonObject) invResponse.readEntity(JsonObject.class)
+        JsonObject jsonFromInventory = (JsonObject) invResponse
+                                                            .readEntity(JsonObject.class)
                                                             .getJsonArray("systems")
                                                             .getJsonObject(0)
                                                             .get("properties");
@@ -176,7 +177,6 @@ public class InventoryEndpointTest {
 
     // Asserts that the given URL has the correct response code of 200.
     private void assertResponse(String url, Response response) {
-        // System.out.println("THE URL :" + url + " GIVES THE RESPONSE CODE: " + response.getStatus());
         assertEquals("Incorrect response code from " + url, 200,
                     response.getStatus());
     }
@@ -190,7 +190,7 @@ public class InventoryEndpointTest {
             + "the inventory service for " + hostname, expected, actual);
     }
 
-    //Makes a simple GET request to inventory/localhost.
+    // Makes a simple GET request to inventory/localhost.
     private void visitSystemService() {
         Response response = this.getResponse(sysUrl);
         this.assertResponse(sysUrl, response);
