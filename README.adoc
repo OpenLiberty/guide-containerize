@@ -10,26 +10,30 @@
 :page-layout: guide-multipane
 :page-duration: 15 minutes
 :page-releasedate: 2019-03-11
-:page-description: Learn how to build a Docker image with Open Liberty.
+:page-description: Learn how to containerize microservices with Open Liberty.
 :page-tags: ['Docker', 'Maven']
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['docker', 'kube-intro']
+:page-related-guides: ['docker', 'kubernetes-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Building a Docker image
-:page-seo-description: Find out how to build a Docker image on Open Liberty
+:page-seo-title: Containerizing microservices
+:page-seo-description: Find out how to containerize microservices on Open Liberty
 :guide-author: Open Liberty
-= Building a Docker image
+= Containerizing microservices
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
 view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
 Learn how to build a docker image.
+
 == What you'll learn
 
 You will learn how to write `Dockerfiles`, how to use the `docker build` to create Docker images and how to run instances of the images in Docker containers using `docker run`. 
-
+Application containerization is to bundle an application with its entire environment, meaning all of its required libraries, dependencies, and configuration files.
+The container can be ran on any machine that is running running Docker regardless of how that machine's environment is set up.
+You can also run multiple containers on a single machine in isolation from one another so that two containers that have different
+versions of a certain technology do not interfere with each other.
 
 The application that you will be working with is an `inventory` service,
 which stores the information about various JVMs that run on different systems.
@@ -45,7 +49,7 @@ service on that host to get these system properties. The system properties are t
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
 
 
-== Checking out your microservices
+== Packaging your microservices
 
 The starting Java project, which you can find in the `start` directory, is a multi-module Maven project that’s made up of the `system` and `inventory` microservices. Each microservice resides in its own directory, `start/system` and `start/inventory`, respectively. 
 
@@ -61,6 +65,8 @@ mvn install
 mvn liberty:start-server
 ```
 
+In the `pom.xml`, the application has been specified to be packaged in an archive form with the [hotspot=packageFile]`<package.file>` tag.
+
 The starting point of the `inventory` service can be found at the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. It displays the current contents of the inventory.
 
 The `system` service shows the system properties of your local JVM and can be found at the http://localhost:9080/system/properties[^] URL.
@@ -73,6 +79,11 @@ After you are done checking out the application, stop the Open Liberty server:
 ```
 mvn liberty:stop-server
 ```
+pom.xml
+[source, xml, linenums, indent=0, role="code_column"]
+----
+include::finish/pom.xml[]
+----
 == Building your Docker images
 
 A Docker image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
@@ -109,16 +120,14 @@ image, which comes with the latest Open Liberty runtime by default. You can find
 
 There are three different Open Liberty Docker image sets available on Docker Hub. You can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
-The [hotspot=add file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. It is structured as `ADD <source> <destination>`. 
-In this case, the source is a `tar.gz` file that was created from running `mvn install` and the destination is a directory called `/opt/ol` where the server will be started.
-The [hotspot=add file=0]`ADD` instruction unpacks local `tar` archives into the destination directory specified in the `Dockerfile`. This is one of the aspects that makes it different from the `COPY` instruction. The `COPY` instruction would keep a layer of the zipped archive as well as the unzipped contents of the archive, whereas `ADD` only keeps the unzipped contents of the archive.
-This server is started in the open-liberty https://github.com/OpenLiberty/ci.docker/blob/master/official/javaee8/java8/ibmjava/Dockerfile[Dockerfile^].
+The [hotspot=add file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. The [hotspot=add file=0]`ADD` instruction also unpacks local archives into the destination directory specified in the `Dockerfile`. It is structured as `ADD <source> <destination>`. 
+In this case, the source is a `tar.gz` file that was created from running `mvn install` and the destination is a directory called `/opt/ol`.
 
 The [hotspot=add file=0]`ADD` instruction needs to use the user id `1001` and group `0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
 
-Finally, the `*.tar.gz` files are copied over into `/opt/ol`.
+Finally, the `inventory.tar.gz` files are copied over into `/opt/ol`.
 
-The `Dockerfile` for the `system` service follows the same instructions as `inventory` service.
+The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` files are copied over into `/opt/ol`.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----

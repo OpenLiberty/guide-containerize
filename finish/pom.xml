@@ -29,7 +29,9 @@
         <sys.service.https.port>9443</sys.service.https.port>
         <inv.service.http.port>9081</inv.service.http.port>
         <inv.service.https.port>9444</inv.service.https.port>
+        <!-- tag::packageFile[] -->
         <package.file>${project.build.directory}/${app.name}.tar.gz</package.file>
+        <!-- end::packageFile[] -->
     </properties>
 
     <!-- Shared dependencies. -->
