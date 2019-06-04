@@ -120,12 +120,11 @@ image, which comes with the latest Open Liberty runtime by default. You can find
 
 There are three different Open Liberty Docker image sets available on Docker Hub. You can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
-The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=3 file=0]`<source>` [hotspot=4 file=0]`<destination>`. 
+The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=6 file=0]`<source>` [hotspot=7 file=0]`<destination>`. 
 It copies local files and directories into the destination within your Docker image. If the source  is an archive, the [hotspot=add file=0]`ADD` instruction will unpack it into the destination directory.
-In this case, the inventory archived application file [hotspot=3 file=0]`inventory.tar.gz`, that was created frmo running `mvn install`, will be extracted to the destination directory [hotspot=4 file=0]`opt/ol`. 
+In this case, the inventory archived application file [hotspot=6 file=0]`inventory.tar.gz`, that was created frmo running `mvn install`, will be extracted to the destination directory [hotspot=7 file=0]`opt/ol`. 
 
-The [hotspot=add file=0]`ADD` instruction needs to use the user id [hotspot=2 file=0]`1001` and group [hotspot=2 file=0]`0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
-Testing tag behaviour. [hotspot=0 file=0]`0` [hotspot=1 file=0]`1` [hotspot=2 file=0]`2` [hotspot=3 file=0]`3` [hotspot=4 file=0]`4` [hotspot=5 file=0]`5` [hotspot=6 file=0]`6` [hotspot=7 file=0]`7` [hotspot=8 file=0]`8`
+The [hotspot=add file=0]`ADD` instruction needs to use the user id [hotspot=5 file=0]`1001` and group [hotspot=5 file=0]`0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` files are copied over into `/opt/ol`.
 
 [role="code_command hotspot file=1", subs="quotes"]
@@ -164,12 +163,12 @@ docker images
 ```
 
 Your two images `inventory` and `system` should appear in the list of all Docker images:
-[source, role="no_copy"]
-```
+[role="no_copy"]
+----
 REPOSITORY   TAG           IMAGE ID            CREATED             SIZE
 inventory    latest        08fef024e986        4 minutes ago       471MB
 system       latest        1dff6d0b4f31        5 minutes ago       470MB
-```
+----
 
 
 == Running your microservices in Docker containers
@@ -197,14 +196,14 @@ Next, run the `docker ps` command to verify that your containers are started:
 docker ps
 ```
 
-Make sure that your container is running and shows `Up x seconds` as its status:
+Make sure that your containers are running and shows `Up x seconds` as their status:
 
 [role="no_copy"]
-```
+----
 CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS           PORTS                                        NAMES
 2b584282e0f5   inventory:latest "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
 99a98313705f   system:latest    "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
-```
+----
 
 To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
 An empty list is expected because no system properties are stored in the inventory yet. 
@@ -230,7 +229,7 @@ You will find the address corresponding to IPv4Address:
 }
 ```
 
-In this case, the address for `system` is `172.17.0.2`. Note down the [system-ip-address] in order to add the system properties to the inventory service. 
+In this case, the address for `system` is `172.17.0.2`. Note down the `[system-ip-address]` in order to add the system properties to the inventory service. 
 
 Point your browser to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing the `[system-ip-address]` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
@@ -240,13 +239,13 @@ you see a new entry for `[system-ip-address]`. As you can see, the `os.name` is 
 If a problem occurs and your containers exit prematurely, the containers won't appear in the container
 list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
 status when running the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
-container logs for any potential problems and double-check that your Dockerfiles are correct. When you
-find the cause of the issue, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
-your image, and start the containers again.
+container logs for any potential problems. You can also double-check that your Dockerfiles are correct. When you
+find the cause of the issues, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
+your images, and start the containers again.
 
-== Testing the application
+== Testing the microservices
 
-You can test your application manually or with automated tests that test the microservices running locally and against the docker container.
+You can test your microservices manually or with automated tests that test the microservices running locally and against the docker container.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -289,8 +288,8 @@ mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-ip-address]
 ```
 
 If the tests pass, you will see a similar output as the following:
-[source, role="no_copy"]
-```
+[role="no_copy"]
+----
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
@@ -310,7 +309,7 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.935 s - in it.
 Results:
 
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
-```
+----
 
 When you are finished with the services, run the following commands to stop your containers.
 [role='command']
