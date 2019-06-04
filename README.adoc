@@ -29,17 +29,19 @@ Learn how to build a docker image.
 
 == What you'll learn
 
-You will learn how to write `Dockerfiles`, how to use the `docker build` to create Docker images and how to run instances of the images in Docker containers using `docker run`. 
-Application containerization is to bundle an application with its entire environment, meaning all of its required libraries, dependencies, and configuration files.
-The container can be ran on any machine that is running running Docker regardless of how that machine's environment is set up.
-You can also run multiple containers on a single machine in isolation from one another so that two containers that have different
-versions of a certain technology do not interfere with each other.
+To accelerate your development, you may use the containerization technology to deploy and run your microservices into isolated containers instead of 
+different physical or virtual machines. 
 
-The application that you will be working with is an `inventory` service,
-which stores the information about various JVMs that run on different systems.
-Whenever a request is made to the `inventory` service to retrieve the JVM
-system properties of a particular host, the `inventory` service communicates with the `system`
-service on that host to get these system properties. The system properties are then stored and returned.
+Application containerization is to bundle an application with its entire environment, meaning all of its
+required libraries, dependencies, and configuration files, so that it can run in any containerization  ecosystem, 
+such as Docker, and it can also be deployed to Kubernetes.
+
+You'll learn how to construct `Dockerfile`, how to create Docker images by using `docker build`  command, and how to run the image in Docker container 
+by using `docker run` command.
+
+The two  microservices that you'll be working are called `system` and `inventory`. The `system` microservice returns the JVM system properties 
+of the running container.  The `inventory` microservice adds the properties from the `system` microservice to the inventory. This guide demonstrates how both microservices can be run and communicate
+in different isolated containers. 
 
 ///////////////////////////
 // Getting started
