@@ -120,13 +120,12 @@ image, which comes with the latest Open Liberty runtime by default. You can find
 
 There are three different Open Liberty Docker image sets available on Docker Hub. You can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
-The [hotspot=add file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. The [hotspot=add file=0]`ADD` instruction also unpacks local archives into the destination directory specified in the `Dockerfile`. It is structured as [hotspot=add file=0]`ADD` [hotspot=3 file=0]`<source>` [hotspot=4 file=0]`<destination>`. 
-In this case, the source is a `tar.gz` file that was created from running `mvn install` and the destination is a directory called `/opt/ol`.
+The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=3 file=0]`<source>` [hotspot=4 file=0]`<destination>`. 
+It copies local files and directories into the destination within your Docker image. If the source  is an archive, the [hotspot=add file=0]`ADD` instruction will unpack it into the destination directory.
+In this case, the inventory archived application file [hotspot=3 file=0]`inventory.tar.gz`, that was created frmo running `mvn install`, will be extracted to the destination directory [hotspot=4 file=0]`opt/ol`. 
 
 The [hotspot=add file=0]`ADD` instruction needs to use the user id [hotspot=2 file=0]`1001` and group [hotspot=2 file=0]`0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
-
-Finally, the [hotspot=3 file=0]`inventory.tar.gz` files are copied over into [hotspot=3 file=0]`/opt/ol`.
-
+Testing tag behaviour. [hotspot=0 file=0]`0` [hotspot=1 file=0]`1` [hotspot=2 file=0]`2` [hotspot=3 file=0]`3` [hotspot=4 file=0]`4` 
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` files are copied over into `/opt/ol`.
 
 [role="code_command hotspot file=1", subs="quotes"]
