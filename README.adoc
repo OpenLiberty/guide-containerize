@@ -209,8 +209,6 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS
 To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
 An empty list is expected because no system properties are stored in the inventory yet. 
 
-Point your browser to the http://localhost:9080/system/properties[^] URL. The `system` service shows the system properties of the `system` container JVM.
-
 Next, you will retrieve the `system` containers IP address. When you start Docker,  a default bridge network is created for running containers to be able to communicate. 
 Run the following command to retrieve the `system` IP address:
 [role='command']
@@ -235,7 +233,7 @@ In this case, the address for `system` is `172.17.0.2`. Note down the `[system-i
 Point your browser to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing the `[system-ip-address]` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
-you see a new entry for `[system-ip-address]`. As you can see, the `os.name` is `Linux` because the base image was pulled from a `Linux` image.
+you see a new entry for `[system-ip-address]`. 
 
 If a problem occurs and your containers exit prematurely, the containers won't appear in the container
 list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
