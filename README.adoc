@@ -60,18 +60,18 @@ The `inventory` service is built in a similar way.
 To try out the application using Maven, first, navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
 [role='command']
 ```
-cd start
 mvn install 
 mvn liberty:start-server
 ```
 
 In the `pom.xml`, the application has been specified to be packaged in an archive form with the [hotspot=packageFile]`<package.file>` tag.
+The `system` and `inventory` microservices including the application `WAR` and server configuration files are archived into `system/target/system.tar.gz` and `inventory/target/inventory.tar.gz`.
 
 The starting point of the `inventory` service can be found at the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. It displays the current contents of the inventory.
 
 The `system` service shows the system properties of your local JVM and can be found at the http://localhost:9080/system/properties[^] URL.
 
-The `system` can be added to the `inventory` by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^] URL.
+The system properties of your localhost can be added to the `inventory` by visiting the http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^] URL.
 
 After you are done checking out the application, stop the Open Liberty server:
 
@@ -120,12 +120,12 @@ image, which comes with the latest Open Liberty runtime by default. You can find
 
 There are three different Open Liberty Docker image sets available on Docker Hub. You can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
 
-The [hotspot=add file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. The [hotspot=add file=0]`ADD` instruction also unpacks local archives into the destination directory specified in the `Dockerfile`. It is structured as `ADD <source> <destination>`. 
+The [hotspot=add file=0]`ADD` instruction copies local files and directories into the destination within your Docker image. The [hotspot=add file=0]`ADD` instruction also unpacks local archives into the destination directory specified in the `Dockerfile`. It is structured as [hotspot=add file=0]`ADD` [hotspot=3 file=0]`<source>` [hotspot=4 file=0]`<destination>`. 
 In this case, the source is a `tar.gz` file that was created from running `mvn install` and the destination is a directory called `/opt/ol`.
 
-The [hotspot=add file=0]`ADD` instruction needs to use the user id `1001` and group `0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
+The [hotspot=add file=0]`ADD` instruction needs to use the user id [hotspot=2 file=0]`1001` and group [hotspot=2 file=0]`0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
 
-Finally, the `inventory.tar.gz` files are copied over into `/opt/ol`.
+Finally, the [hotspot=3 file=0]`inventory.tar.gz` files are copied over into [hotspot=3 file=0]`/opt/ol`.
 
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` files are copied over into `/opt/ol`.
 

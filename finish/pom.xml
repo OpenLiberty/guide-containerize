@@ -1,4 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation=
+        "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -29,9 +32,6 @@
         <sys.service.https.port>9443</sys.service.https.port>
         <inv.service.http.port>9081</inv.service.http.port>
         <inv.service.https.port>9444</inv.service.https.port>
-        <!-- tag::packageFile[] -->
-        <package.file>${project.build.directory}/${app.name}.tar.gz</package.file>
-        <!-- end::packageFile[] -->
     </properties>
 
     <!-- Shared dependencies. -->
@@ -149,9 +149,13 @@
                             <version>RELEASE</version>
                             <type>zip</type>
                         </assemblyArtifact>
-                        <packageFile>${package.file}</packageFile>
+                        <!-- tag::packageFile[] -->
+                        <packageFile>
+                            ${project.build.directory}/${app.name}.tar.gz
+                        </packageFile>
+                        <!-- end::packageFile[] -->
                     </configuration>
-                </plugin>
+                </plugin>¸
                 <!-- Plugin to run unit tests -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -203,8 +207,13 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <summaryFile>${project.build.directory}/test-reports/it/failsafe-summary.xml</summaryFile>
-                        <reportsDirectory>${project.build.directory}/test-reports/it</reportsDirectory>
+                        <summaryFile>
+                            ${project.build.directory}/test-reports/it/
+                                                                    failsafe-summary.xml
+                        </summaryFile>
+                        <reportsDirectory>
+                            ${project.build.directory}/test-reports/it
+                        </reportsDirectory>
                     </configuration>
                 </plugin>
             </plugins>
