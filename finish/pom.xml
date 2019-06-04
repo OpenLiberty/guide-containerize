@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation=
-        "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -155,7 +152,7 @@
                         </packageFile>
                         <!-- end::packageFile[] -->
                     </configuration>
-                </plugin>¸
+                </plugin>
                 <!-- Plugin to run unit tests -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -194,8 +191,12 @@
                                 </includes>
                                 <systemPropertyVariables>
                                     <system.ip>${system.ip}</system.ip>
-                                    <sys.http.port>${sys.service.http.port}</sys.http.port>
-                                    <inv.http.port>${inv.service.http.port}</inv.http.port>
+                                    <sys.http.port>
+                                        ${sys.service.http.port}
+                                    </sys.http.port>
+                                    <inv.http.port>
+                                        ${inv.service.http.port}
+                                    </inv.http.port>
                                 </systemPropertyVariables>
                             </configuration>
                         </execution>
@@ -208,8 +209,7 @@
                     </executions>
                     <configuration>
                         <summaryFile>
-                            ${project.build.directory}/test-reports/it/
-                                                                    failsafe-summary.xml
+                        ${project.build.directory}/test-reports/it/failsafe-summary.xml
                         </summaryFile>
                         <reportsDirectory>
                             ${project.build.directory}/test-reports/it
@@ -226,4 +226,3 @@
     </modules>
 
 </project>
-
