@@ -40,7 +40,7 @@ Application containerization is to bundle an application with its entire environ
 required libraries, dependencies, and configuration files, so that it can run in any containerization  ecosystem, 
 such as Docker, and it can also be deployed to Kubernetes.
 
-You'll learn how to construct `Dockerfile`, how to create Docker images by using `docker build`  command, and how to run the image in Docker container 
+You'll learn how to construct `Dockerfile`, how to create a Docker image by using `docker build`  command, and how to run the image in Docker container 
 by using `docker run` command.
 
 The two  microservices that you'll be working are called `system` and `inventory`. The `system` microservice returns the JVM system properties 
@@ -70,7 +70,7 @@ mvn install
 mvn liberty:start-server
 ```
 
-In the `pom.xml`, the application has been specified to be packaged in an archive form with the [hotspot=packageFile]`<package.file>` tag.
+The [hotspot=packageFile]`<packageFile>` tag in the [hotspot]`pom.xml` configures the microservices to be packed in an archive form.
 The `system` and `inventory` microservices including the application `WAR` and server configuration files are archived into `system/target/system.tar.gz` and `inventory/target/inventory.tar.gz`.
 
 The starting point of the `inventory` service can be found at the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. It displays the current contents of the inventory.
@@ -92,8 +92,8 @@ include::finish/pom.xml[]
 ----
 == Building your Docker images
 
-A Docker image is a binary file, made up of multiple layers, used to execute code in a Docker container. Images are built from
-instructions, called `Dockerfiles`, to create a containerized version of the application.
+A Docker image is a binary file, made up of multiple layers, and used to execute code in a Docker container. Images are built from
+instructions, defined in `Dockerfiles`, to create a containerized version of the application.
 
 A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
 
@@ -124,11 +124,9 @@ base image.
 In this case, you're using the `open-liberty` image as your parent
 image, which comes with the latest Open Liberty runtime by default. You can find all different official images at the https://hub.docker.com/_/open-liberty[open-liberty DockerHub^]. To pull different open-liberty image, like `kernel`, you may define the `FROM` instructions as `FROM open-liberty:kernel`.
 
-There are three different Open Liberty Docker image sets available on Docker Hub. You can learn more about them on the https://github.com/OpenLiberty/ci.docker[OpenLiberty Docker Images repository^].
-
-The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=6 file=0]`<source>` [hotspot=7 file=0]`<destination>`. 
+The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=5 file=0]`[--chown=<user>:<group>]` [hotspot=6 file=0]`<source>` [hotspot=7 file=0]`<destination>`. 
 It copies local files and directories into the destination within your Docker image. If the source  is an archive, the [hotspot=add file=0]`ADD` instruction will unpack it into the destination directory.
-In this case, the inventory archived application file [hotspot=6 file=0]`inventory.tar.gz`, that was created frmo running `mvn install`, will be extracted to the destination directory [hotspot=7 file=0]`opt/ol`. 
+In this case, the inventory archived application file [hotspot=6 file=0]`inventory.tar.gz`, that was created from running `mvn install`, will be extracted to the destination directory [hotspot=7 file=0]`/opt/ol`. 
 
 The [hotspot=add file=0]`ADD` instruction needs to use the user id [hotspot=5 file=0]`1001` and group [hotspot=5 file=0]`0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` files are copied over into `/opt/ol`.
@@ -147,11 +145,9 @@ include::finish/system/Dockerfile[]
 
 === Creating your Docker image
 
-Now that your microservices are complete and you have written your Dockerfiles, you will build your Docker images using the `docker build` command.
+Now that your microservices are packaged and you have written your Dockerfiles, you will build your Docker images using the `docker build` command. To build your image, you need to have Docker installed and your Docker daemon started.
 
-To build your image, you need Docker to have Docker installed and your Docker daemon started.
-
-You will build your Docker image using the `docker build` command. To build and containerize the application, run the following commands:
+Run the following commands to build and containerize the application:
 
 [role='command']
 ```
@@ -159,8 +155,8 @@ docker build -t system system/.
 docker build -t inventory inventory/.
 ```
 
-The `-t` flag in the `docker build` command allows the docker images to be in `name[:tag]` format. 
-The tag for an image describes the specific image version because [:tag] is not specified, the `latest` version will be created by default.
+The `-t` flag in the `docker build` command allows the docker image to be in `name[:tag]` format. 
+The tag for an image describes the specific image version because `[:tag]` is not specified, the `latest` version will be created by default.
 To verify that the images are built, run the `docker images` command to list all local Docker images:
 
 [role='command']
@@ -171,9 +167,9 @@ docker images
 Your two images `inventory` and `system` should appear in the list of all Docker images:
 [role="no_copy"]
 ----
-REPOSITORY   TAG           IMAGE ID            CREATED             SIZE
-inventory    latest        08fef024e986        4 minutes ago       471MB
-system       latest        1dff6d0b4f31        5 minutes ago       470MB
+REPOSITORY    TAG       IMAGE ID        CREATED          SIZE
+inventory     latest    08fef024e986    4 minutes ago    471MB
+system        latest    1dff6d0b4f31    5 minutes ago    470MB
 ----
 
 
@@ -202,14 +198,21 @@ Next, run the `docker ps` command to verify that your containers are started:
 docker ps
 ```
 
-Make sure that your containers are running and shows `Up x seconds` as their status:
+Make sure that your containers are running and shows `Up` as their status:
 
 [role="no_copy"]
 ----
-CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS           PORTS                                        NAMES
-2b584282e0f5   inventory:latest "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
-99a98313705f   system:latest    "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
+CONTAINER ID   IMAGE              COMMAND                  CREATED          STATUS           PORTS                                        NAMES
+2b584282e0f5   inventory:latest   "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
+99a98313705f   system:latest      "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
 ----
+
+If a problem occurs and your containers exit prematurely, the containers won't appear in the container
+list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
+status when running the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
+container logs for any potential problems. You can also double-check that your Dockerfiles are correct. When you
+find the cause of the issues, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
+your images, and start the containers again.
 
 To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
 An empty list is expected because no system properties are stored in the inventory yet. 
@@ -221,9 +224,9 @@ Run the following command to retrieve the `system` IP address:
 docker network inspect bridge
 ```
 
-You will find the address corresponding to IPv4Address:
-
-```
+You will find the `[system-ip-address]` corresponding to `IPv4Address`:
+[role="no_copy"]
+----
 "99a98313705fc9f8c21b8110900b8bee0427412373f8c3ef2d733c96d96ffb5f": {
     "Name": "system",
     "EndpointID": "e30b640eb214435c9bf08b23d7c3f851c88e909e4feffd1a893f14ae4d2f35a4",
@@ -231,21 +234,14 @@ You will find the address corresponding to IPv4Address:
     "IPv4Address": "172.17.0.2/16",
     "IPv6Address": ""
 }
-```
+----
 
-In this case, the address for `system` is `172.17.0.2`. Note down the `[system-ip-address]` in order to add the system properties to the inventory service. 
+In this case, the address for `system` is `172.17.0.2`. Take note of the the address `[system-ip-address]` in order to add the system properties to the inventory service. 
 
 Point your browser to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing the `[system-ip-address]` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
 you see a new entry for `[system-ip-address]`. 
-
-If a problem occurs and your containers exit prematurely, the containers won't appear in the container
-list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
-status when running the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
-container logs for any potential problems. You can also double-check that your Dockerfiles are correct. When you
-find the cause of the issues, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
-your images, and start the containers again.
 
 == Testing the microservices
 
