@@ -156,7 +156,7 @@ docker build -t inventory inventory/.
 ```
 
 The `-t` flag in the `docker build` command allows the docker image to be in `name[:tag]` format. 
-The tag for an image describes the specific image version because `[:tag]` is not specified, the `latest` version will be created by default.
+The tag for an image describes the specific image version. If the `[:tag]` is not specified, the `latest` version will be created by default.
 To verify that the images are built, run the `docker images` command to list all local Docker images:
 
 [role='command']
@@ -311,7 +311,7 @@ Results:
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-When you are finished with the services, run the following commands to stop your containers.
+When you are finished with the services, run the following commands to stop and remove your containers.
 [role='command']
 ```
 docker stop inventory system 
