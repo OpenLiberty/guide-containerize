@@ -57,13 +57,14 @@ include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitc
 
 == Packaging your microservices
 
-The starting Java project, which you can find in the `start` directory, is a multi-module Maven project that’s made up of the `system` and `inventory` microservices. Each microservice resides in its own directory, `start/system` and `start/inventory`, respectively. 
+Navigate to the `start` directory to begin.
+The starting Java project, which you can find in the `start` directory, is a multi-module Maven project that’s made up of the `system` and `inventory` microservices. Each microservice resides in its own directory, `system` and `inventory`, respectively. 
 
 If you want to learn more about RESTful web services and how to build them, see
 https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service^] for details about how to build the `system` service.
 The `inventory` service is built in a similar way.
 
-To try out the application using Maven, first, navigate to the `start` directory and then run the following Maven goals to build the application and run it inside Open Liberty:
+To try out the application using Maven, run the following Maven goals to build the application and run it inside Open Liberty:
 [role='command']
 ```
 mvn install 
@@ -99,7 +100,7 @@ A Dockerfile is a collection of instructions for building a Docker image that ca
 
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
-Install Docker on the https://docs.docker.com/engine/installation[official instructions page^].
+Install Docker by following the instructions on the https://docs.docker.com/engine/installation[official page^].
 
 === Creating your Dockerfiles
 
