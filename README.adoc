@@ -131,7 +131,6 @@ In this case, the inventory archived application file [hotspot=6 file=0]`invento
 
 The [hotspot=add file=0]`ADD` instruction needs to use the user id [hotspot=5 file=0]`1001` and group [hotspot=5 file=0]`0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
 
-The [hotspot=run file=0]`RUN` instruction is structured in two forms as [hotspot=run file=0]`RUN` `<command>` or [hotspot=run file=0]`RUN` `["executable", "parameter1", "parameter2"]`. Whenever the `RUN` instruction is executed, another container layer is created so in order to reduce image size and layer count it is possible to run multiple commands using the `&&` operator. In this case, we are executing the `configure.sh` script which sets up extra configuration for users using Open Liberty images.
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` files are copied over into `/opt/ol`.
 
 [role="code_command hotspot file=1", subs="quotes"]
