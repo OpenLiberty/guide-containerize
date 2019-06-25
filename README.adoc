@@ -108,7 +108,7 @@ You will be creating two Docker images to run the `inventory` service and `syste
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Create the `inventory/Dockerfile`.#
+#Create the `Dockerfile` for the inventory service.#
 `inventory/Dockerfile`
 ----
 
@@ -135,7 +135,7 @@ The `Dockerfile` for the `system` service follows the same instructions as `inve
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
-#Create the `system/Dockerfile`.#
+#Create the `Dockerfile` for the system service.#
 `system/Dockerfile`
 ----
 
@@ -181,7 +181,7 @@ Now that you have your two images built, you will run your microservices in Dock
 [role='command']
 ```
 docker run -d --name system -p 9080:9080 system
-docker run -d --name inventory -p 9081:9081 inventory
+docker run -d --name inventory -p 9081:9080 inventory
 ```
 
 The flags are described in the table below: 
@@ -191,7 +191,7 @@ The flags are described in the table below:
 | *Flag* | *Description*
 | -d     | Runs the container in the background.
 | --name | Specifies a name for the container.
-| -p     | Maps the container ports to the host ports.
+| -p     | Maps the host ports to the container ports. For example: `-p <HOST_PORT>:<CONTAINER_PORT>`
 |===
 
 Next, run the `docker ps` command to verify that your containers are started:

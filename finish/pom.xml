@@ -27,7 +27,7 @@
         <version.openliberty-runtime>RELEASE</version.openliberty-runtime>
         <sys.service.http.port>9080</sys.service.http.port>
         <sys.service.https.port>9443</sys.service.https.port>
-        <inv.service.http.port>9081</inv.service.http.port>
+        <inv.service.http.port>9080</inv.service.http.port>
         <inv.service.https.port>9444</inv.service.https.port>
     </properties>
 
