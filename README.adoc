@@ -40,7 +40,7 @@ Application containerization is to bundle an application with its entire environ
 required libraries, dependencies, and configuration files, so that it can run in any containerization  ecosystem, 
 such as Docker, and it can also be deployed to Kubernetes.
 
-You'll learn how to construct `Dockerfile`, how to create a Docker image by using `docker build`  command, and how to run the image in Docker container 
+You'll learn how to construct a `Dockerfile`, how to create a Docker image by using `docker build`  command, and how to run the image in Docker container 
 by using `docker run` command.
 
 The two  microservices that you'll be working with are called `system` and `inventory`. The `system` microservice returns the JVM system properties 
@@ -71,10 +71,10 @@ mvn install
 mvn liberty:start-server
 ```
 
-The [hotspot=packageFile]`<packageFile>` tag in the [hotspot]`pom.xml` configures the microservices to be packed in an archive form.
+The [hotspot=packageFile]`<packageFile>` tag in the [hotspot]`pom.xml` configures the microservices to be packaged in an archive form.
 The `system` and `inventory` microservices including the application `WAR` and server configuration files are archived into `system/target/system.tar.gz` and `inventory/target/inventory.tar.gz`.
 
-The starting point of the `inventory` service can be found at the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. It displays the current contents of the inventory.
+To access the `inventory` service, which displays the current contents of the inventory, visit the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL.
 
 The `system` service shows the system properties of your local JVM and can be found at the http://localhost:9080/system/properties[^] URL.
 
@@ -123,13 +123,13 @@ image that  has been built. If you don't need a parent image, then you can use `
 base image. 
 
 In this case, you're using the `open-liberty` image as your parent
-image, which comes with the latest Open Liberty runtime by default. You can find all different official images at the https://hub.docker.com/_/open-liberty[open-liberty DockerHub^]. To pull different open-liberty image, like `kernel`, you may define the `FROM` instructions as `FROM open-liberty:kernel`.
+image, which comes with the latest Open Liberty runtime by default. You can find all different official images at the https://hub.docker.com/_/open-liberty[open-liberty DockerHub^]. To pull different open-liberty image, like `kernel`, you may define the `FROM` instruction as `FROM open-liberty:kernel`.
 
 The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=5 file=0]`[--chown=<user>:<group>]` [hotspot=6 file=0]`<source>` [hotspot=7 file=0]`<destination>`. 
 It copies local files and directories into the destination within your Docker image. If the source  is an archive, the [hotspot=add file=0]`ADD` instruction will unpack it into the destination directory.
 In this case, the inventory archived application file [hotspot=6 file=0]`inventory.tar.gz`, that was created from running `mvn install`, will be extracted to the destination directory [hotspot=7 file=0]`/opt/ol`. 
 
-The [hotspot=add file=0]`ADD` instruction needs to use the user id [hotspot=5 file=0]`1001` and group [hotspot=5 file=0]`0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root). Without this, the files and directories copied over would be owned by root.
+The [hotspot=add file=0]`ADD` instruction needs to use the user id [hotspot=5 file=0]`1001` and group [hotspot=5 file=0]`0` because the `OpenLiberty` image runs by default with the `USER 1001` (non-root) for security purposes. Without this, the files and directories copied over would be owned by root.
 
 The `Dockerfile` for the `system` service follows the same instructions as `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` files are copied over into `/opt/ol`.
 
@@ -145,11 +145,11 @@ system/Dockerfile
 include::finish/system/Dockerfile[]
 ----
 
-=== Creating your Docker image
+=== Building your Docker image
 
 Now that your microservices are packaged and you have written your Dockerfiles, you will build your Docker images using the `docker build` command. To build your image, you need to have Docker installed and your Docker daemon started.
 
-Run the following commands to build and containerize the application:
+Run the following commands to build container images for your application:
 
 [role='command']
 ```
@@ -157,7 +157,7 @@ docker build -t system system/.
 docker build -t inventory inventory/.
 ```
 
-The `-t` flag in the `docker build` command allows the docker image to be in `name[:tag]` format. 
+The `-t` flag in the `Docker build` command allows the docker image to be in `name[:tag]` format. 
 The tag for an image describes the specific image version. If the `[:tag]` is not specified, the `latest` version will be created by default.
 To verify that the images are built, run the `docker images` command to list all local Docker images:
 
@@ -219,14 +219,14 @@ your images, and start the containers again.
 To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
 An empty list is expected because no system properties are stored in the inventory yet. 
 
-Next, you will retrieve the `system` containers IP address by using the `system` container name we defined when running the docker containers. 
+Next, you will retrieve the `system` container's IP address by using the `system` container name we defined when running the docker containers. 
 Run the following command to retrieve the `system` IP address:
 [role='command']
 ```
 docker inspect -f "{{.NetworkSettings.IPAddress }}" system
 ```
 
-You will find the `[system-ip-address]`:
+You will find the `system` container's IP address:
 [role="no_copy"]
 ----
 172.17.0.2
@@ -242,7 +242,7 @@ you see a new entry for `[system-ip-address]`.
 
 == Testing the microservices
 
-You can test your microservices manually or with automated tests that test the microservices running locally and against the docker container.
+You can test your microservices manually by hitting the endpoints or with automated tests that check the microservices locally and against the docker containers.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
