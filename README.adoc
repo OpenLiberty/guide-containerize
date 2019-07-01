@@ -96,13 +96,21 @@ include::finish/pom.xml[]
 A Docker image is a binary file, made up of multiple layers, and used to execute code in a Docker container. Images are built from
 instructions, defined in `Dockerfiles`, to create a containerized version of the application.
 
-A Dockerfile is a collection of instructions for building a Docker image that can then be run as a container. Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
+A `Dockerfile` is a collection of instructions for building a Docker image that can then be run as a container.
+As each instruction is executed in a `Dockerfile` a new Docker layer is created. These layers, known as intermediate images, are created when a change is made to your Docker image.
+
+Every Dockerfile begins with a parent or base image on top of which various commands are run. For example, you can start your image from scratch and execute commands that download and install Java, or you can start from an image that already contains a Java installation.
 
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
 Install Docker by following the instructions on the https://docs.docker.com/engine/installation[official page^].
 
 === Creating your Dockerfiles
+
+== Dockerhub 
+
+Dockerhub is a cloud-based library to store and distribute container images. There are public repositories for images for users to share and private repositories for Docker images with sensitive data.
+Learn more about Dockerhub on the https://hub.docker.com[official Dockerhub website^].
 
 You will be creating two Docker images to run the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
 
