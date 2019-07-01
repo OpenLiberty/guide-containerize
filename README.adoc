@@ -133,6 +133,8 @@ base image.
 In this case, you're using the `open-liberty` image as your parent
 image, which comes with the latest Open Liberty runtime by default. You can find all different official images at the https://hub.docker.com/_/open-liberty[open-liberty DockerHub^]. To pull different open-liberty image, like `kernel`, you may define the `FROM` instruction as `FROM open-liberty:kernel`.
 
+During the build, instead of using multiple `COPY` commands to transfer configuration files and the application itself, we are using a single `ADD` command because we have packaged the application into an archive. This eliminates a couple of layers in the process of creating the Docker image.
+
 The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=5 file=0]`[--chown=<user>:<group>]` [hotspot=6 file=0]`<source>` [hotspot=7 file=0]`<destination>`. 
 It copies local files and directories into the destination within your Docker image. If the source  is an archive, the [hotspot=add file=0]`ADD` instruction will unpack it into the destination directory.
 In this case, the inventory archived application file [hotspot=6 file=0]`inventory.tar.gz`, that was created from running `mvn install`, will be extracted to the destination directory [hotspot=7 file=0]`/opt/ol`. 
