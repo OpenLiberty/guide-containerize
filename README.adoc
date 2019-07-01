@@ -242,7 +242,7 @@ you see a new entry for `[system-ip-address]`.
 
 == Testing the microservices
 
-You can test your microservices manually by hitting the endpoints or with automated tests that check the microservices locally and against the docker containers.
+You can test your microservices manually by hitting the endpoints or with automated tests that check your running docker containers.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -317,6 +317,6 @@ docker rm inventory system
 
 == Great work! You're done!
 
-You have just built Docker images for two microservices in Open Liberty. 
+You have just built Docker images for two microservices on Open Liberty. 
 
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
