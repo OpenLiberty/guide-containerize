@@ -25,7 +25,7 @@
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
 view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Learn how to containerize your micoservices with Open Liberty by Docker and run them in isolated containers.
+Learn how to containerize and run your microservices with Open Liberty on Docker.
 
 // =================================================================================================
 //  What you'll learn
@@ -33,7 +33,7 @@ Learn how to containerize your micoservices with Open Liberty by Docker and run 
 
 == What you'll learn
 
-To accelerate your development, you may use the containerization technology to deploy and run your microservices into isolated containers instead of 
+To accelerate your development, you may use the containerization technology to deploy and run your microservices into Docker containers instead of 
 different physical or virtual machines. 
 
 Application containerization is to bundle an application with its entire environment, meaning all of its
@@ -45,7 +45,7 @@ by using `docker run` command.
 
 The two  microservices that you'll be working with are called `system` and `inventory`. The `system` microservice returns the JVM system properties 
 of the running container.  The `inventory` microservice adds the properties from the `system` microservice to the inventory. This guide demonstrates how both microservices can be run and communicate
-in different isolated containers. 
+in different Docker containers. 
 
 ///////////////////////////
 // Getting started
