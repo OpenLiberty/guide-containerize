@@ -34,9 +34,9 @@ Learn how to containerize and run your microservices with Open Liberty on Docker
 == What you'll learn
 
 To accelerate your development, you may use the containerization technology to deploy and run your microservices into Docker containers instead of 
-different physical or virtual machines. 
+separate physical or virtual machines. 
 
-Application containerization is to bundle an application with its entire environment, meaning all of its
+Application containerization is used to bundle an application with its entire environment, meaning all of its
 required libraries, dependencies, and configuration files, so that it can run in any containerization  ecosystem, 
 such as Docker, and it can also be deployed to Kubernetes.
 
@@ -105,12 +105,13 @@ Learn more about Docker on the https://www.docker.com/what-docker[official Docke
 
 Install Docker by following the instructions on the https://docs.docker.com/engine/installation[official page^].
 
-=== Creating your Dockerfiles
 
-== Dockerhub 
+=== Dockerhub 
 
 Dockerhub is a cloud-based library to store and distribute container images. There are public repositories for images for users to share and private repositories for Docker images with sensitive data.
 Learn more about Dockerhub on the https://hub.docker.com[official Dockerhub website^].
+
+=== Creating your Dockerfiles
 
 You will be creating two Docker images to run the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
 
