@@ -106,11 +106,6 @@ Learn more about Docker on the https://www.docker.com/what-docker[official Docke
 Install Docker by following the instructions on the https://docs.docker.com/engine/installation[official page^].
 
 
-=== Dockerhub 
-
-Dockerhub is a cloud-based library to store and distribute container images. There are public repositories for images for users to share and private repositories for Docker images with sensitive data.
-Learn more about Dockerhub on the https://hub.docker.com[official Dockerhub website^].
-
 === Creating your Dockerfiles
 
 You will be creating two Docker images to run the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
