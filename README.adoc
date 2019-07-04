@@ -127,7 +127,7 @@ image that  has been built. If you don't need a parent image, then you can use `
 base image. 
 
 In this case, you're using the `open-liberty` image as your parent
-image, which comes with the latest Open Liberty runtime by default. You can find all different official images at the https://hub.docker.com/_/open-liberty[open-liberty DockerHub^]. To pull different open-liberty image, like `kernel`, you may define the `FROM` instruction as `FROM open-liberty:kernel`.
+image, which comes with the latest Open Liberty runtime by default. You can find all different official images at the https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull different open-liberty image, like `kernel`, you may define the `FROM` instruction as `FROM open-liberty:kernel`.
 
 During the build, instead of using multiple `COPY` commands to transfer configuration files and the application itself, we are using a single `ADD` command because we have packaged the application into an archive. This eliminates multiple layers in the process of creating the Docker image.
 
