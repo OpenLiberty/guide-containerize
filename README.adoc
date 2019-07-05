@@ -9,15 +9,15 @@
 :projectid: microservices-docker
 :page-layout: guide-multipane
 :page-duration: 15 minutes
-:page-releasedate: 2019-03-11
-:page-description: Learn how to containerize microservices with Open Liberty.
+:page-releasedate: 2019-07-18
+:page-description: Learn how to containerize and run your microservices with Open Liberty using Docker
 :page-tags: ['Docker']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['docker', 'kubernetes-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Containerizing microservices
-:page-seo-description: Find out how to containerize microservices on Open Liberty
+:page-seo-description: A tutorial on how to containerize or dockerize and run your Java microservices in Docker containers
 :guide-author: Open Liberty
 = Containerizing microservices
 
@@ -25,7 +25,7 @@
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
 view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Learn how to containerize and run your microservices with Open Liberty on Docker.
+Learn how to containerize and run your microservices with Open Liberty using Docker.
 
 // =================================================================================================
 //  What you'll learn
@@ -40,7 +40,7 @@ Application containerization is used to bundle an application with its entire en
 required libraries, dependencies, and configuration files, so that it can run in any containerization  ecosystem, 
 such as Docker, and it can also be deployed to Kubernetes.
 
-You'll learn how to construct a `Dockerfile`, how to create a Docker image by using `docker build`  command, and how to run the image in Docker container 
+You'll learn how to construct a `Dockerfile`, how to create a Docker image by using the `docker build` command, and how to run the image in Docker container 
 by using `docker run` command.
 
 The two  microservices that you'll be working with are called `system` and `inventory`. The `system` microservice returns the JVM system properties 
@@ -91,6 +91,8 @@ pom.xml
 ----
 include::finish/pom.xml[]
 ----
+
+
 == Building your Docker images
 
 A Docker image is a binary file, made up of multiple layers, and used to execute code in a Docker container. Images are built from
@@ -104,7 +106,6 @@ Every Dockerfile begins with a parent or base image on top of which various comm
 Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
 Install Docker by following the instructions on the https://docs.docker.com/engine/installation[official page^].
-
 
 === Creating your Dockerfiles
 
@@ -163,7 +164,7 @@ docker build -t system system/.
 docker build -t inventory inventory/.
 ```
 
-The `-t` flag in the `Docker build` command allows the docker image to be in `name[:tag]` format. 
+The `-t` flag in the `docker build` command allows the Docker image to be labelled (tagged) in the `name[:tag]` format. 
 The tag for an image describes the specific image version. If the `[:tag]` is not specified, the `latest` version will be created by default.
 To verify that the images are built, run the `docker images` command to list all local Docker images:
 
@@ -218,7 +219,7 @@ CONTAINER ID   IMAGE              COMMAND                  CREATED          STAT
 If a problem occurs and your containers exit prematurely, the containers won't appear in the container
 list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
 status when running the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
-container logs for any potential problems. Run the `docker stats system` and `docker stats inventory` to display a live stream of the containers usage statistics. You can also double-check that your Dockerfiles are correct. When you
+container logs for any potential problems. Run the `docker stats system` and `docker stats inventory` commands to display a live stream of the containers usage statistics. You can also double-check that your Dockerfiles are correct. When you
 find the cause of the issues, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands, rebuild
 your images, and start the containers again.
 
@@ -238,13 +239,13 @@ You will find the `system` container's IP address:
 172.17.0.2
 ----
 
-
 In this case, the address for `system` is `172.17.0.2`. Take note of the address `[system-ip-address]` in order to add the system properties to the inventory service. 
 
 Point your browser to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing the `[system-ip-address]` with the value you obtained.
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
 you see a new entry for `[system-ip-address]`. 
+
 
 == Testing the microservices
 
@@ -284,7 +285,7 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 
 === Running the tests
 
-Run the Maven `verify` goal to test the services running in the docker containers by replacing the `[system-ip-address]` with the value determined in the previous section.
+Run the Maven `verify` goal to test the services running in the Docker containers by replacing the `[system-ip-address]` with the value determined in the previous section.
 [role='command']
 ```
 mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-ip-address]
@@ -321,8 +322,9 @@ docker stop inventory system
 docker rm inventory system
 ```
 
+
 == Great work! You're done!
 
-You have just built Docker images for two microservices on Open Liberty. 
+You have just built Docker images and run two microservices on Open Liberty in containers. 
 
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
