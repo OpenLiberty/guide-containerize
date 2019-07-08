@@ -216,8 +216,8 @@ Make sure that your containers are running and show `Up` as their status:
 [role="no_copy"]
 ----
 CONTAINER ID   IMAGE              COMMAND                  CREATED          STATUS           PORTS                                        NAMES
-2b584282e0f5   inventory:latest   "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
-99a98313705f   system:latest      "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
+2b584282e0f5   inventory          "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
+99a98313705f   system             "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
 ----
 
 If a problem occurs and your containers exit prematurely, the containers won't appear in the container
