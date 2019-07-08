@@ -6,7 +6,7 @@
     <feature>cdi-2.0</feature>
   </featureManager>
 
-  <httpEndpoint httpPort="${system.http.port}" httpsPort="${system.http.port}"
+  <httpEndpoint httpPort="${system.http.port}" httpsPort="${system.https.port}"
       id="defaultHttpEndpoint" host="*" />
 
   <webApplication location="inventory.war" contextRoot="/">
