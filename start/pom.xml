@@ -146,7 +146,11 @@
                             <version>RELEASE</version>
                             <type>zip</type>
                         </assemblyArtifact>
-                        <packageFile>${project.build.directory}/${app.name}.tar.gz</packageFile>
+                        <!-- tag::packageFile[] -->
+                        <packageFile>
+                            ${project.build.directory}/${app.name}.tar.gz
+                        </packageFile>
+                        <!-- end::packageFile[] -->
                     </configuration>
                 </plugin>
                 <!-- Plugin to run unit tests -->
@@ -187,8 +191,12 @@
                                 </includes>
                                 <systemPropertyVariables>
                                     <system.ip>${system.ip}</system.ip>
-                                    <sys.http.port>${sys.service.http.port}</sys.http.port>
-                                    <inv.http.port>${inv.service.http.port}</inv.http.port>
+                                    <sys.http.port>
+                                        ${sys.service.http.port}
+                                    </sys.http.port>
+                                    <inv.http.port>
+                                        ${inv.service.http.port}
+                                    </inv.http.port>
                                 </systemPropertyVariables>
                             </configuration>
                         </execution>
@@ -200,8 +208,12 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <summaryFile>${project.build.directory}/test-reports/it/failsafe-summary.xml</summaryFile>
-                        <reportsDirectory>${project.build.directory}/test-reports/it</reportsDirectory>
+                        <summaryFile>
+                        ${project.build.directory}/test-reports/it/failsafe-summary.xml
+                        </summaryFile>
+                        <reportsDirectory>
+                            ${project.build.directory}/test-reports/it
+                        </reportsDirectory>
                     </configuration>
                 </plugin>
             </plugins>
@@ -214,4 +226,3 @@
     </modules>
 
 </project>
-
