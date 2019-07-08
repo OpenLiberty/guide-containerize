@@ -191,7 +191,7 @@ Now that you have your two images built, you will run your microservices in Dock
 [role='command']
 ```
 docker run -d --name system -p 9080:9080 system
-docker run -d --name inventory -p 9081:9080 inventory
+docker run -d --name inventory -p 9081:9081 inventory
 ```
 
 The flags are described in the table below: 

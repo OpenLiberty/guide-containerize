@@ -163,7 +163,6 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                         <default.https.port>${inv.service.https.port}</default.https.port>
                         <system.http.port>${sys.service.http.port}</system.http.port>
                         <system.https.port>${sys.service.https.port}</system.https.port>
-
                     </bootstrapProperties>
                 </configuration>
                 <executions>
