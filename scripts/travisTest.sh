@@ -23,7 +23,7 @@ docker build -t inventory inventory/.
 docker run -d --name system -p 9080:9080 system
 docker run -d --name inventory -p 9081:9081 inventory
 
-sleep 60
+sleep 120
 
 systemStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9080/system/properties/")"
 inventoryStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9081/inventory/systems/")"
