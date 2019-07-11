@@ -178,8 +178,8 @@ Your two images, `inventory` and `system`, should appear in the list of all Dock
 [role="no_copy"]
 ----
 REPOSITORY    TAG       IMAGE ID        CREATED          SIZE
-inventory     latest    08fef024e986    4 minutes ago    471 MB
-system        latest    1dff6d0b4f31    5 minutes ago    470 MB
+inventory     latest    08fef024e986    4 minutes ago    471MB
+system        latest    1dff6d0b4f31    5 minutes ago    470MB
 ----
 
 
