@@ -159,8 +159,8 @@ Run the following commands to build container images for your application:
 
 [role='command']
 ```
-docker build -t system system/.
-docker build -t inventory inventory/.
+docker build -t system:1.0-SNAPSHOT system/.
+docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
 The `-t` flag in the `docker build` command allows the Docker image to be labeled (tagged) in the `name[:tag]` format. 
@@ -177,9 +177,9 @@ Your two images, `inventory` and `system`, should appear in the list of all Dock
 
 [role="no_copy"]
 ----
-REPOSITORY    TAG       IMAGE ID        CREATED          SIZE
-inventory     latest    08fef024e986    4 minutes ago    471MB
-system        latest    1dff6d0b4f31    5 minutes ago    470MB
+REPOSITORY    TAG             IMAGE ID        CREATED          SIZE
+inventory     1.0-SNAPSHOT    08fef024e986    4 minutes ago    471MB
+system        1.0-SNAPSHOT    1dff6d0b4f31    5 minutes ago    470MB
 ----
 
 
@@ -188,8 +188,8 @@ Now that you have your two images built, you will run your microservices in Dock
 
 [role='command']
 ```
-docker run -d --name system -p 9080:9080 system
-docker run -d --name inventory -p 9081:9081 inventory
+docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
+docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
 ```
 
 The flags are described in the table below: 
@@ -213,9 +213,9 @@ Make sure that your containers are running and show `Up` as their status:
 
 [role="no_copy"]
 ----
-CONTAINER ID IMAGE              COMMAND                  CREATED          STATUS           PORTS                                        NAMES
-2b584282e0f5   inventory          "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second      9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
-99a98313705f   system             "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds     0.0.0.0:9080->9080/tcp, 9443/tcp             system
+CONTAINER ID    IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                        NAMES
+2b584282e0f5    inventory:1.0-SNAPSHOT  "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second     9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
+99a98313705f    system:1.0-SNAPSHOT     "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds    0.0.0.0:9080->9080/tcp, 9443/tcp             system
 ----
 
 If a problem occurs and your containers exit prematurely, the containers don't appear in the container
