@@ -9,7 +9,7 @@
 :projectid: microservices-docker
 :page-layout: guide-multipane
 :page-duration: 15 minutes
-:page-releasedate: 2019-07-18
+:page-releasedate: 2019-07-23
 :page-description: Learn how to containerize and run your microservices with Open Liberty using Docker
 :page-tags: ['Docker']
 :page-permalink: /guides/{projectid}
@@ -59,7 +59,7 @@ include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitc
 == Packaging your microservices
 
 Navigate to the `start` directory to begin.
-You can find the starting Java project in the `start` directory. It is a multi-module Maven project that is made up of the`system` and `inventory` microservices. Each microservice lives in its own corresponding directory, `system` and `inventory`.
+You can find the starting Java project in the `start` directory. It is a multi-module Maven project that is made up of the `system` and `inventory` microservices. Each microservice lives in its own corresponding directory, `system` and `inventory`.
 
 To try out the application by using Maven, run the following Maven goals to build the application and run it inside Open Liberty:
 [role='command']
