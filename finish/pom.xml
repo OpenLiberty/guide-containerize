@@ -146,6 +146,7 @@
                             <version>RELEASE</version>
                             <type>zip</type>
                         </assemblyArtifact>
+                        <skip>true</skip>
                         <!-- tag::packageFile[] -->
                         <packageFile>
                             ${project.build.directory}/${app.name}.tar.gz
