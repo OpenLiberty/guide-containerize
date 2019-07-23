@@ -7,19 +7,9 @@ set -euxo pipefail
 ##
 ##############################################################################
 
-mvn -q clean install -DskipTests
+mvn -q clean install
 
-killall -9 java
-
-docker pull open-liberty
-
-docker build -t system system/.
-docker build -t inventory inventory/.
-
-docker run -d --name system -p 9080:9080 system
-docker run -d --name inventory -p 9081:9081 inventory
-
-sleep 120
+mvn liberty:start-server
 
 systemStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9080/system/properties/")"
 inventoryStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9081/inventory/systems/")"
@@ -36,5 +26,5 @@ else
   exit 1
 fi
 
-docker stop inventory system
-docker rm inventory system
+mvn liberty:stop-server
+
