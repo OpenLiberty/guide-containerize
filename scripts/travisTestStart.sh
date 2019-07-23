@@ -7,6 +7,8 @@ set -euxo pipefail
 ##
 ##############################################################################
 
+cd ../start
+
 mvn -q clean install
 
 mvn liberty:start-server
