@@ -1,0 +1,337 @@
+// Copyright (c) 2019 IBM Corporation and others.
+// Licensed under Creative Commons Attribution-NoDerivatives
+// 4.0 International (CC BY-ND 4.0)
+//   https://creativecommons.org/licenses/by-nd/4.0/
+//
+// Contributors:
+//     IBM Corporation
+//
+:projectid: containerize
+:page-layout: guide-multipane
+:page-duration: 15 minutes
+:page-releasedate: 2019-07-23
+:page-description: Learn how to containerize and run your microservices with Open Liberty using Docker
+:page-tags: ['Docker']
+:page-permalink: /guides/{projectid}
+:page-related-guides: ['docker', 'kubernetes-intro']
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:source-highlighter: prettify
+:page-seo-title: Containerizing microservices
+:page-seo-description: A tutorial on how to containerize or dockerize and run your Java microservices in Docker containers
+:guide-author: Open Liberty
+= Containerizing microservices
+
+[.hidden]
+NOTE: This repository contains the guide documentation source. To view the guide in published form,
+view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+
+Learn how to containerize and run your microservices with Open Liberty using Docker.
+
+// =================================================================================================
+//  What you'll learn
+// =================================================================================================
+
+== What you'll learn
+
+
+You can easily deploy your microservices in different environments in a lightweight and portable manner by using containers.
+From development to production and across your DevOps environments, you can deploy your microservices consistently and
+efficiently with containers. You can run a container from a container image. Each container image is a package of what you
+need to run your microservice or application, from the code to its dependencies and configuration.
+
+You'll learn how to build container images and run containers using Docker for your microservices.
+You'll construct `Dockerfile` files, create Docker images by using the `docker build` command, and run the image as Docker containers 
+by using `docker run` command.
+
+The two microservices that you'll be working with are called `system` and `inventory`. The `system` microservice returns the JVM system properties 
+of the running container. The `inventory` microservice adds the properties from the `system` microservice to the inventory. This guide demonstrates how both microservices can run and communicate
+with each other in different Docker containers. 
+
+
+///////////////////////////
+// Getting started
+///////////////////////////
+
+[role='command']
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
+
+
+== Packaging your microservices
+
+Navigate to the `start` directory to begin.
+You can find the starting Java project in the `start` directory. It is a multi-module Maven project that is made up of the `system` and `inventory` microservices. Each microservice lives in its own corresponding directory, `system` and `inventory`.
+
+To try out the application by using Maven, run the following Maven goals to build the application and run it inside Open Liberty:
+[role='command']
+```
+mvn install 
+mvn liberty:start-server
+```
+
+Notice that the [hotspot=packageFile]`<packageFile>` tag in the [hotspot]`pom.xml` file configures the microservices to be packaged in an archive form.
+The `system` and `inventory` microservices including the application `WAR` and server configuration files are archived into `system/target/system.tar.gz` and `inventory/target/inventory.tar.gz`.
+
+To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
+
+The `system` service shows the system properties of the running JVM and can be found at  http://localhost:9080/system/properties[^].
+
+The system properties of your localhost can be added to the `inventory` at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
+
+After you are done checking out the application, stop the Open Liberty server:
+
+[role='command']
+```
+mvn liberty:stop-server
+```
+pom.xml
+[source, xml, linenums, indent=0, role="code_column"]
+----
+include::finish/pom.xml[]
+----
+
+To learn more about RESTful web services and how to build them, see
+https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service^] for details about how to build the `system` service.
+The `inventory` service is built in a similar way.
+
+
+== Building your Docker images
+
+A Docker image is a binary file. It is made up of multiple layers and is used to run code in a Docker container. Images are built from
+instructions in Dockerfiles to create a containerized version of the application.
+
+A `Dockerfile` is a collection of instructions for building a Docker image that can then be run as a container.
+As each instruction is run in a `Dockerfile`, a new Docker layer is created. These layers, which are known as intermediate images, are created when a change is made to your Docker image.
+
+Every `Dockerfile` begins with a parent or base image over which various commands are run. For example, you can start your image from scratch and run commands that download and install a Java runtime, or you can start from an image that already contains a Java installation.
+
+Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
+
+Install Docker by following the instructions on the https://docs.docker.com/engine/installation[official page^].
+
+=== Creating your Dockerfiles
+You will be creating two Docker images to run the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `Dockerfile` for the inventory service.#
+`inventory/Dockerfile`
+----
+
+inventory/Dockerfile
+[source, Text, linenums, indent=0, role="code_column"]
+----
+include::finish/inventory/Dockerfile[]
+----
+
+The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the built image. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
+base image. 
+
+In this case, you're using the `open-liberty` image as your parent
+image, which comes with the Open Liberty runtime by default. You can find all different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull a different open-liberty image, like `kernel`, define the `FROM` instruction as `FROM open-liberty: kernel`.
+
+During the build, use a single `ADD` command instead of using multiple `COPY` commands to transfer configuration files and the application because the application is packaged into an archive. It eliminates multiple layers as the Docker image is created.
+
+The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=5 file=0]`[--chown=<user>:<group>]` [hotspot=6 file=0]`<source>` [hotspot=7 file=0]`<destination>`. 
+It copies local files and directories into the specified destination within your Docker image. If the source is an archive, the [hotspot=add file=0]`ADD` instruction unpacks it into the destination directory.
+In this case, the `inventory` application archive [hotspot=6 file=0]`inventory.tar.gz`, created from running `mvn install` previously, is extracted to the destination directory [hotspot=7 file=0]`/opt/ol`. 
+
+The [hotspot=add file=0]`ADD` instruction needs to use the user ID [hotspot=5 file=0]`1001` and group [hotspot=5 file=0]`0` because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
+
+The `Dockerfile` for the `system` service follows the same instructions as the `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` archive is copied over into `/opt/ol`.
+
+[role="code_command hotspot file=1", subs="quotes"]
+----
+#Create the `Dockerfile` for the system service.#
+`system/Dockerfile`
+----
+
+system/Dockerfile
+[source, Text, linenums, indent=0, role="code_column"]
+----
+include::finish/system/Dockerfile[]
+----
+
+=== Building your Docker image
+
+Now that your microservices are packaged and you have written your Dockerfiles, you will build your Docker images by using the `docker build` command. To build your image, you need to have Docker installed and your Docker daemon started.
+
+Run the following commands to build container images for your application:
+
+[role='command']
+```
+docker build -t system:1.0-SNAPSHOT system/.
+docker build -t inventory:1.0-SNAPSHOT inventory/.
+```
+
+The `-t` flag in the `docker build` command allows the Docker image to be labeled (tagged) in the `name[:tag]` format. 
+The tag for an image describes the specific image version. If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
+
+To verify that the images are built, run the `docker images` command to list all local Docker images:
+
+[role='command']
+```
+docker images
+```
+
+Your two images, `inventory` and `system`, should appear in the list of all Docker images:
+
+[role="no_copy"]
+----
+REPOSITORY    TAG             IMAGE ID        CREATED          SIZE
+inventory     1.0-SNAPSHOT    08fef024e986    4 minutes ago    471MB
+system        1.0-SNAPSHOT    1dff6d0b4f31    5 minutes ago    470MB
+----
+
+
+== Running your microservices in Docker containers
+Now that you have your two images built, you will run your microservices in Docker containers:
+
+[role='command']
+```
+docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
+docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
+```
+
+The flags are described in the table below: 
+
+[cols="15, 100", options="header"]
+|===
+| *Flag* | *Description*
+| -d     | Runs the container in the background.
+| --name | Specifies a name for the container.
+| -p     | Maps the host ports to the container ports. For example: `-p <HOST_PORT>:<CONTAINER_PORT>`
+|===
+
+Next, run the `docker ps` command to verify that your containers are started:
+
+[role='command']
+```
+docker ps
+```
+
+Make sure that your containers are running and show `Up` as their status:
+
+[role="no_copy"]
+----
+CONTAINER ID    IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                        NAMES
+2b584282e0f5    inventory:1.0-SNAPSHOT  "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second     9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
+99a98313705f    system:1.0-SNAPSHOT     "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds    0.0.0.0:9080->9080/tcp, 9443/tcp             system
+----
+
+If a problem occurs and your containers exit prematurely, the containers don't appear in the container
+list that the `docker ps` command displays. Instead, your containers appear with an `Exited`
+status when they run the `docker ps -a` command. Run the `docker logs system` and `docker logs inventory` commands to view the
+container logs for any potential problems. Run the `docker stats system` and `docker stats inventory` commands to display a live stream of usage statistics for your containers. You can also double-check that your Dockerfiles are correct. When you
+find the cause of the issues, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands. Rebuild
+your images, and start the containers again.
+
+To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
+An empty list is expected because no system properties are stored in the inventory yet. 
+
+Next, retrieve the `system` container's IP address by using the `system` container's name that is defined when it ran the Docker containers. 
+Run the following command to retrieve the `system` IP address:
+
+[role='command']
+```
+docker inspect -f "{{.NetworkSettings.IPAddress }}" system
+```
+
+You find the `system` container's IP address:
+
+[role="no_copy"]
+----
+172.17.0.2
+----
+
+In this case, the IP address for the `system` service is `172.17.0.2`. Take note of this IP address to add the system properties to the `inventory` service. 
+
+Point your browser to `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` by replacing `[system-ip-address]` with the IP address you obtained earlier.
+You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
+properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
+you see a new entry for `[system-ip-address]`. 
+
+
+== Testing the microservices
+
+You can test your microservices manually by hitting the endpoints or with automated tests that check your running Docker containers.
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `SystemEndpointTest` class.#
+`system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java`
+----
+
+SystemEndpointTest.java
+[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
+----
+include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
+----
+
+The [hotspot=testGetProperties file=0]`testGetProperties()` method checks for a `200` response code from the `system` service endpoint.
+
+[role="code_command hotspot file=1", subs="quotes"]
+----
+#Create the `InventoryEndpointTest` class.#
+`inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java`
+----
+
+InventoryEndpointTest.java
+[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
+----
+include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[]
+----
+
+* The [hotspot=testEmptyInventory file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
+* The [hotspot=testHostRegistration file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly.
+* The [hotspot=testSystemPropertiesMatch file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory` service.
+* The [hotspot=testUnknownHost file=1]`testUnknownHost()` method checks that an error is raised if an unknown host name is being added into the `inventory` service.
+* The [hotspot=systemServiceIp file=1]`systemServiceIp` variable has the same value as what you retrieved in the previous section when manually adding the `system` service into the `inventory` service. This value of the IP address is passed in when you run the tests.
+
+=== Running the tests
+
+Run the Maven `verify` goal to test the services running in the Docker containers by replacing the `[system-ip-address]` with the IP address determined in the previous section.
+
+[role='command']
+```
+mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-ip-address]
+```
+
+If the tests pass, you see a similar output as the following:
+
+[role="no_copy"]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.system.SystemEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.653 s - in it.io.openliberty.guides.system.SystemEndpointTest
+
+Results:
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.inventory.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.935 s - in it.io.openliberty.guides.inventory.InventoryEndpointTest
+
+Results:
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+----
+
+When you are finished with the services, run the following commands to stop and remove your containers:
+
+[role='command']
+```
+docker stop inventory system 
+docker rm inventory system
+```
+
+
+== Great work! You're done!
+
+You have just built Docker images and run two microservices on Open Liberty in containers. 
+
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
