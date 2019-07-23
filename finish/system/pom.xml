@@ -4,7 +4,7 @@
 
     <parent>
         <groupId>io.openliberty.guides</groupId>
-        <artifactId>docker-intro</artifactId>
+        <artifactId>containerize</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
