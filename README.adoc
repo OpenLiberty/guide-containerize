@@ -262,9 +262,9 @@ You can test your microservices manually by hitting the endpoints or with automa
 ----
 
 SystemEndpointTest.java
-[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
+[source, java, linenums, indent=0, role="code_column"]
 ----
-include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
+include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[][tags=**;!copyright;]
 ----
 
 The [hotspot=testGetProperties file=0]`testGetProperties()` method checks for a `200` response code from the `system` service endpoint.
@@ -276,9 +276,9 @@ The [hotspot=testGetProperties file=0]`testGetProperties()` method checks for a 
 ----
 
 InventoryEndpointTest.java
-[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
+[source, java, linenums, indent=0, role="code_column"]
 ----
-include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[]
+include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[][tags=**;!copyright;]
 ----
 
 * The [hotspot=testEmptyInventory file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
