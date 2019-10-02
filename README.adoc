@@ -131,11 +131,11 @@ image, which comes with the Open Liberty runtime by default. You can find all di
 
 During the build, use a single `ADD` command instead of using multiple `COPY` commands to transfer configuration files and the application because the application is packaged into an archive. It eliminates multiple layers as the Docker image is created.
 
-The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=5 file=0]`[--chown=<user>:<group>]` [hotspot=6 file=0]`<source>` [hotspot=7 file=0]`<destination>`. 
+The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=userID file=0]`[--chown=<user>:<group>]` [hotspot=source file=0]`<source>` [hotspot=destination file=0]`<destination>`. 
 It copies local files and directories into the specified destination within your Docker image. If the source is an archive, the [hotspot=add file=0]`ADD` instruction unpacks it into the destination directory.
-In this case, the `inventory` application archive [hotspot=6 file=0]`inventory.tar.gz`, created from running `mvn install` previously, is extracted to the destination directory [hotspot=7 file=0]`/opt/ol`. 
+In this case, the `inventory` application archive [hotspot=source file=0]`inventory.tar.gz`, created from running `mvn install` previously, is extracted to the destination directory [hotspot=destination file=0]`/opt/ol`. 
 
-The [hotspot=add file=0]`ADD` instruction needs to use the user ID [hotspot=5 file=0]`1001` and group [hotspot=5 file=0]`0` because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
+The [hotspot=add file=0]`ADD` instruction needs to use the user ID [hotspot=userID file=0]`1001` and group [hotspot=userID file=0]`0` because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
 
 The `Dockerfile` for the `system` service follows the same instructions as the `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` archive is copied over into `/opt/ol`.
 
