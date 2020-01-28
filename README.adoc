@@ -17,7 +17,7 @@
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Containerizing and running Java microservices in Docker containers
-:page-seo-description: A getting started tutorial and an example on how to containerize or dockerize your Java microservices by building a container image and running the image as a Docker container.
+:page-seo-description: A getting started tutorial with examples of how to containerize or dockerize your Java microservices by building a container image and running the image as a Docker container.
 :guide-author: Open Liberty
 = Containerizing microservices
 
