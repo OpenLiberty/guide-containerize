@@ -66,9 +66,9 @@ public class InventoryEndpointIT {
     }
 
     // tag::tests[]
+    // tag::testEmptyInventory[]
     @Test
     @Order(1)
-    // tag::testEmptyInventory[]
     public void testEmptyInventory() {
         Response response = this.getResponse(invUrl);
         this.assertResponse(invUrl, response);
@@ -84,9 +84,9 @@ public class InventoryEndpointIT {
     }
     // end::testEmptyInventory[]
 
+    // tag::testHostRegistration[]
     @Test
     @Order(2)
-    // tag::testHostRegistration[]
     public void testHostRegistration() {
         this.visitSystemService();
 
@@ -109,9 +109,9 @@ public class InventoryEndpointIT {
     }
     // end::testHostRegistration[]
 
+    // tag::testSystemPropertiesMatch[]
     @Test
     @Order(3)
-    // tag::testSystemPropertiesMatch[]
     public void testSystemPropertiesMatch() {
         Response invResponse = this.getResponse(invUrl);
         Response sysResponse = this.getResponse(sysUrl);
@@ -140,9 +140,9 @@ public class InventoryEndpointIT {
     }
     // end::testSystemPropertiesMatch[]
 
+    // tag::testUnknownHost[]
     @Test
     @Order(4)
-    // tag::testUnknownHost[]
     public void testUnknownHost() {
         Response response = this.getResponse(invUrl);
         this.assertResponse(invUrl, response);
@@ -161,46 +161,20 @@ public class InventoryEndpointIT {
     }
     // end::testUnknownHost[]
     // end::tests[]
-    // tag::helpers[]
-    // tag::javadoc[]
-    /**
-     * <p>
-     * Returns response information from the specified URL.
-     * </p>
-     * 
-     * @param url - target URL.
-     * @return Response object with the response from the specified URL.
-     */
-    // end::javadoc[]
+
+    // Returns response information from the specified URL.
     private Response getResponse(String url) {
         return client.target(url).request().get();
     }
 
-    // tag::javadoc[]
-    /**
-     * <p>
-     * Asserts that the given URL has the correct response code of 200.
-     * </p>
-     * 
-     * @param url      - target URL.
-     * @param response - response received from the target URL.
-     */
-    // end::javadoc[]
+
+    // Asserts that the given URL has the correct response code of 200.
     private void assertResponse(String url, Response response) {
         assertEquals(200, response.getStatus(), "Incorrect response code from " + url);
     }
 
-    // tag::javadoc[]
-    /**
-     * Asserts that the specified JVM system property is equivalent in both the
-     * system and inventory services.
-     * 
-     * @param propertyName - name of the system property to check.
-     * @param hostname     - name of JVM's host.
-     * @param expected     - expected name.
-     * @param actual       - actual name.
-     */
-    // end::javadoc[]
+    // Asserts that the specified JVM system property is equivalent in both the
+    // system and inventory services.
     private void assertProperty(String propertyName, String hostname, String expected,
                     String actual) {
         assertEquals(expected, actual, "JVM system property [" + propertyName + "] "
@@ -208,11 +182,7 @@ public class InventoryEndpointIT {
                         + "the inventory service for " + hostname);
     }
 
-    // tag::javadoc[]
-    /**
-     * Makes a simple GET request to inventory/localhost.
-     */
-    // end::javadoc[]
+    // Makes a simple GET request to inventory/localhost.
     private void visitSystemService() {
         Response response = this.getResponse(sysUrl);
         this.assertResponse(sysUrl, response);

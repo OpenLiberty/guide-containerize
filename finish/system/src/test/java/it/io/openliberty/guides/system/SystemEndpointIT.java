@@ -59,16 +59,7 @@ public class SystemEndpointIT {
         client.close();
     }
     
-    @Test
-    public void testPodNameNotNull() {
-        response = this.getResponse(clusterUrl);
-        this.assertResponse(clusterUrl, response);
-        String greeting = response.getHeaderString("X-Pod-Name");
-        
-        assertNotNull(greeting, 
-            "Container name should not be null but it was. The service is probably not running inside a container");
-    }
-
+    // tag:testGetProperties[]
     @Test
     public void testGetProperties() {
         Client client = ClientBuilder.newClient();
@@ -77,35 +68,10 @@ public class SystemEndpointIT {
         WebTarget target = client.target(clusterUrl);
         Response response = target.request().get();
 
-        assertEquals(200, response.getStatus(), "Incorrect response code from " + clusterUrl);
+        assertEquals(200, response.getStatus(), 
+            "Incorrect response code from " + clusterUrl);
         response.close();
     }
-
-    /**
-     * <p>
-     * Returns response information from the specified URL.
-     * </p>
-     * 
-     * @param url
-     *          - target URL.
-     * @return Response object with the response from the specified URL.
-     */
-    private Response getResponse(String url) {
-        return client.target(url).request().get();
-    }
-
-    /**
-     * <p>
-     * Asserts that the given URL has the correct response code of 200.
-     * </p>
-     * 
-     * @param url
-     *          - target URL.
-     * @param response
-     *          - response received from the target URL.
-     */
-    private void assertResponse(String url, Response response) {
-        assertEquals(200, response.getStatus(), "Incorrect response code from " + url);
-    }
+    // end:testGetProperties[]
 
 }
