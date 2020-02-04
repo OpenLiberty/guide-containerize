@@ -4,8 +4,12 @@
     <feature>jaxrs-2.1</feature>
     <feature>jsonp-1.1</feature>
     <feature>cdi-2.0</feature>
+    <feature>mpConfig-1.3</feature>
   </featureManager>
 
+  <variable name="default.http.port" defaultValue="9081" />
+  <variable name="default.https.port" defaultValue="9443" />
+    
   <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
       id="defaultHttpEndpoint" host="*" />
 

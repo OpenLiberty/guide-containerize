@@ -6,7 +6,12 @@ FROM open-liberty
 # tag::config-userID[]
 COPY --chown=1001:0 \
 # end::config-userID[]
-    src/main/liberty/config /config/
+    # tag::inventory-config[]
+    src/main/liberty/config \
+    # end::inventory-config[]
+    # tag::config[]
+    /config/
+    # tag::config[]
 # end::copy-config[]
 
 # tag::copy-war[]
