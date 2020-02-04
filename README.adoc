@@ -146,7 +146,7 @@ The `inventory` application WAR file [hotspot=inventory-war file=0]`inventory.wa
 
 The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions need to use the user ID [hotspot=config-userID hotspot=war-userID file=0]`1001` and group [hotspot=config-userID hotspot=war-userID file=0]`0` because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
 
-The [hotspot=configure-sh file=0]`RUN configure.sh` command should be placed at the last to get a pre-warmed container. It will improve the startup time of running the container.
+The [hotspot=configure-sh file=0]`RUN configure.sh` command should be placed at the last to get a pre-warmed Docker image. It will improve the startup time of running your Docker container.
 
 The `Dockerfile` for the `system` service follows the same instructions as the `inventory` service, except that the [hotspot=copy-war file=1]`system.war` archive is copied over into `/config/apps`.
 
