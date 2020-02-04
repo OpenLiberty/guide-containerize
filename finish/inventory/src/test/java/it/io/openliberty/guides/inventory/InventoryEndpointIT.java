@@ -46,7 +46,9 @@ public class InventoryEndpointIT {
         String invServPort = System.getProperty("inventory.http.port");
         String sysServPort = System.getProperty("system.http.port");
 
+        // tag::systemServiceIp[]
         systemServiceIp = System.getProperty("system.ip");
+        // end::systemServiceIp[]
 
         invUrl = "http://localhost" + ":" + invServPort + "/inventory/systems/";
         sysUrl = "http://localhost" + ":" + sysServPort + "/system/properties/";
