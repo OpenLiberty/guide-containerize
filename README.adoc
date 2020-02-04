@@ -1,4 +1,4 @@
-// Copyright (c) 2019 IBM Corporation and others.
+// Copyright (c) 2019, 2020 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -61,15 +61,16 @@ include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitc
 Navigate to the `start` directory to begin.
 You can find the starting Java project in the `start` directory. It is a multi-module Maven project that is made up of the `system` and `inventory` microservices. Each microservice lives in its own corresponding directory, `system` and `inventory`.
 
-To try out the application by using Maven, run the following Maven goals to build the application and run it inside Open Liberty:
+To try out the microservices by using Maven, run the following Maven goal to build the `system` microservice and run it inside Open Liberty:
 [role='command']
 ```
-mvn install 
-mvn liberty:start-server
+mvn -pl system liberty:run
 ```
-
-Notice that the [hotspot=packageFile]`<packageFile>` tag in the [hotspot]`pom.xml` file configures the microservices to be packaged in an archive form.
-The `system` and `inventory` microservices including the application `WAR` and server configuration files are archived into `system/target/system.tar.gz` and `inventory/target/inventory.tar.gz`.
+Open another shell session run the following Maven goal to build the `inventory` microservice and run it inside Open Liberty:
+[role='command']
+```
+mvn -pl inventory liberty:run
+```
 
 To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
 
@@ -77,12 +78,14 @@ The `system` service shows the system properties of the running JVM and can be f
 
 The system properties of your localhost can be added to the `inventory` at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
 
-After you are done checking out the application, stop the Open Liberty server:
-
+After you are finished checking out the microservices, stop the Open Liberty servers by pressing `CTRL+C`
+in the shell sessions where you ran the servers. Alternatively, you can run the `liberty:stop` goal in another shell session:
 [role='command']
 ```
-mvn liberty:stop-server
+mvn -pl system liberty:stop
+mvn -pl inventory liberty:stop
 ```
+
 pom.xml
 [source, xml, linenums, indent=0, role="code_column"]
 ----
