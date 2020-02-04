@@ -86,7 +86,7 @@ mvn -pl system liberty:stop
 mvn -pl inventory liberty:stop
 ```
 
-Run the `mvn package` command from the `start` directory so that the `.war` file resides in the `target` directory.
+Run the `mvn package` command to build the application WAR files from the `start` directory so that the `.war` files reside in the `system/target` and `inventory/target` directories.
 [role='command']
 ```
 mvn package
@@ -140,9 +140,12 @@ image, which comes with the Open Liberty runtime by default. You can find all di
 
 During the build, use `COPY` commands to transfer configuration files and the application because the application ????is packaged into an archive. It eliminates multiple layers as the Docker image is created.
 
-The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions are structured as [hotspot=copy-config file=0]`COPY` [hotspot=config-userID hotspot=war-userID file=0]`[--chown=<user>:<group>]` [hotspot=inventory-config hotspot=inventory-war file=0]`<source>` [hotspot=config hotspot=config-apps file=0]`<destination>`. 
+The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions are structured as `COPY` [hotspot=config-userID hotspot=war-userID file=0]`[--chown=<user>:<group>]` [hotspot=inventory-config hotspot=inventory-war file=0]`<source>` [hotspot=config hotspot=config-apps file=0]`<destination>`. 
 They copy local files into the specified destination within your Docker image.
-In this case, the `inventory` application archive [hotspot=inventory-war file=0]`inventory.war`, created from running `mvn package` previously, is copied to the destination directory [hotspot=config-apps file=0]`/config/apps`. 
+In this case, the `inventory` server configuration files located at `src/main/liberty/config` are copied to the destination directory [hotspot=config file=0]`/config/`.
+The `inventory` application WAR file [hotspot=inventory-war file=0]`inventory.war`, created from running `mvn package` previously, is copied to the destination directory [hotspot=config-apps file=0]`/config/apps`.
+
+The [hotspot=configure-sh file=0]`RUN configure.sh` command should be placed at the last to get a pre-warmed container. It will improve the startup time of running the container.
 
 The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions need to use the user ID [hotspot=config-userID hotspot=war-userID file=0]`1001` and group [hotspot=config-userID hotspot=war-userID file=0]`0` because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
 

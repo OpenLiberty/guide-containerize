@@ -26,6 +26,6 @@ COPY --chown=1001:0 \
     # end::config-apps[]
 # end::copy-war[]
 
-# tag::configure[]
+# tag::configure-sh[]
 RUN configure.sh
-# end::configure[]
+# end::configure-sh[]
