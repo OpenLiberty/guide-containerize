@@ -22,18 +22,8 @@
         <version.maven-war-plugin>3.2.3</version.maven-war-plugin>
         <version.maven-surefire-plugin>2.22.2</version.maven-surefire-plugin>
         <!-- Default test properties -->
-        <!-- tag::cluster.ip[] -->
-        <cluster.ip>localhost</cluster.ip>
-        <!-- end::cluster.ip[] -->
-        <!-- tag::system.kube.service[] -->
-        <system.kube.service>system-service</system.kube.service>
-        <!-- end::system.kube.service[] -->
-        <!-- tag::system.node.port[] -->
-        <system.node.port>31000</system.node.port>
-        <!-- end::system.node.port[] -->
-        <!-- tag::inventory.node.port[] -->
-        <inventory.node.port>32000</inventory.node.port>
-        <!-- end::inventory.node.port[] -->
+        <system.ip>localhost</system.ip>
+        <system.http.port>9080</system.http.port>
         <!-- Liberty configuration -->
         <liberty.var.default.http.port>9081</liberty.var.default.http.port>
         <liberty.var.default.https.port>9444</liberty.var.default.https.port>
@@ -107,10 +97,9 @@
                 <version>${version.maven-failsafe-plugin}</version>
                 <configuration>
                     <systemPropertyVariables>
-                        <cluster.ip>${cluster.ip}</cluster.ip>
-                        <inventory.node.port>${inventory.node.port}</inventory.node.port>
-                        <system.node.port>${system.node.port}</system.node.port>
-                        <system.kube.service>${system.kube.service}</system.kube.service>
+                        <system.ip>${system.ip}</system.ip>
+                        <system.http.port>${system.node.port}</system.http.port>
+                        <inventory.http.port>${liberty.var.default.http.port}</inventory.http.port>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

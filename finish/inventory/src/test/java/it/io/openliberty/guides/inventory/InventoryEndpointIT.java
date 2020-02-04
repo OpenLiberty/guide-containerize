@@ -36,19 +36,21 @@ public class InventoryEndpointIT {
 
     private static String invUrl;
     private static String sysUrl;
-    private static String sysKubeService;
+    private static String systemServiceIp;
 
     private static Client client;
 
     @BeforeAll
     public static void oneTimeSetup() {
-        String clusterIp = System.getProperty("cluster.ip");
-        String invNodePort = System.getProperty("inventory.node.port");
-        String sysNodePort = System.getProperty("system.node.port");
 
-        sysKubeService = System.getProperty("system.kube.service");
-        invUrl = "http://" + clusterIp + ":" + invNodePort + "/inventory/systems/";
-        sysUrl = "http://" + clusterIp + ":" + sysNodePort + "/system/properties/";
+        String invServPort = System.getProperty("inventory.http.port");
+        String sysServPort = System.getProperty("system.http.port");
+
+        systemServiceIp = System.getProperty("system.ip");
+
+        invUrl = "http://localhost" + ":" + invServPort + "/inventory/systems/";
+        sysUrl = "http://localhost" + ":" + sysServPort + "/system/properties/";
+        
 
         client = ClientBuilder.newBuilder().hostnameVerifier(new HostnameVerifier() {
             public boolean verify(String hostname, SSLSession session) {
@@ -98,12 +100,12 @@ public class InventoryEndpointIT {
         int expected = 1;
         int actual = obj.getInt("total");
         assertEquals(expected, actual,
-                        "The inventory should have one entry for " + sysKubeService);
+                        "The inventory should have one entry for " + systemServiceIp);
 
         boolean serviceExists = obj.getJsonArray("systems").getJsonObject(0)
-                        .get("hostname").toString().contains(sysKubeService);
+                        .get("hostname").toString().contains(systemServiceIp);
         assertTrue(serviceExists,
-                        "A host was registered, but it was not " + sysKubeService);
+                        "A host was registered, but it was not " + systemServiceIp);
 
         response.close();
     }
@@ -127,12 +129,12 @@ public class InventoryEndpointIT {
 
         String osNameFromInventory = jsonFromInventory.getString("os.name");
         String osNameFromSystem = jsonFromSystem.getString("os.name");
-        this.assertProperty("os.name", sysKubeService, osNameFromSystem,
+        this.assertProperty("os.name", systemServiceIp, osNameFromSystem,
                         osNameFromInventory);
 
         String userNameFromInventory = jsonFromInventory.getString("user.name");
         String userNameFromSystem = jsonFromSystem.getString("user.name");
-        this.assertProperty("user.name", sysKubeService, userNameFromSystem,
+        this.assertProperty("user.name", systemServiceIp, userNameFromSystem,
                         userNameFromInventory);
 
         invResponse.close();
@@ -188,7 +190,7 @@ public class InventoryEndpointIT {
         this.assertResponse(sysUrl, response);
         response.close();
 
-        Response targetResponse = client.target(invUrl + sysKubeService).request()
+        Response targetResponse = client.target(invUrl + systemServiceIp).request()
                         .get();
 
         targetResponse.close();
