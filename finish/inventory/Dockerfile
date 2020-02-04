@@ -11,7 +11,7 @@ COPY --chown=1001:0 \
     # end::inventory-config[]
     # tag::config[]
     /config/
-    # tag::config[]
+    # end::config[]
 # end::copy-config[]
 
 # tag::copy-war[]
