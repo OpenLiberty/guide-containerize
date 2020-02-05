@@ -8,12 +8,16 @@ ARG REVISION=SNAPSHOT
 # tag::label[]
 LABEL org.opencontainers.image.authors="My Name" \
       org.opencontainers.image.vendor="Open Liberty" \
-      org.opencontainers.image.url="https://openliberty.io/" \
+      org.opencontainers.image.url="https://hub.docker.com/" \
       org.opencontainers.image.source="https://github.com/OpenLiberty/guide-containerize" \
       org.opencontainers.image.version="$VERSION" \
       org.opencontainers.image.revision="$REVISION" \
-      io.openliberty.guide.name="Containerizing microservices" \
-      io.openliberty.guide.summary="The inventory microservice runs with Open Liberty runtime."
+      vendor="Open Liberty" \
+      name="inventory" \
+      version="$VERSION:$REVISION" \
+      summary="The inventory microservice from the Containerizing microservices guide" \
+      description="This image contains the inventory microservice running with Open Liberty runtime." \
+      io.openliberty.guide.name="guide-containerize"
 # end::label[]
 
 # tag::copy-config[]
