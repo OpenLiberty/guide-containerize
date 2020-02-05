@@ -12,11 +12,8 @@ LABEL org.opencontainers.image.authors="My Name" \
       org.opencontainers.image.source="https://github.com/OpenLiberty/guide-containerize" \
       org.opencontainers.image.version="$VERSION" \
       org.opencontainers.image.revision="$REVISION" \
-      vendor="Open Liberty" \
-      name="inventory" \
-      version="$VERSION:$REVISION" \
-      summary="The inventory microservice from the Containerizing microservices guide" \
-      description="This image contains the inventory microservice which runs with Open Liberty runtime."
+      io.openliberty.guide.name="Containerizing microservices" \
+      io.openliberty.guide.summary="The inventory microservice runs with Open Liberty runtime."
 # end::label[]
 
 # tag::copy-config[]
