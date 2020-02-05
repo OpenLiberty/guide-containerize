@@ -13,7 +13,6 @@
 package it.io.openliberty.guides.system;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -33,7 +32,6 @@ public class SystemEndpointIT {
     private static String clusterUrl;
 
     private Client client;
-    private Response response;
 
     @BeforeAll
     public static void oneTimeSetup() {
@@ -43,7 +41,6 @@ public class SystemEndpointIT {
     
     @BeforeEach
     public void setup() {
-        response = null;
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {
                         public boolean verify(String hostname, SSLSession session) {
