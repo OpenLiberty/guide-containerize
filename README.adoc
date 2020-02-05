@@ -92,12 +92,6 @@ Run the `mvn package` command to build the application WAR files from the `start
 mvn package
 ```
 
-pom.xml
-[source, xml, linenums, indent=0, role="code_column"]
-----
-include::finish/pom.xml[]
-----
-
 To learn more about RESTful web services and how to build them, see
 https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service^] for details about how to build the `system` service.
 The `inventory` service is built in a similar way.
@@ -138,11 +132,12 @@ base image.
 In this case, you're using the `open-liberty` image as your parent
 image, which comes with the Open Liberty runtime by default. You can find all different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull a different open-liberty image, like `kernel`, define the `FROM` instruction as `FROM open-liberty: kernel`.
 
+It is recommended to add labels to your image by the [hotspot=label file=0]`LABEL` command. See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
+
 The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions are structured as `COPY` [hotspot=config-userID hotspot=war-userID file=0]`[--chown=<user>:<group>]` [hotspot=inventory-config hotspot=inventory-war file=0]`<source>` [hotspot=config hotspot=config-apps file=0]`<destination>`. 
 They copy local files into the specified destination within your Docker image.
 In this case, the `inventory` server configuration files located at `src/main/liberty/config` are copied to the destination directory [hotspot=config file=0]`/config/`.
 The `inventory` application WAR file [hotspot=inventory-war file=0]`inventory.war`, created from running `mvn package` previously, is copied to the destination directory [hotspot=config-apps file=0]`/config/apps`.
-
 
 The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions need to use the user ID [hotspot=config-userID hotspot=war-userID file=0]`1001` and group [hotspot=config-userID hotspot=war-userID file=0]`0` because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
 
@@ -183,6 +178,12 @@ To verify that the images are built, run the `docker images` command to list all
 [role='command']
 ```
 docker images
+```
+
+Or, run the `docker images` command with `--filter` option to list your images:
+[role='command']
+```
+docker images -f "label=org.opencontainers.image.authors=My Name"
 ```
 
 Your two images, `inventory` and `system`, should appear in the list of all Docker images:

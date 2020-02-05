@@ -2,6 +2,23 @@
 FROM open-liberty
 # end::from[]
 
+ARG VERSION=1.0
+ARG REVISION=SNAPSHOT
+
+# tag::label[]
+LABEL org.opencontainers.image.authors="My Name" \
+      org.opencontainers.image.vendor="Open Liberty" \
+      org.opencontainers.image.url="https://openliberty.io/" \
+      org.opencontainers.image.source="https://github.com/OpenLiberty/guide-containerize" \
+      org.opencontainers.image.version="$VERSION" \
+      org.opencontainers.image.revision="$REVISION" \
+      vendor="Open Liberty" \
+      name="inventory" \
+      version="$VERSION:$REVISION" \
+      summary="The inventory microservice from the Containerizing microservices guide" \
+      description="This image contains the inventory microservice which runs with Open Liberty runtime."
+# end::label[]
+
 # tag::copy-config[]
 # tag::config-userID[]
 COPY --chown=1001:0 \
