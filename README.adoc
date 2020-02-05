@@ -305,7 +305,7 @@ Run the Maven `failsafe` goal to test the services running in the Docker contain
 
 [role='command']
 ```
-mvn -pl inventory failsafe:integration-test -Dsystem.ip=[system-ip-address]
+mvn failsafe:integration-test -Dsystem.ip=[system-ip-address]
 ```
 
 If the tests pass, you see a similar output as the following:
