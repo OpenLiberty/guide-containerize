@@ -302,11 +302,12 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 
 === Running the tests
 
-Run the Maven `failsafe` goal to test the services running in the Docker containers by replacing the `[system-ip-address]` with the IP address determined in the previous section.
+Run the Maven `package` goal to compile the test classes and `failsafe` goal to test the services running in the Docker containers by replacing the `[system-ip-address]` with the IP address determined in the previous section.
 
 [role='command']
 ```
-mvn failsafe:integration-test -Dsystem.ip=[system-ip-address]
+mvn package
+mvn failsafe:integration-test -Dsystem.ip=[system-ip-address] -Dinventory.http.port=9081 -Dsystem.http.port=9080
 ```
 
 If the tests pass, you see a similar output as the following:
