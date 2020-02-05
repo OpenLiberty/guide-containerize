@@ -98,7 +98,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <system.ip>${system.ip}</system.ip>
-                        <system.http.port>${system.node.port}</system.http.port>
+                        <system.http.port>${system.http.port}</system.http.port>
                         <inventory.http.port>${liberty.var.default.http.port}</inventory.http.port>
                     </systemPropertyVariables>
                 </configuration>
