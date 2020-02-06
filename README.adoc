@@ -8,7 +8,7 @@
 //
 :projectid: containerize
 :page-layout: guide-multipane
-:page-duration: 15 minutes
+:page-duration: 20 minutes
 :page-releasedate: 2019-07-23
 :page-description: Learn how to containerize and run your microservices with Open Liberty using Docker
 :page-tags: ['Docker']
@@ -132,7 +132,7 @@ base image.
 In this case, you're using the `open-liberty` image as your parent
 image, which comes with the Open Liberty runtime by default. You can find all different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull a different open-liberty image, like `kernel`, define the `FROM` instruction as `FROM open-liberty: kernel`.
 
-It is recommended to add your labels or override the labels from `open-liberty` image by the [hotspot=label file=0]`LABEL` command, so that those information can help you to manage your images. See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
+It is recommended to add your own labels to your Docker image like the [hotspot=label file=0]`LABEL` command doing, so that those information can help you to manage your images. See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
 
 The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions are structured as `COPY` [hotspot=config-userID hotspot=war-userID file=0]`[--chown=<user>:<group>]` [hotspot=inventory-config hotspot=inventory-war file=0]`<source>` [hotspot=config hotspot=config-apps file=0]`<destination>`. 
 They copy local files into the specified destination within your Docker image.
@@ -183,7 +183,7 @@ docker images
 Or, run the `docker images` command with `--filter` option to list your images:
 [role='command']
 ```
-docker images -f "label=org.opencontainers.image.authors=My Name"
+docker images -f "label=io.openliberty.guide.image.authors=My Name"
 ```
 
 Your two images, `inventory` and `system`, should appear in the list of all Docker images:
