@@ -7,12 +7,17 @@ set -euxo pipefail
 ##
 ##############################################################################
 
-mvn -q clean install -DskipTests
+cd ../finish
+
+mvn -q clean package
 
 docker pull open-liberty
 
 docker build -t system system/.
 docker build -t inventory inventory/.
+
+docker images -f "label=org.opencontainers.image.authors=My Name" | grep system
+docker images -f "label=org.opencontainers.image.authors=My Name" | grep inventory
 
 docker run -d --name system -p 9080:9080 system
 docker run -d --name inventory -p 9081:9081 inventory
