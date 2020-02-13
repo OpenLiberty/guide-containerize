@@ -143,7 +143,7 @@ The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions need to use
 
 The [hotspot=configure-sh file=0]`RUN configure.sh` command should be placed at the last to get a pre-warmed Docker image. It will improve the startup time of running your Docker container.
 
-The `Dockerfile` for the `system` service follows the same instructions as the `inventory` service, except that the [hotspot=copy-war file=1]`system.war` archive is copied over into `/config/apps`.
+The `Dockerfile` for the `system` service follows the same instructions as the `inventory` service, except that some [hotspot=name hotspot=summary file=1]`labels` are updated, and the [hotspot=copy-war file=1]`system.war` archive is copied over into `/config/apps`.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -183,7 +183,7 @@ docker images
 Or, run the `docker images` command with `--filter` option to list your images:
 [role='command']
 ```
-docker images -f "label=io.openliberty.guide.image.authors=My Name"
+docker images -f "label=org.opencontainers.image.authors=My Name"
 ```
 
 Your two images, `inventory` and `system`, should appear in the list of all Docker images:

@@ -11,10 +11,14 @@ LABEL \
   org.opencontainers.image.version="$VERSION" \
   org.opencontainers.image.revision="$REVISION" \
   vendor="Open Liberty" \
+# tag::name[]
   name="system" \
+# end::name[]
   version="$VERSION=-$REVISION" \
+# tag::summary[]
   summary="The system microservice from the Containerizing microservices guide" \
   description="This image contains the system microservice running with the Open Liberty runtime."
+# end::summary[]
 COPY --chown=1001:0 src/main/liberty/config /config/
 # tag::copy-war[]
 COPY --chown=1001:0 target/system.war /config/apps
