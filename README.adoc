@@ -130,7 +130,7 @@ The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which
 base image. 
 
 In this case, you're using the `open-liberty` image as your parent
-image, which comes with the Open Liberty runtime by default. You can find all different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull a different open-liberty image, like `kernel`, define the `FROM` instruction as `FROM open-liberty: kernel`.
+image, which comes with the Open Liberty runtime by default. You can find all different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull a different open-liberty image, like `kernel`, define the `FROM` instruction as `FROM open-liberty:kernel`.
 
 It is recommended to label your Docker image like the [hotspot=label file=0]`LABEL` command doing, so that those information can help you to manage your images. See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
 

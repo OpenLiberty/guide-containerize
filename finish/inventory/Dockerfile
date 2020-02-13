@@ -17,7 +17,7 @@ LABEL \
   name="inventory" \
   version="$VERSION=-$REVISION" \
   summary="The inventory microservice from the Containerizing microservices guide" \
-  description="This image contains the inventory microservice running with Open Liberty runtime."
+  description="This image contains the inventory microservice running with the Open Liberty runtime."
 # end::label[]
 
 # tag::copy-config[]
