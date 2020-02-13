@@ -19,6 +19,7 @@ LABEL \
   summary="The system microservice from the Containerizing microservices guide" \
   description="This image contains the system microservice running with the Open Liberty runtime."
 # end::summary[]
+
 COPY --chown=1001:0 src/main/liberty/config /config/
 # tag::copy-war[]
 COPY --chown=1001:0 target/system.war /config/apps
