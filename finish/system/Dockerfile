@@ -14,7 +14,7 @@ LABEL \
 # tag::name[]
   name="system" \
 # end::name[]
-  version="$VERSION=-$REVISION" \
+  version="$VERSION-$REVISION" \
 # tag::summary[]
   summary="The system microservice from the Containerizing microservices guide" \
   description="This image contains the system microservice running with the Open Liberty runtime."

@@ -15,7 +15,7 @@ LABEL \
   org.opencontainers.image.revision="$REVISION" \
   vendor="Open Liberty" \
   name="inventory" \
-  version="$VERSION=-$REVISION" \
+  version="$VERSION-$REVISION" \
   summary="The inventory microservice from the Containerizing microservices guide" \
   description="This image contains the inventory microservice running with the Open Liberty runtime."
 # end::label[]
