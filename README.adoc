@@ -183,7 +183,7 @@ docker images
 Or, run the `docker images` command with `--filter` option to list your images:
 [role='command']
 ```
-docker images -f "label=org.opencontainers.image.authors=My Name"
+docker images -f "label=org.opencontainers.image.authors=Your Name"
 ```
 
 Your two images, `inventory` and `system`, should appear in the list of all Docker images:
