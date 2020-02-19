@@ -66,7 +66,7 @@ To try out the microservices by using Maven, run the following Maven goal to bui
 ```
 mvn -pl system liberty:run
 ```
-Open another shell session run the following Maven goal to build the `inventory` microservice and run it inside Open Liberty:
+Open another shell session and run the following Maven goal to build the `inventory` microservice and run it inside Open Liberty:
 [role='command']
 ```
 mvn -pl inventory liberty:run
