@@ -7,7 +7,7 @@ ARG REVISION=SNAPSHOT
 
 # tag::label[]
 LABEL \
-  org.opencontainers.image.authors="My Name" \
+  org.opencontainers.image.authors="Your Name" \
   org.opencontainers.image.vendor="Open Liberty" \
   org.opencontainers.image.url="local" \
   org.opencontainers.image.source="https://github.com/OpenLiberty/guide-containerize" \
