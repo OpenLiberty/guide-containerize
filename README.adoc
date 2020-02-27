@@ -1,4 +1,4 @@
-// Copyright (c) 2019 IBM Corporation and others.
+// Copyright (c) 2019, 2020 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -8,7 +8,7 @@
 //
 :projectid: containerize
 :page-layout: guide-multipane
-:page-duration: 15 minutes
+:page-duration: 20 minutes
 :page-releasedate: 2019-07-23
 :page-description: Learn how to containerize and run your microservices with Open Liberty using Docker
 :page-tags: ['Docker']
@@ -16,8 +16,8 @@
 :page-related-guides: ['docker', 'kubernetes-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Containerizing microservices
-:page-seo-description: A tutorial on how to containerize or dockerize and run your Java microservices in Docker containers
+:page-seo-title: Containerizing and running Java microservices in Docker containers
+:page-seo-description: A getting started tutorial with examples of how to containerize or dockerize your Java microservices by building a container image and running the image as a Docker container.
 :guide-author: Open Liberty
 = Containerizing microservices
 
@@ -61,15 +61,16 @@ include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitc
 Navigate to the `start` directory to begin.
 You can find the starting Java project in the `start` directory. It is a multi-module Maven project that is made up of the `system` and `inventory` microservices. Each microservice lives in its own corresponding directory, `system` and `inventory`.
 
-To try out the application by using Maven, run the following Maven goals to build the application and run it inside Open Liberty:
+To try out the microservices by using Maven, run the following Maven goal to build the `system` microservice and run it inside Open Liberty:
 [role='command']
 ```
-mvn install 
-mvn liberty:start-server
+mvn -pl system liberty:run
 ```
-
-Notice that the [hotspot=packageFile]`<packageFile>` tag in the [hotspot]`pom.xml` file configures the microservices to be packaged in an archive form.
-The `system` and `inventory` microservices including the application `WAR` and server configuration files are archived into `system/target/system.tar.gz` and `inventory/target/inventory.tar.gz`.
+Open another shell session and run the following Maven goal to build the `inventory` microservice and run it inside Open Liberty:
+[role='command']
+```
+mvn -pl inventory liberty:run
+```
 
 To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
 
@@ -77,17 +78,19 @@ The `system` service shows the system properties of the running JVM and can be f
 
 The system properties of your localhost can be added to the `inventory` at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
 
-After you are done checking out the application, stop the Open Liberty server:
-
+After you are finished checking out the microservices, stop the Open Liberty servers by pressing `CTRL+C`
+in the shell sessions where you ran the servers. Alternatively, you can run the `liberty:stop` goal in another shell session:
 [role='command']
 ```
-mvn liberty:stop-server
+mvn -pl system liberty:stop
+mvn -pl inventory liberty:stop
 ```
-pom.xml
-[source, xml, linenums, indent=0, role="code_column"]
-----
-include::finish/pom.xml[]
-----
+
+Run the Maven `package` goal to build the application `.war` files from the `start` directory so that the `.war` files reside in the `system/target` and `inventory/target` directories.
+[role='command']
+```
+mvn package
+```
 
 To learn more about RESTful web services and how to build them, see
 https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service^] for details about how to build the `system` service.
@@ -127,17 +130,20 @@ The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which
 base image. 
 
 In this case, you're using the `open-liberty` image as your parent
-image, which comes with the Open Liberty runtime by default. You can find all different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull a different open-liberty image, like `kernel`, define the `FROM` instruction as `FROM open-liberty: kernel`.
+image, which comes with the Open Liberty runtime by default. You can find all different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull a different open-liberty image, like `kernel`, define the `FROM` instruction as `FROM open-liberty:kernel`. If you build an image for production, it is recommended to use the `openliberty/open-liberty:kernel-java8-openj9-ubi` image.
 
-During the build, use a single `ADD` command instead of using multiple `COPY` commands to transfer configuration files and the application because the application is packaged into an archive. It eliminates multiple layers as the Docker image is created.
+It is also recommended to label your Docker images with the [hotspot=label file=0]`LABEL` command, as the label information can help you manage your images. For more information, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
 
-The [hotspot=add file=0]`ADD` instruction is structured as [hotspot=add file=0]`ADD` [hotspot=userID file=0]`[--chown=<user>:<group>]` [hotspot=source file=0]`<source>` [hotspot=destination file=0]`<destination>`. 
-It copies local files and directories into the specified destination within your Docker image. If the source is an archive, the [hotspot=add file=0]`ADD` instruction unpacks it into the destination directory.
-In this case, the `inventory` application archive [hotspot=source file=0]`inventory.tar.gz`, created from running `mvn install` previously, is extracted to the destination directory [hotspot=destination file=0]`/opt/ol`. 
+The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions are structured as `COPY` [hotspot=config-userID hotspot=war-userID file=0]`[--chown=<user>:<group>]` [hotspot=inventory-config hotspot=inventory-war file=0]`<source>` [hotspot=config hotspot=config-apps file=0]`<destination>`. 
+They copy local files into the specified destination within your Docker image.
+In this case, the `inventory` server configuration files that are located at `src/main/liberty/config` are copied to the [hotspot=config file=0]`/config/` destination directory.
+The `inventory` application WAR file [hotspot=inventory-war file=0]`inventory.war`, which was created from running `mvn package`, is copied to the [hotspot=config-apps file=0]`/config/apps` destination directory.
 
-The [hotspot=add file=0]`ADD` instruction needs to use the user ID [hotspot=userID file=0]`1001` and group [hotspot=userID file=0]`0` because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
+The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions use the [hotspot=config-userID hotspot=war-userID file=0]`1001` user ID  and [hotspot=config-userID hotspot=war-userID file=0]`0` group because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
 
-The `Dockerfile` for the `system` service follows the same instructions as the `inventory` service, except that the [hotspot=add file=1]`system.tar.gz` archive is copied over into `/opt/ol`.
+Place the [hotspot=configure-sh file=0]`RUN configure.sh` command at the end to get a pre-warmed Docker image. It improves the startup time of running your Docker container.
+
+The `Dockerfile` for the `system` service follows the same instructions as the `inventory` service, except that some [hotspot=name hotspot=summary file=1]`labels` are updated, and the [hotspot=copy-war file=1]`system.war` archive is copied into `/config/apps`.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -150,6 +156,7 @@ system/Dockerfile
 ----
 include::finish/system/Dockerfile[]
 ----
+
 
 === Building your Docker image
 
@@ -171,6 +178,12 @@ To verify that the images are built, run the `docker images` command to list all
 [role='command']
 ```
 docker images
+```
+
+Or, run the `docker images` command with `--filter` option to list your images:
+[role='command']
+```
+docker images -f "label=org.opencontainers.image.authors=Your Name"
 ```
 
 Your two images, `inventory` and `system`, should appear in the list of all Docker images:
@@ -257,28 +270,28 @@ You can test your microservices manually by hitting the endpoints or with automa
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Create the `SystemEndpointTest` class.#
-`system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java`
+#Create the `SystemEndpointIT` class.#
+`system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java`
 ----
 
-SystemEndpointTest.java
+SystemEndpointIT.java
 [source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
-include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
+include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java[]
 ----
 
 The [hotspot=testGetProperties file=0]`testGetProperties()` method checks for a `200` response code from the `system` service endpoint.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
-#Create the `InventoryEndpointTest` class.#
-`inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java`
+#Create the `InventoryEndpointIT` class.#
+`inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointIT.java`
 ----
 
-InventoryEndpointTest.java
+InventoryEndpointIT.java
 [source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
-include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[]
+include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointIT.java[]
 ----
 
 * The [hotspot=testEmptyInventory file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
@@ -289,11 +302,12 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 
 === Running the tests
 
-Run the Maven `verify` goal to test the services running in the Docker containers by replacing the `[system-ip-address]` with the IP address determined in the previous section.
+Run the Maven `package` goal to compile the test classes. Run the Maven `failsafe` goal to test the services that are running in the Docker containers by replacing the `[system-ip-address]` with the IP address that was determined in the previous section.
 
 [role='command']
 ```
-mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-ip-address]
+mvn package
+mvn failsafe:integration-test -Dsystem.ip=[system-ip-address] -Dinventory.http.port=9081 -Dsystem.http.port=9080
 ```
 
 If the tests pass, you see a similar output as the following:
@@ -303,8 +317,8 @@ If the tests pass, you see a similar output as the following:
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.system.SystemEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.653 s - in it.io.openliberty.guides.system.SystemEndpointTest
+Running it.io.openliberty.guides.system.SystemEndpointIT
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.653 s - in it.io.openliberty.guides.system.SystemEndpointIT
 
 Results:
 
@@ -313,12 +327,12 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.inventory.InventoryEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.935 s - in it.io.openliberty.guides.inventory.InventoryEndpointTest
+Running it.io.openliberty.guides.inventory.InventoryEndpointIT
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.935 s - in it.io.openliberty.guides.inventory.InventoryEndpointIT
 
 Results:
 
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 When you are finished with the services, run the following commands to stop and remove your containers:

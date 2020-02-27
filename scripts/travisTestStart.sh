@@ -9,9 +9,12 @@ set -euxo pipefail
 
 cd ../start
 
-mvn -q clean install
+mvn -q clean package
+mvn -q -pl system liberty:create liberty:install-feature liberty:deploy
+mvn -q -pl inventory liberty:create liberty:install-feature liberty:deploy
 
-mvn liberty:start-server
+mvn -pl system liberty:start
+mvn -pl inventory liberty:start
 
 systemStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9080/system/properties/")"
 inventoryStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9081/inventory/systems/")"
@@ -28,5 +31,6 @@ else
   exit 1
 fi
 
-mvn liberty:stop-server
+mvn -pl system liberty:stop
+mvn -pl inventory liberty:stop
 
