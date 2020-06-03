@@ -128,8 +128,8 @@ include::finish/inventory/Dockerfile[]
 
 The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the built image. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a base image. 
 
-In this case, you are using the recommended production image, 
-`openliberty/open-liberty:kernel-java8-openj9-ubi`, as your parent image. If you would not like to have any additional runtime features for your `kernel` image, define the `FROM` instruction as `FROM open-liberty:kernel`. To use the default image that comes with the Open Liberty runtime, simply define the `FROM` instruction as `FROM open-liberty`. You can find all the different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^].
+In this case, you're using the recommended production image, 
+`openliberty/open-liberty:kernel-java8-openj9-ubi`, as your parent image. If you don't want any additional runtime features for your `kernel` image, define the `FROM` instruction as `FROM open-liberty:kernel`. To use the default image that comes with the Open Liberty runtime, define the `FROM` instruction as `FROM open-liberty`. You can find all the official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^].
 
 It is also recommended to label your Docker images with the [hotspot=label file=0]`LABEL` command, as the label information can help you manage your images. For more information, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
 
