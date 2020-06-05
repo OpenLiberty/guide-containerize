@@ -49,7 +49,7 @@ with each other in different Docker containers.
 
 == Additional prerequisites
 
-Before you begin, you need to have `Docker` installed. For installation instructions, refer to the https://docs.docker.com/get-docker/[^official Docker documentation]. You will build and run the application in Docker containers.
+Before you begin, you need to have `Docker` installed. For installation instructions, refer to the https://docs.docker.com/get-docker/[^official Docker documentation]. You will build and run the microservices in Docker containers.
 
 Make sure to start your Docker daemon before you proceed.
 
