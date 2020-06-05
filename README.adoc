@@ -126,11 +126,10 @@ inventory/Dockerfile
 include::finish/inventory/Dockerfile[]
 ----
 
-The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the built image. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a
-base image. 
+The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the built image. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a base image. 
 
-In this case, you're using the `open-liberty` image as your parent
-image, which comes with the Open Liberty runtime by default. You can find all different official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^]. To pull a different open-liberty image, like `kernel`, define the `FROM` instruction as `FROM open-liberty:kernel`. If you build an image for production, it is recommended to use the `openliberty/open-liberty:kernel-java8-openj9-ubi` image.
+In this case, you're using the recommended production image, 
+`openliberty/open-liberty:kernel-java8-openj9-ubi`, as your parent image. If you don't want any additional runtime features for your `kernel` image, define the `FROM` instruction as `FROM open-liberty:kernel`. To use the default image that comes with the Open Liberty runtime, define the `FROM` instruction as `FROM open-liberty`. You can find all the official images at https://hub.docker.com/_/open-liberty[open-liberty Docker Hub^].
 
 It is also recommended to label your Docker images with the [hotspot=label file=0]`LABEL` command, as the label information can help you manage your images. For more information, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
 
@@ -139,7 +138,7 @@ They copy local files into the specified destination within your Docker image.
 In this case, the `inventory` server configuration files that are located at `src/main/liberty/config` are copied to the [hotspot=config file=0]`/config/` destination directory.
 The `inventory` application WAR file [hotspot=inventory-war file=0]`inventory.war`, which was created from running `mvn package`, is copied to the [hotspot=config-apps file=0]`/config/apps` destination directory.
 
-The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions use the [hotspot=config-userID hotspot=war-userID file=0]`1001` user ID  and [hotspot=config-userID hotspot=war-userID file=0]`0` group because the `open-liberty` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
+The [hotspot=copy-config hotspot=copy-war file=0]`COPY` instructions use the [hotspot=config-userID hotspot=war-userID file=0]`1001` user ID  and [hotspot=config-userID hotspot=war-userID file=0]`0` group because the `openliberty/open-liberty:kernel-java8-openj9-ubi` image runs by default with the `USER 1001` (non-root) user for security purposes. Otherwise, the files and directories that are copied over are owned by the root user.
 
 Place the [hotspot=configure-sh file=0]`RUN configure.sh` command at the end to get a pre-warmed Docker image. It improves the startup time of running your Docker container.
 
@@ -161,6 +160,8 @@ include::finish/system/Dockerfile[]
 === Building your Docker image
 
 Now that your microservices are packaged and you have written your Dockerfiles, you will build your Docker images by using the `docker build` command. To build your image, you need to have Docker installed and your Docker daemon started.
+
+include::{common-includes}/ol-kernel-docker-pull.adoc[]
 
 Run the following commands to build container images for your application:
 

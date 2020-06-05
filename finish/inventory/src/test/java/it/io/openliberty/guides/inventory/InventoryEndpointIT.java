@@ -52,7 +52,6 @@ public class InventoryEndpointIT {
 
         invUrl = "http://localhost" + ":" + invServPort + "/inventory/systems/";
         sysUrl = "http://localhost" + ":" + sysServPort + "/system/properties/";
-        
 
         client = ClientBuilder.newBuilder().hostnameVerifier(new HostnameVerifier() {
             public boolean verify(String hostname, SSLSession session) {
@@ -156,7 +155,7 @@ public class InventoryEndpointIT {
 
         String obj = badResponse.readEntity(String.class);
 
-        boolean isError = obj.contains("ERROR");
+        boolean isError = obj.contains("error");
         assertTrue(isError,
                         "badhostname is not a valid host but it didn't raise an error");
 
