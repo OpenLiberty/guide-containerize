@@ -49,7 +49,7 @@ with each other in different Docker containers.
 
 == Additional prerequisites
 
-Before you begin, you need to have `Docker` installed. For installation instructions, refer to the https://docs.docker.com/get-docker/[official Docker documentation^]. You will build and run the microservices in Docker containers.
+Before you begin, you need to have Docker installed. For installation instructions, refer to the https://docs.docker.com/get-docker/[official Docker documentation^]. You will build and run the microservices in Docker containers.
 
 Make sure to start your Docker daemon before you proceed.
 
@@ -111,6 +111,8 @@ A `Dockerfile` is a collection of instructions for building a Docker image that 
 As each instruction is run in a `Dockerfile`, a new Docker layer is created. These layers, which are known as intermediate images, are created when a change is made to your Docker image.
 
 Every `Dockerfile` begins with a parent or base image over which various commands are run. For example, you can start your image from scratch and run commands that download and install a Java runtime, or you can start from an image that already contains a Java installation.
+
+Learn more about Docker on the https://www.docker.com/what-docker[official Docker page^].
 
 === Creating your Dockerfiles
 You will be creating two Docker images to run the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
