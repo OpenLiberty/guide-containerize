@@ -66,7 +66,7 @@ To try out the microservices by using Maven, run the following Maven goal to bui
 ```
 mvn -pl system liberty:run
 ```
-Open another shell session and run the following Maven goal to build the `inventory` microservice and run it inside Open Liberty:
+Open another command-line session and run the following Maven goal to build the `inventory` microservice and run it inside Open Liberty:
 [role='command']
 ```
 mvn -pl inventory liberty:run
@@ -79,7 +79,7 @@ The `system` service shows the system properties of the running JVM and can be f
 The system properties of your localhost can be added to the `inventory` at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
 
 After you are finished checking out the microservices, stop the Open Liberty servers by pressing `CTRL+C`
-in the shell sessions where you ran the servers. Alternatively, you can run the `liberty:stop` goal in another shell session:
+in the command-line sessions where you ran the servers. Alternatively, you can run the `liberty:stop` goal in another command-line session:
 [role='command']
 ```
 mvn -pl system liberty:stop
