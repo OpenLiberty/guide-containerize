@@ -10,7 +10,8 @@ script:
 - ../scripts/travisTest.sh
 - ../scripts/travisTestStart.sh
 after_script:
-- logsPath=$(find . -name "console.log" | sed "s/console.log//g");
+- docker images
+- logsPath=$(find . -name "console.log" | grep inventory | sed "s/console.log//g");
 - build=$(grep "Open Liberty" $logsPath/console.log | cut -d" " -f5 | cut -d")" -f1 );
 - release=$( echo "$build" | cut -d'/' -f1); 
 - number=$(echo "$build" | cut -d'/' -f2); 
