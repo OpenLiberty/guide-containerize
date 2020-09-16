@@ -11,6 +11,7 @@ script:
 - ../scripts/travisTestStart.sh
 after_script:
 - docker images
+- cd ../start
 - logsPath=$(find . -name "console.log" | grep inventory | sed "s/console.log//g");
 - build=$(grep "Open Liberty" $logsPath/console.log | cut -d" " -f5 | cut -d")" -f1 );
 - release=$( echo "$build" | cut -d'/' -f1); 
