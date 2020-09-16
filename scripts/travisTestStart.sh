@@ -8,6 +8,8 @@ set -euxo pipefail
 ##############################################################################
 
 cd ../start
+cp -f ../finish/inventory/pom.xml inventory/pom.xml
+cp -f ../finish/system/pom.xml system/pom.xml
 
 mvn -q clean package
 mvn -q -pl system liberty:create liberty:install-feature liberty:deploy
