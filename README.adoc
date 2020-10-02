@@ -64,6 +64,7 @@ include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitc
 == Packaging your microservices
 
 Navigate to the `start` directory to begin.
+
 You can find the starting Java project in the `start` directory. It is a multi-module Maven project that is made up of the `system` and `inventory` microservices. Each microservice lives in its own corresponding directory, `system` and `inventory`.
 
 To try out the microservices by using Maven, run the following Maven goal to build the `system` microservice and run it inside Open Liberty:
