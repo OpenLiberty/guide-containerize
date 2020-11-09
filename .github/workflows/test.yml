@@ -32,7 +32,7 @@ jobs:
       if: always()
       run: | 
           sudo docker images
-          logsPath=$(sudo find . -name "console.log");
+          logsPath=$(find . -name "console.log" | grep inventory | sed "s/console.log//g");
           sudo cat $logsPath | sudo grep Launching
           
     - name: Archive server logs if failed
