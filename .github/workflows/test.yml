@@ -11,8 +11,7 @@ on:
 jobs:
   java8build:
     runs-on: ubuntu-latest
-    env:
-      CHANGE_MINIKUBE_NONE_USER: true
+
     defaults:
       run:
         working-directory: finish
@@ -24,22 +23,21 @@ jobs:
       with:
         java-version: 1.8
     - run: unset _JAVA_OPTIONS
-    - name: Set up Minikube
-      run: |
-        curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-        chmod +x kubectl
-        sudo ln -s $(pwd)/kubectl /usr/local/bin/kubectl
-        wget https://github.com/kubernetes/minikube/releases/download/v0.28.2/minikube-linux-amd64 -q -O minikube
-        chmod +x minikube
-        CHANGE_MINIKUBE_NONE_USER=true
-    - name: Install Conn Track
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y conntrack
-    - name: Start Minikube
-      run: sudo minikube start --vm-driver=none --bootstrapper=kubeadm
+
     - name: Run tests
-      run: chmod +x ../scripts/travisTest.sh && sudo ../scripts/travisTest.sh
+      run: |
+          chmod +x ../scripts/travisTest.sh && sudo ../scripts/travisTest.sh && chmod +x ../scripts/travisTestStart.sh \
+          && ../scripts/travisTest.sh && ../scripts/travisTestStart.sh
     - name: Post tests
       if: always()
-      run: docker images
+      run: | 
+          sudo docker images
+          logsPath=$(sudo find . -name "console.log");
+          sudo cat $logsPath | sudo grep Launching
+          
+    - name: Archive server logs if failed
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: server-logs
+        path: finish/target/liberty/wlp/usr/servers/defaultServer/logs/
