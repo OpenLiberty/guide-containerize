@@ -26,8 +26,8 @@ jobs:
 
     - name: Run tests
       run: |
-          chmod +x ../scripts/travisTest.sh && sudo ../scripts/travisTest.sh && chmod +x ../scripts/travisTestStart.sh \
-          && ../scripts/travisTest.sh && ../scripts/travisTestStart.sh
+          chmod +x ../scripts/travisTest.sh && sudo ../scripts/travisTest.sh
+          chmod +x ../scripts/travisTestStart.sh && ../scripts/travisTestStart.sh
     - name: Post tests
       if: always()
       run: | 
