@@ -6,15 +6,11 @@
     <feature>cdi-2.0</feature>
   </featureManager>
 
-  <!-- tag::httpPort[] -->
   <variable name="default.http.port" defaultValue="9080" />
-  <!-- end::httpPort[] -->
   <variable name="default.https.port" defaultValue="9443" />
 
-  <!-- tag::httpEndpoint[] -->
   <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
       id="defaultHttpEndpoint" host="*" />
-  <!-- end::httpEndpoint[] -->
 
   <webApplication location="system.war" contextRoot="/">
   
