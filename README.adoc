@@ -286,7 +286,7 @@ include::finish/inventory/src/main/liberty/config/server.xml[]
 ----
 
 One of the advantages of using containers is that they are portable. From
-development to production, containers and can be moved and deployed efficiently
+development to production, containers can be moved and deployed efficiently
 across all of your DevOps environments. Configuration often changes across
 different environments, and by externalizing your server's configuration, you
 can simplify the development process.
@@ -319,7 +319,7 @@ When you last ran the `system` container, none of the above environment variable
 The configuration of the HTTP port for the `inventory` service is implemented the same way. 
 
 Run the following commands to start both containers with the `default.http.port` environment variables set:
-``` 
+
 [role='command']
 ```
 docker run -d --name system -e default.http.port=9090 -p 9090:9090 system:1.0-SNAPSHOT
