@@ -269,6 +269,86 @@ properties are automatically stored in the inventory. Go back to http://localhos
 you see a new entry for `[system-ip-address]`. 
 
 
+== Externally configuring your servers
+
+// File 0
+system/server.xml
+[source, xml, linenums, indent=0, role="code_column"]
+----
+include::finish/system/src/main/liberty/config/server.xml[]
+----
+
+// File 1
+inventory/server.xml
+[source, xml, linenums, indent=0, role="code_column"]
+----
+include::finish/inventory/src/main/liberty/config/server.xml[]
+----
+
+One of the advantages of using containers is that they are portable. From
+development to production, containers and can be moved and deployed efficiently
+across all of your DevOps environments. Configuration often changes across
+different environments, and by externalizing your server's configuration, you
+can simplify the development process.
+
+Imagine a scenario where you are are developing an Open Liberty application on
+port `9080` but when it comes time to deploy it to production, it must available
+on port `9090`. To manage this, you could keep two different versions of the
+`server.xml`; one for production and one for development. However, trying to
+maintain two different versions of a file could be prone to mistakes. A better
+solution would be to externalize the configuration of the port number and use the
+value of an environment variable stored in each environment. 
+
+In this example, you will use environment variables to externally configure the
+HTTP port number of the `system` and `inventory` services. 
+
+In the [hotspot file=0]`system/server.xml` file, the [hotspot=httpPort
+file=0]`default.http.port` variable is declared and it is used in the
+[hotspot=httpEndpoint file=0]`<httpEndpoint>` element to define the service's endpoint. The default value of the
+of the [hotspot=httpPort file=0]`default.http.port` variable is `9080`, however
+this value is only used if no other value is specified. To find a value for this
+variable, Open Liberty will look for the following environment variables, in
+order:
+
+* default.http.port
+* default_http_port
+* DEFAULT_HTTP_PORT
+
+When you last ran the `system` container, none of the above environment variables were defined and thus the default value of `9080` was used.
+
+The configuration of the HTTP port for the `inventory` service is implemented the same way. 
+
+Run the following commands to start both containers with the `default.http.port` environment variables set:
+``` 
+[role='command']
+```
+docker run -d --name system -e default.http.port=9090 -p 9090:9090 system:1.0-SNAPSHOT
+docker run -d --name inventory -e default.http.port=9091 -p 9091:9091 inventory:1.0-SNAPSHOT
+```
+
+The `-e` flag can be used to create and set the values of environment variables
+in a container. In this case you are setting default.http.port` environment
+variable to `9090` and `9091` for the `system` and `inventory` containers,
+respectively. 
+
+Now, when the services are starting up, Open Liberty will find the
+`default.http.port` environment variable in each container and use it to define
+the value of the [hotspot=httpPort file=0]`default.http.port` variable for the
+service in that container. 
+
+The services should now be available on the new port
+numbers you specified. The `system` service should be available at
+http://localhost:9090/system/properties[http://localhost:9090/system/properties^].
+You should be able to see the contents of the `inventory` service at
+http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^]
+and you can add the system properties of your local host at
+http://localhost:9091/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
+
+You can externialize the configuration of much more than just the port numbers.
+To learn more about Open Liberty server configuration, check out the
+https://openliberty.io/docs/20.0.0.11/reference/config/server-configuration-overview.html[Server
+Configuration Overview] docs. 
+
 == Testing the microservices
 
 You can test your microservices manually by hitting the endpoints or with automated tests that check your running Docker containers.
