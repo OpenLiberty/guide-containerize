@@ -285,7 +285,7 @@ different environments, and by externalizing your server's configuration, you
 can simplify the development process.
 
 Imagine a scenario where you are are developing an Open Liberty application on
-port `9081` but when it comes time to deploy it to production, it must available
+port `9081` but when it comes time to deploy it to production, it must be available
 on port `9091`. To manage this, you could keep two different versions of the
 `server.xml` file; one for production and one for development. However, trying to
 maintain two different versions of a file may lead to mistakes. A better
@@ -331,7 +331,7 @@ specified. You should be able to see the contents of the inventory at
 http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^]
 and you can add the system properties of your localhost at
 http://localhost:9091/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
-The `system` service URL remains the unchanged at
+The `system` service remains unchanged available at
 http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
 
 You can externialize the configuration of more than just the port numbers.
