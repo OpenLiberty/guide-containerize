@@ -331,7 +331,7 @@ The `inventory` service should now be available on the new port number you
 specified. You should be able to see the contents of the inventory at
 http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^]
 and you can add your local system properties at
-`http://localhost:9091/inventory/systems/pass:c[[system-ip-address]]`.
+`\http://localhost:9091/inventory/systems/pass:c[[system-ip-address]]`.
 The `system` service remains unchanged available at
 http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
 
