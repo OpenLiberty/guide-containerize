@@ -278,7 +278,7 @@ inventory/server.xml
 include::finish/inventory/src/main/liberty/config/server.xml[]
 ----
 
-As mentioned at the beginning of this guide, one of the advantages of using
+As mentioned in the beginning of this guide, one of the advantages of using
 containers is that they are portable and can be moved and deployed efficiently
 across all of your DevOps environments. Configuration often changes across
 different environments, and by externalizing your server's configuration, you
@@ -332,7 +332,7 @@ specified. You should be able to see the contents of the inventory at
 http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^]
 and you can add your local system properties at
 `\http://localhost:9091/inventory/systems/pass:c[[system-ip-address]]`.
-The `system` service remains unchanged and available at
+The `system` service remains unchanged and is available at
 http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
 
 You can externalize the configuration of more than just the port numbers.
