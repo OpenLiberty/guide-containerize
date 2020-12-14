@@ -278,8 +278,8 @@ inventory/server.xml
 include::finish/inventory/src/main/liberty/config/server.xml[]
 ----
 
-One of the advantages of using containers is that they are portable. From
-development to production, containers can be moved and deployed efficiently
+As mentioned at the beginning of this guide, one of the advantages of using
+containers is that they are portable and can be moved and deployed efficiently
 across all of your DevOps environments. Configuration often changes across
 different environments, and by externalizing your server's configuration, you
 can simplify the development process.
@@ -297,11 +297,11 @@ HTTP port number of the `inventory` service.
 
 In the [hotspot file=0]`inventory/server.xml` file, the [hotspot=httpPort
 file=0]`default.http.port` variable is declared and is used in the
-[hotspot=httpEndpoint file=0]`<httpEndpoint>` element to define the service's endpoint. The default value of the
-of the [hotspot=httpPort file=0]`default.http.port` variable is `9081`, however
-this value is only used if no other value is specified. To find a value for this
-variable, Open Liberty will look for the following environment variables, in
-order:
+[hotspot=httpEndpoint file=0]`<httpEndpoint>` element to define the service's
+endpoint. The default value of the [hotspot=httpPort file=0]`default.http.port`
+variable is `9081`, however this value is only used if no other value is
+specified. To find a value for this variable, Open Liberty will look for the
+following environment variables, in order:
 
 * `default.http.port`
 * `default_http_port`
@@ -332,10 +332,10 @@ specified. You should be able to see the contents of the inventory at
 http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^]
 and you can add your local system properties at
 `\http://localhost:9091/inventory/systems/pass:c[[system-ip-address]]`.
-The `system` service remains unchanged available at
+The `system` service remains unchanged and available at
 http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
 
-You can externialize the configuration of more than just the port numbers.
+You can externalize the configuration of more than just the port numbers.
 To learn more about Open Liberty server configuration, check out the
 https://openliberty.io/docs/20.0.0.11/reference/config/server-configuration-overview.html[Server
 Configuration Overview] docs. 
