@@ -297,7 +297,7 @@ HTTP port number of the `inventory` service.
 
 In the [hotspot file=0]`inventory/server.xml` file, the [hotspot=httpPort
 file=0]`default.http.port` variable is declared and is used in the
-[hotspot=httpEndpoint file=0]`<httpEndpoint>` element to define the service's
+[hotspot=httpEndpoint file=0]`httpEndpoint` element to define the service's
 endpoint. The default value of the [hotspot=httpPort file=0]`default.http.port`
 variable is `9081`, however this value is only used if no other value is
 specified. To find a value for this variable, Open Liberty will look for the
