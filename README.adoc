@@ -269,7 +269,7 @@ properties are automatically stored in the inventory. Go back to http://localhos
 you see a new entry for `[system-ip-address]`. 
 
 
-== Adding external server configuration
+== Externalizing server configuration
 
 // File 0
 inventory/server.xml
