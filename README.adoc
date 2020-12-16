@@ -329,10 +329,11 @@ endpoint.
 
 The `inventory` service will now be available on the new port number you
 specified. You should be able to see the contents of the inventory at
-http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^]
-and you can add your local system properties at
-`\http://localhost:9091/inventory/systems/pass:c[[system-ip-address]]`.
-The `system` service remains unchanged and is available at
+http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^].
+You can add your local system properties at
+`\http://localhost:9091/inventory/systems/pass:c[[system-ip-address]]` by
+replacing `[system-ip-address]` with the IP address you obtained in the previous
+section. The `system` service remains unchanged and is available at
 http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
 
 You can externalize the configuration of more than just the port numbers.
@@ -378,7 +379,7 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 
 === Running the tests
 
-Run the Maven `package` goal to compile the test classes. Run the Maven `failsafe` goal to test the services that are running in the Docker containers by replacing the `[system-ip-address]` with the IP address that was determined in the previous section.
+Run the Maven `package` goal to compile the test classes. Run the Maven `failsafe` goal to test the services that are running in the Docker containers by replacing the `[system-ip-address]` with the IP address that you determined previously.
 
 [role='command']
 ```
