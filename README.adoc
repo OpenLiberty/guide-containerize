@@ -327,8 +327,8 @@ The `-e` flag can be used to create and set the values of environment variables
 in a Docker container. In this case, you are setting the `default.http.port` environment
 variable to `9091` for the `inventory` container.
 
-Now, when the service is starting up, Open Liberty will find the
-`default.http.port` environment variable and use it to set the value of the
+Now, when the service is starting up, Open Liberty finds the
+`default.http.port` environment variable and uses it to set the value of the
 [hotspot=httpPort file=0]`default.http.port` variable to be used in the HTTP
 endpoint.
 
