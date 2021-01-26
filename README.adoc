@@ -58,7 +58,7 @@ Make sure to start your Docker daemon before you proceed.
 ///////////////////////////
 
 [role='command']
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
+include::{common-includes}/gitclone.adoc[]
 
 
 == Packaging your microservices
@@ -430,4 +430,4 @@ docker rm inventory system
 
 You have just built Docker images and run two microservices on Open Liberty in containers. 
 
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/attribution.adoc[]
+include::{common-includes}/attribution.adoc[]
