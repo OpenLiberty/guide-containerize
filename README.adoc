@@ -251,6 +251,7 @@ your images, and start the containers again.
 To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
 An empty list is expected because no system properties are stored in the inventory yet. 
 
+ifndef::cloud-hosted[]
 Next, retrieve the `system` container's IP address by using the `system` container's name that is defined when it ran the Docker containers. 
 Run the following command to retrieve the `system` IP address:
 
@@ -272,7 +273,17 @@ Point your browser to `\http://localhost:9081/inventory/systems/pass:c[[system-i
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
 you see a new entry for `[system-ip-address]`. 
+endif::[]
 
+ifndef::cloud-hosted[]
+Next, run the following curl commands to retrieve the `system` container's IP address by using the `system` container's name that is defined when it ran the Docker containers and visit the `\ http://localhost:9081/inventory/systems/[system-ip-address]` URL.
+```
+system-ip-address=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
+curl http://localhost:9081/inventory/systems/{$system-ip-address}
+```
+{: codeblock}
+
+endif::[]
 
 == Externalizing server configuration
 
