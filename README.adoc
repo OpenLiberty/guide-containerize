@@ -389,7 +389,7 @@ http://localhost:9080/system/properties[http://localhost:9080/system/properties^
 endif::[]
 
 // Following context for the cloud-hosted guide:
-ifndef::cloud-hosted[]
+ifdef::cloud-hosted[]
 The `inventory` service will now be available on the new port number you
 specified. You can see the contents of the inventory at
 **http://localhost:9091/inventory/systems**. Run the following curl command:
