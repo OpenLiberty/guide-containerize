@@ -278,7 +278,7 @@ endif::[]
 
 // Following context for the cloud-hosted guide:
 ifdef::cloud-hosted[]
-Run the following curl commands that visit the **\http://localhost:9081/inventory/systems/[system-ip-address]** by replacing `[system-ip-address]` with the IP address you obtained earlier.
+Run the following curl commands that visit the **\http://localhost:9081/inventory/systems/[system-ip-address]** by replacing **[system-ip-address]** with the IP address you obtained earlier.
 ```
 SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
 curl http://localhost:9081/inventory/systems/{$SYSTEM_IP}
