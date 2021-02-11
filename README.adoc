@@ -82,7 +82,7 @@ mvn -pl inventory liberty:run
 ifndef::cloud-hosted[]
 To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
 
-The `system` service shows the system properties of the running JVM and can be found at http://localhost:9080/system/properties[^].
+The `system` service shows the system properties of the running JVM and can be found at  http://localhost:9080/system/properties[^].
 
 The system properties of your localhost can be added to the `inventory` at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
 endif::[]
