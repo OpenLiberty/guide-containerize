@@ -84,7 +84,7 @@ To access the `inventory` service, which displays the current contents of the in
 
 The `system` service shows the system properties of the running JVM and can be found at  http://localhost:9080/system/properties[^].
 
-The system properties of your localhost can be added to the `inventory` at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
+The system properties of your localhost can be added to the `inventory` service at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
 endif::[]
 
 // Following context for the cloud-hosted guide:
@@ -101,7 +101,7 @@ curl http://localhost:9080/system/properties
 ```
 {: codeblock}
 
-The system properties of your localhost can be added to the **inventory** at **http://localhost:9081/inventory/systems/localhost**. Run the following curl command:
+The system properties of your localhost can be added to the **inventory** service at **http://localhost:9081/inventory/systems/localhost**. Run the following curl command:
 ```
 curl http://localhost:9081/inventory/systems/localhost
 ```
@@ -294,15 +294,15 @@ In this case, the IP address for the `system` service is `172.17.0.2`. Take note
 
 // Following context for the static guide:
 ifndef::cloud-hosted[]
-Point your browser to `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` by replacing `[system-ip-address]` with the IP address you obtained earlier.
-You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
-properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
+Go to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing `[system-ip-address]` with the IP address that you obtained earlier.
+You see a result in JSON format with the system properties of your local JVM. When you go to this URL, these system
+properties are automatically stored in the inventory. Go back to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL and
 you see a new entry for `[system-ip-address]`. 
 endif::[]
 
 // Following context for the cloud-hosted guide:
 ifdef::cloud-hosted[]
-Run the following commands that visit to **http://localhost:9081/inventory/systems/[system-ip-address]** by replacing **[system-ip-address]** with the IP address you obtained earlier.
+Run the following commands to go to the **http://localhost:9081/inventory/systems/[system-ip-address]** by replacing **[system-ip-address]** URL with the IP address that you obtained earlier:
 ```
 SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
 curl http://localhost:9081/inventory/systems/{$SYSTEM_IP}
@@ -378,29 +378,29 @@ endpoint.
 
 // Following context for the static guide:
 ifndef::cloud-hosted[]
-The `inventory` service will now be available on the new port number you
-specified. You can see the contents of the inventory at
-http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^].
+The `inventory` service is now available on the new port number that you
+specified. You can see the contents of the inventory at the 
+http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^] URL.
 You can add your local system properties at
 `\http://localhost:9091/inventory/systems/pass:c[[system-ip-address]]` by
-replacing `[system-ip-address]` with the IP address you obtained in the previous
-section. The `system` service remains unchanged and is available at
-http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
+replacing `[system-ip-address]` with the IP address that you obtained in the previous
+section. The `system` service remains unchanged and is available at the
+http://localhost:9080/system/properties[http://localhost:9080/system/properties^] URL.
 endif::[]
 
 // Following context for the cloud-hosted guide:
 ifdef::cloud-hosted[]
-The `inventory` service will now be available on the new port number you
-specified. You can see the contents of the inventory at
-**http://localhost:9091/inventory/systems**. Run the following curl command:
+The `inventory` service is now available on the new port number that you
+specified. You can see the contents of the inventory at the
+**http://localhost:9091/inventory/systems** URL. Run the following curl command:
 ```
 curl http://localhost:9091/inventory/systems
 ```
 {: codeblock}
 
-You can add your local system properties at
-**http://localhost:9091/inventory/systems/[system-ip-address]** by
-replacing **[system-ip-address]** with the IP address you obtained in the previous
+You can add your local system properties at the
+**http://localhost:9091/inventory/systems/[system-ip-address]** URL by
+replacing **[system-ip-address]** with the IP address that you obtained in the previous
 section. Run the following commands:
 ```
 SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
@@ -408,8 +408,8 @@ curl http://localhost:9081/inventory/systems/{$SYSTEM_IP}
 ```
 {: codeblock}
 
-The **system** service remains unchanged and is available at
-**http://localhost:9080/system/properties**. Run the following curl command:
+The **system** service remains unchanged and is available at the
+**http://localhost:9080/system/properties** URL. Run the following curl command:
 ```
 curl http://localhost:9080/system/properties
 ```
