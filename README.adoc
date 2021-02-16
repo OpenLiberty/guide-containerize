@@ -272,8 +272,21 @@ container logs for any potential problems. Run the `docker stats system` and `do
 find the cause of the issues, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands. Rebuild
 your images, and start the containers again.
 
-To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
+// Following context for the static guide:
+ifndef::cloud-hosted[]
+To access the application, go to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
 An empty list is expected because no system properties are stored in the inventory yet. 
+endif::[]
+
+// Following context for the cloud-hosted guide:
+ifdef::cloud-hosted[]
+To access the application, run the following curl command. 
+An empty list is expected because no system properties are stored in the inventory yet.
+```
+curl http://localhost:9081/inventory/systems
+```
+{: codeblock}
+endif::[]
 
 Next, retrieve the `system` container's IP address by using the `system` container's name that is defined when it ran the Docker containers. 
 Run the following command to retrieve the `system` IP address:
