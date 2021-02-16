@@ -311,7 +311,7 @@ curl http://localhost:9081/inventory/systems/{$SYSTEM_IP}
 
 You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
 properties are automatically stored in the inventory. Run the following curl command and 
-you see a new entry for **[system-ip-address]**. 
+you see a new entry for **[system-ip-address]**:
 ```
 curl http://localhost:9081/inventory/systems
 ```
