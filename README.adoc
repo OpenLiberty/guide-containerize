@@ -281,7 +281,7 @@ endif::[]
 // Following context for the cloud-hosted guide:
 ifdef::cloud-hosted[]
 To access the application, run the following curl command. 
-An empty list is expected because no system properties are stored in the inventory yet.
+An empty list is expected because no system properties are stored in the inventory yet:
 ```
 curl http://localhost:9081/inventory/systems
 ```
