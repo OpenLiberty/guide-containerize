@@ -78,11 +78,35 @@ Open another command-line session and run the following Maven goal to build the 
 mvn -pl inventory liberty:run
 ```
 
+// Following context for the static guide:
+ifndef::cloud-hosted[]
 To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
 
 The `system` service shows the system properties of the running JVM and can be found at  http://localhost:9080/system/properties[^].
 
-The system properties of your localhost can be added to the `inventory` at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
+The system properties of your localhost can be added to the `inventory` service at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
+endif::[]
+
+// Following context for the cloud-hosted guide:
+ifdef::cloud-hosted[]
+To access the **inventory** service, which displays the current contents of the inventory, run the following curl command: 
+```
+curl http://localhost:9081/inventory/systems
+```
+{: codeblock}
+
+The **system** service shows the system properties of the running JVM and can be found by running the following curl command:
+```
+curl http://localhost:9080/system/properties
+```
+{: codeblock}
+
+The system properties of your localhost can be added to the **inventory** service at **http://localhost:9081/inventory/systems/localhost**. Run the following curl command:
+```
+curl http://localhost:9081/inventory/systems/localhost
+```
+{: codeblock}
+endif::[]
 
 After you are finished checking out the microservices, stop the Open Liberty servers by pressing `CTRL+C`
 in the command-line sessions where you ran the servers. Alternatively, you can run the `liberty:stop` goal in another command-line session:
@@ -248,8 +272,21 @@ container logs for any potential problems. Run the `docker stats system` and `do
 find the cause of the issues, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands. Rebuild
 your images, and start the containers again.
 
-To access the application, point your browser to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
+// Following context for the static guide:
+ifndef::cloud-hosted[]
+To access the application, go to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
 An empty list is expected because no system properties are stored in the inventory yet. 
+endif::[]
+
+// Following context for the cloud-hosted guide:
+ifdef::cloud-hosted[]
+To access the application, run the following curl command. 
+An empty list is expected because no system properties are stored in the inventory yet:
+```
+curl http://localhost:9081/inventory/systems
+```
+{: codeblock}
+endif::[]
 
 Next, retrieve the `system` container's IP address by using the `system` container's name that is defined when it ran the Docker containers. 
 Run the following command to retrieve the `system` IP address:
@@ -268,11 +305,31 @@ You find the `system` container's IP address:
 
 In this case, the IP address for the `system` service is `172.17.0.2`. Take note of this IP address to add the system properties to the `inventory` service. 
 
-Point your browser to `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` by replacing `[system-ip-address]` with the IP address you obtained earlier.
-You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
-properties are automatically stored in the inventory. Go back to http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] and
+// Following context for the static guide:
+ifndef::cloud-hosted[]
+Go to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing `[system-ip-address]` with the IP address that you obtained earlier.
+You see a result in JSON format with the system properties of your local JVM. When you go to this URL, these system
+properties are automatically stored in the inventory. Go back to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL and
 you see a new entry for `[system-ip-address]`. 
+endif::[]
 
+// Following context for the cloud-hosted guide:
+ifdef::cloud-hosted[]
+Run the following commands to go to the **http://localhost:9081/inventory/systems/[system-ip-address]** by replacing **[system-ip-address]** URL with the IP address that you obtained earlier:
+```
+SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
+curl http://localhost:9081/inventory/systems/{$SYSTEM_IP}
+```
+{: codeblock}
+
+You see a result in JSON format with the system properties of your local JVM. When you visit this URL, these system
+properties are automatically stored in the inventory. Run the following curl command and 
+you see a new entry for **[system-ip-address]**:
+```
+curl http://localhost:9081/inventory/systems
+```
+{: codeblock}
+endif::[]
 
 == Externalizing server configuration
 
@@ -332,14 +389,45 @@ Now, when the service is starting up, Open Liberty finds the
 [hotspot=httpPort file=0]`default.http.port` variable to be used in the HTTP
 endpoint.
 
-The `inventory` service will now be available on the new port number you
-specified. You can see the contents of the inventory at
-http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^].
+// Following context for the static guide:
+ifndef::cloud-hosted[]
+The `inventory` service is now available on the new port number that you
+specified. You can see the contents of the inventory at the 
+http://localhost:9091/inventory/systems[http://localhost:9091/inventory/systems^] URL.
 You can add your local system properties at
 `\http://localhost:9091/inventory/systems/pass:c[[system-ip-address]]` by
-replacing `[system-ip-address]` with the IP address you obtained in the previous
-section. The `system` service remains unchanged and is available at
-http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
+replacing `[system-ip-address]` with the IP address that you obtained in the previous
+section. The `system` service remains unchanged and is available at the
+http://localhost:9080/system/properties[http://localhost:9080/system/properties^] URL.
+endif::[]
+
+// Following context for the cloud-hosted guide:
+ifdef::cloud-hosted[]
+The `inventory` service is now available on the new port number that you
+specified. You can see the contents of the inventory at the
+**http://localhost:9091/inventory/systems** URL. Run the following curl command:
+```
+curl http://localhost:9091/inventory/systems
+```
+{: codeblock}
+
+You can add your local system properties at the
+**http://localhost:9091/inventory/systems/[system-ip-address]** URL by
+replacing **[system-ip-address]** with the IP address that you obtained in the previous
+section. Run the following commands:
+```
+SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
+curl http://localhost:9081/inventory/systems/{$SYSTEM_IP}
+```
+{: codeblock}
+
+The **system** service remains unchanged and is available at the
+**http://localhost:9080/system/properties** URL. Run the following curl command:
+```
+curl http://localhost:9080/system/properties
+```
+{: codeblock}
+endif::[]
 
 You can externalize the configuration of more than just the port numbers.
 To learn more about Open Liberty server configuration, check out the
