@@ -160,9 +160,9 @@ In this case, you're using the recommended production image,
 `openliberty/open-liberty:kernel-java8-openj9-ubi`, as your parent image. If you
 don't want any additional runtime features for your `kernel` image, define the
 `FROM` instruction as `FROM open-liberty:kernel`. To use the default image that
-comes with the Open Liberty runtime, define the `FROM` instruction as `FROM
-open-liberty`. You can find all the https://hub.docker.com/_/open-liberty[official images^] and
-https://hub.docker.com/r/openliberty/open-liberty/[ubi images] on the open-liberty Docker Hub.
+comes with the Open Liberty runtime, define the `FROM` instruction as `FROM open-liberty`. 
+You can find all the https://hub.docker.com/_/open-liberty[official images^] and
+https://hub.docker.com/r/openliberty/open-liberty/[ubi images^] on the open-liberty Docker Hub.
 
 It is also recommended to label your Docker images with the [hotspot=label file=0]`LABEL` command, as the label information can help you manage your images. For more information, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
 
@@ -431,8 +431,7 @@ endif::[]
 
 You can externalize the configuration of more than just the port numbers.
 To learn more about Open Liberty server configuration, check out the
-https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html[Server
-Configuration Overview] docs. 
+https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html[Server Configuration Overview^] docs. 
 
 == Testing the microservices
 
