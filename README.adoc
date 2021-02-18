@@ -431,8 +431,7 @@ endif::[]
 
 You can externalize the configuration of more than just the port numbers.
 To learn more about Open Liberty server configuration, check out the
-https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html[Server
-Configuration Overview] docs. 
+https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html[Server Configuration Overview^] docs. 
 
 == Testing the microservices
 
