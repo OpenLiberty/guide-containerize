@@ -63,7 +63,19 @@ include::{common-includes}/gitclone.adoc[]
 
 == Packaging your microservices
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 Navigate to the `start` directory to begin.
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+To begin, run the following command to navigate to the **start** directory:
+```
+cd start
+```
+{: codeblock}
+endif::[]
 
 You can find the starting Java project in the `start` directory. It is a multi-module Maven project that is made up of the `system` and `inventory` microservices. Each microservice lives in its own corresponding directory, `system` and `inventory`.
 
