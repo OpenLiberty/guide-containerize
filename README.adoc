@@ -84,14 +84,15 @@ To try out the microservices by using Maven, run the following Maven goal to bui
 ```
 mvn -pl system liberty:run
 ```
+
+// static guide instructions:
+ifndef::cloud-hosted[]
 Open another command-line session and run the following Maven goal to build the `inventory` microservice and run it inside Open Liberty:
 [role='command']
 ```
 mvn -pl inventory liberty:run
 ```
 
-// static guide instructions:
-ifndef::cloud-hosted[]
 To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
 
 The `system` service shows the system properties of the running JVM and can be found at  http://localhost:9080/system/properties[^].
@@ -101,6 +102,14 @@ endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
+Select **Terminal** > **New Terminal** from the menu of the IDE to open another command-line session and 
+run the following Maven goal to build the **inventory** microservice and run it inside Open Liberty:
+[role='command']
+```
+mvn -pl inventory liberty:run
+```
+
+Select **Terminal** > **New Terminal** from the menu of the IDE to open a new command-line session.
 To access the **inventory** service, which displays the current contents of the inventory, run the following curl command: 
 ```
 curl http://localhost:9081/inventory/systems
