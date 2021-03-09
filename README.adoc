@@ -83,14 +83,15 @@ To try out the microservices by using Maven, run the following Maven goal to bui
 ```
 mvn -pl system liberty:run
 ```
+
+// static guide instructions:
+ifndef::cloud-hosted[]
 Open another command-line session and run the following Maven goal to build the `inventory` microservice and run it inside Open Liberty:
 [role='command']
 ```
 mvn -pl inventory liberty:run
 ```
 
-// Following context for the static guide:
-ifndef::cloud-hosted[]
 To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
 
 The `system` service shows the system properties of the running JVM and can be found at  http://localhost:9080/system/properties[^].
@@ -98,8 +99,17 @@ The `system` service shows the system properties of the running JVM and can be f
 The system properties of your localhost can be added to the `inventory` service at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
 endif::[]
 
-// Following context for the cloud-hosted guide:
+// cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
+Select **Terminal** > **New Terminal** from the menu of the IDE to open another command-line session and 
+run the following Maven goal to build the **inventory** microservice and run it inside Open Liberty:
+```
+cd /home/project/guide-containerize/start
+mvn -pl inventory liberty:run
+```
+{: codeblock}
+
+Select **Terminal** > **New Terminal** from the menu of the IDE to open a new command-line session.
 To access the **inventory** service, which displays the current contents of the inventory, run the following curl command: 
 ```
 curl http://localhost:9081/inventory/systems
@@ -283,13 +293,13 @@ container logs for any potential problems. Run the `docker stats system` and `do
 find the cause of the issues, remove the faulty containers with the `docker rm system` and `docker rm inventory` commands. Rebuild
 your images, and start the containers again.
 
-// Following context for the static guide:
+// static guide instructions:
 ifndef::cloud-hosted[]
 To access the application, go to the http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^] URL. 
 An empty list is expected because no system properties are stored in the inventory yet. 
 endif::[]
 
-// Following context for the cloud-hosted guide:
+// cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 To access the application, run the following curl command. 
 An empty list is expected because no system properties are stored in the inventory yet:
@@ -316,7 +326,7 @@ You find the `system` container's IP address:
 
 In this case, the IP address for the `system` service is `172.17.0.2`. Take note of this IP address to add the system properties to the `inventory` service. 
 
-// Following context for the static guide:
+// static guide instructions:
 ifndef::cloud-hosted[]
 Go to the `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]` URL by replacing `[system-ip-address]` with the IP address that you obtained earlier.
 You see a result in JSON format with the system properties of your local JVM. When you go to this URL, these system
@@ -324,7 +334,7 @@ properties are automatically stored in the inventory. Go back to the http://loca
 you see a new entry for `[system-ip-address]`. 
 endif::[]
 
-// Following context for the cloud-hosted guide:
+// cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 Run the following commands to go to the **http://localhost:9081/inventory/systems/[system-ip-address]** by replacing **[system-ip-address]** URL with the IP address that you obtained earlier:
 ```
@@ -400,7 +410,7 @@ Now, when the service is starting up, Open Liberty finds the
 [hotspot=httpPort file=0]`default.http.port` variable to be used in the HTTP
 endpoint.
 
-// Following context for the static guide:
+// static guide instructions:
 ifndef::cloud-hosted[]
 The `inventory` service is now available on the new port number that you
 specified. You can see the contents of the inventory at the 
@@ -412,9 +422,9 @@ section. The `system` service remains unchanged and is available at the
 http://localhost:9080/system/properties[http://localhost:9080/system/properties^] URL.
 endif::[]
 
-// Following context for the cloud-hosted guide:
+// cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-The `inventory` service is now available on the new port number that you
+The **inventory** service is now available on the new port number that you
 specified. You can see the contents of the inventory at the
 **http://localhost:9091/inventory/systems** URL. Run the following curl command:
 ```
