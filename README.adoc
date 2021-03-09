@@ -22,8 +22,7 @@
 = Containerizing microservices
 
 [.hidden]
-NOTE: This repository contains the guide documentation source. To view the guide in published form,
-view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the  https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
 Learn how to containerize and run your microservices with Open Liberty using Docker.
 
