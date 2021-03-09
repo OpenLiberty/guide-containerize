@@ -22,8 +22,7 @@
 = Containerizing microservices
 
 [.hidden]
-NOTE: This repository contains the guide documentation source. To view the guide in published form,
-view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the  https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
 Learn how to containerize and run your microservices with Open Liberty using Docker.
 
@@ -379,7 +378,8 @@ value of an environment variable that is stored in each environment.
 In this example, you will use an environment variable to externally configure the
 HTTP port number of the `inventory` service. 
 
-In the [hotspot file=0]`inventory/server.xml` file, the [hotspot=httpPort file=0]`default.http.port` variable is declared and is used in the
+In the [hotspot file=0]`inventory/server.xml` file, 
+the [hotspot=httpPort file=0]`default.http.port` variable is declared and is used in the
 [hotspot=httpEndpoint file=0]`httpEndpoint` element to define the service
 endpoint. The default value of the [hotspot=httpPort file=0]`default.http.port`
 variable is `9081`. However, this value is only used if no other value is
