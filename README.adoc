@@ -526,6 +526,7 @@ mvn failsafe:integration-test -Dsystem.ip="$SYSTEM_IP" -Dinventory.http.port=909
 ```
 {: codeblock}
 endif::[]
+
 If the tests pass, you see a similar output as the following:
 
 [role="no_copy"]
