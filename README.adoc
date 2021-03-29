@@ -128,6 +128,7 @@ curl http://localhost:9081/inventory/systems/localhost
 ```
 {: codeblock}
 endif::[]
+
 // static guide instructions:
 ifndef::cloud-hosted[]
 After you are finished checking out the microservices, stop the Open Liberty servers by pressing `CTRL+C`
