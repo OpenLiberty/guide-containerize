@@ -520,7 +520,7 @@ ifdef::cloud-hosted[]
 Run the Maven `package` goal to compile the test classes. Run the Maven `failsafe` goal to test the services that are running in the Docker containers by setting `Dsystem.ip` to the IP address that you determined previously.
 
 ```
-SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system
+SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
 mvn package
 mvn failsafe:integration-test -Dsystem.ip="$(SYSTEM_IP)" -Dinventory.http.port=9091 -Dsystem.http.port=9080
 ```
