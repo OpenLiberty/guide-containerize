@@ -522,7 +522,7 @@ Run the Maven `package` goal to compile the test classes. Run the Maven `failsaf
 ```
 SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
 mvn package
-mvn failsafe:integration-test -Dsystem.ip="$(SYSTEM_IP)" -Dinventory.http.port=9091 -Dsystem.http.port=9080
+mvn failsafe:integration-test -Dsystem.ip="$SYSTEM_IP" -Dinventory.http.port=9091 -Dsystem.http.port=9080
 ```
 {: codeblock}
 endif::[]
