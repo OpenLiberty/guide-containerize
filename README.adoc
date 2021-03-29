@@ -438,7 +438,7 @@ replacing **[system-ip-address]** with the IP address that you obtained in the p
 section. Run the following commands:
 ```
 SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
-curl http://localhost:9081/inventory/systems/{$SYSTEM_IP}
+curl http://localhost:9091/inventory/systems/{$SYSTEM_IP}
 ```
 {: codeblock}
 
