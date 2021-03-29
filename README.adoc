@@ -151,6 +151,7 @@ mvn -pl inventory liberty:stop
 ```
 {: codeblock}
 endif::[]
+
 Run the Maven `package` goal to build the application `.war` files from the `start` directory so that the `.war` files reside in the `system/target` and `inventory/target` directories.
 [role='command']
 ```
