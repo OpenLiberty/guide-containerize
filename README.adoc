@@ -129,6 +129,8 @@ curl http://localhost:9081/inventory/systems/localhost
 {: codeblock}
 endif::[]
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 After you are finished checking out the microservices, stop the Open Liberty servers by pressing `CTRL+C`
 in the command-line sessions where you ran the servers. Alternatively, you can run the `liberty:stop` goal in another command-line session:
 [role='command']
@@ -136,6 +138,20 @@ in the command-line sessions where you ran the servers. Alternatively, you can r
 mvn -pl system liberty:stop
 mvn -pl inventory liberty:stop
 ```
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+After you are finished checking out the microservices, stop the Open Liberty servers by pressing **CTRL+C**
+in the command-line sessions where you ran the servers. Alternatively, you can run the **liberty:stop** goal in another command-line session from the 
+**start** directory:
+```
+cd /home/project/guide-containerize/start
+mvn -pl system liberty:stop
+mvn -pl inventory liberty:stop
+```
+{: codeblock}
+endif::[]
 
 Run the Maven `package` goal to build the application `.war` files from the `start` directory so that the `.war` files reside in the `system/target` and `inventory/target` directories.
 [role='command']
@@ -491,7 +507,8 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 * The [hotspot=systemServiceIp file=1]`systemServiceIp` variable has the same value as what you retrieved in the previous section when manually adding the `system` service into the `inventory` service. This value of the IP address is passed in when you run the tests.
 
 === Running the tests
-
+// static guide instructions
+ifndef::cloud-hosted[]
 Run the Maven `package` goal to compile the test classes. Run the Maven `failsafe` goal to test the services that are running in the Docker containers by replacing the `[system-ip-address]` with the IP address that you determined previously.
 
 [role='command']
@@ -499,6 +516,19 @@ Run the Maven `package` goal to compile the test classes. Run the Maven `failsaf
 mvn package
 mvn failsafe:integration-test -Dsystem.ip=[system-ip-address] -Dinventory.http.port=9091 -Dsystem.http.port=9080
 ```
+endif::[]
+
+// cloud-hosted guide instructions
+ifdef::cloud-hosted[]
+Run the Maven **package** goal to compile the test classes. Run the Maven **failsafe** goal to test the services that are running in the Docker containers by setting **-Dsystem.ip** to the IP address that you determined previously.
+
+```
+SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
+mvn package
+mvn failsafe:integration-test -Dsystem.ip="$SYSTEM_IP" -Dinventory.http.port=9091 -Dsystem.http.port=9080
+```
+{: codeblock}
+endif::[]
 
 If the tests pass, you see a similar output as the following:
 
