@@ -1,5 +1,5 @@
 # tag::from[]
-FROM openliberty/open-liberty:kernel-java8-openj9-ubi
+FROM openliberty/open-liberty:full-java11-openj9-ubi
 # end::from[]
 
 ARG VERSION=1.0
