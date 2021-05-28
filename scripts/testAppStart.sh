@@ -3,9 +3,18 @@ set -euxo pipefail
 
 cd ../start
 
-mvn -q clean package
-mvn -q -pl system liberty:create liberty:install-feature liberty:deploy
-mvn -q -pl inventory liberty:create liberty:install-feature liberty:deploy
+mvn -Dhttp.keepAlive=false \
+    -Dmaven.wagon.http.pool=false \
+    -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
+    -q clean package
+mvn -Dhttp.keepAlive=false \
+    -Dmaven.wagon.http.pool=false \
+    -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
+    -q -pl system liberty:create liberty:install-feature liberty:deploy
+mvn -Dhttp.keepAlive=false \
+    -Dmaven.wagon.http.pool=false \
+    -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
+    -q -pl inventory liberty:create liberty:install-feature liberty:deploy
 
 mvn -pl system liberty:start
 mvn -pl inventory liberty:start
