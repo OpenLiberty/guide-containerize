@@ -92,6 +92,13 @@ Open another command-line session and run the following Maven goal to build the 
 mvn -pl inventory liberty:run
 ```
 
+After you see the following message in both command-line sessions, both of your services are ready:
+
+[source, role="no_copy"]
+----
+The defaultServer server is ready to run a smarter planet.
+----
+
 To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
 
 The `system` service shows the system properties of the running JVM and can be found at  http://localhost:9080/system/properties[^].
@@ -115,6 +122,12 @@ To access the **inventory** service, which displays the current contents of the 
 curl http://localhost:9081/inventory/systems
 ```
 {: codeblock}
+
+After you see the following message in both command-line sessions, both of your services are ready:
+
+```
+The defaultServer server is ready to run a smarter planet.
+```
 
 The **system** service shows the system properties of the running JVM and can be found by running the following curl command:
 ```
