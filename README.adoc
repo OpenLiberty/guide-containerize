@@ -463,8 +463,7 @@ curl http://localhost:9091/inventory/systems
 
 You can add your local system properties at the
 **http://localhost:9091/inventory/systems/[system-ip-address]** URL by
-replacing **[system-ip-address]** with the IP address that you obtained in the previous
-section. Run the following commands:
+replacing **[system-ip-address]** with the IP address that was previously obtained and stored in the `SYSTEM_IP` variable. Run the following command:
 ```
 curl http://localhost:9091/inventory/systems/{$SYSTEM_IP}
 ```
@@ -532,7 +531,7 @@ endif::[]
 
 // cloud-hosted guide instructions
 ifdef::cloud-hosted[]
-Run the Maven **package** goal to compile the test classes. Run the Maven **failsafe** goal to test the services that are running in the Docker containers by setting **-Dsystem.ip** to the IP address that you determined previously.
+Run the Maven **package** goal to compile the test classes. Run the Maven **failsafe** goal to test the services that are running in the Docker containers by setting **-Dsystem.ip** to the IP address that was previously obtained and stored in the `SYSTEM_IP` variable.
 
 ```
 mvn package
