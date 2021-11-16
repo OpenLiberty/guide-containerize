@@ -244,7 +244,7 @@ include::finish/system/Dockerfile[]
 
 Now that your microservices are packaged and you have written your Dockerfiles, you will build your Docker images by using the `docker build` command.
 
-include::{common-includes}/ol-full-docker-pull.adoc[]
+include::{common-includes}/ol-icr-full-docker-pull.adoc[]
 
 Run the following commands to build container images for your application:
 
