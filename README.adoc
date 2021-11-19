@@ -207,11 +207,12 @@ include::finish/inventory/Dockerfile[]
 The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the built image. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a base image. 
 
 In this case, you're using the recommended production image,
-`icr.io/appcafe/open-liberty:full-java11-openj9-ubi`, as your parent image. If you
-don't want any additional runtime features for your `kernel` image, define the
-`FROM` instruction as `FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`. To use the default image that
-comes with the Open Liberty runtime, define the `FROM` instruction as `FROM icr.io/appcafe/open-liberty`. 
-You can find all the https://github.com/OpenLiberty/ci.docker/blob/master/docs/icr-images.md[official images^] that
+`icr.io/appcafe/open-liberty:full-java11-openj9-ubi`, as your parent image. 
+To use the default image that comes with the Open Liberty runtime,
+define the `FROM` instruction as `FROM icr.io/appcafe/open-liberty`. 
+If you don't want any additional runtime features, you can use `kernel` image by defining the
+`FROM` instruction as `FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`. 
+You can find all the https://github.com/OpenLiberty/ci.docker/blob/master/docs/icr-images.md[official ubi images^] that
 are available from IBM Container Registry (ICR).
 
 It is also recommended to label your Docker images with the [hotspot=label file=0]`LABEL` command, as the label information can help you manage your images. For more information, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
