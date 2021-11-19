@@ -209,8 +209,9 @@ The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which
 In this case, you're using the recommended production image,
 `icr.io/appcafe/open-liberty:full-java11-openj9-ubi`, as your parent image. If you
 don't want any additional runtime features for your `kernel` image, define the
-`FROM` instruction as `FROM open-liberty:kernel-slim`. To use the default image that
-comes with the Open Liberty runtime, define the `FROM` instruction as `FROM open-liberty`. 
+`FROM` instruction as `FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`.
+To use the default image that comes with the Open Liberty runtime, 
+define the `FROM` instruction as `FROM icr.io/appcafe/open-liberty`. 
 You can find all the https://hub.docker.com/_/open-liberty[official images^] and
 https://hub.docker.com/r/openliberty/open-liberty/[ubi images^] on the open-liberty Docker Hub.
 
