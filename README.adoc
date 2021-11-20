@@ -213,7 +213,7 @@ define the `FROM` instruction as `FROM icr.io/appcafe/open-liberty`.
 If you don't want any additional runtime features, you can use `kernel` image by defining the
 `FROM` instruction as `FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`. 
 You can find all the https://github.com/OpenLiberty/ci.docker/blob/master/docs/icr-images.md[official universal base images (ubi)^] that
-are available from IBM Container Registry (ICR).
+are available from the IBM Container Registry (ICR).
 
 It is also recommended to label your Docker images with the [hotspot=label file=0]`LABEL` command, as the label information can help you manage your images. For more information, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
 
