@@ -48,7 +48,7 @@ docker run -d --name inventory -e default.http.port=9091 -p 9091:9091 inventory
 
 sleep 30
 
-inventoryStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9081/inventory/systems/")"
+inventoryStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9091/inventory/systems/")"
 
 if [ "$inventoryStatus" == "200" ]
 then
