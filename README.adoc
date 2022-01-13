@@ -76,7 +76,8 @@ cd start
 {: codeblock}
 endif::[]
 
-You can find the starting Java project in the `start` directory. It is a multi-module Maven project that is made up of the `system` and `inventory` microservices. Each microservice lives in its own corresponding directory, `system` and `inventory`.
+You can find the starting Java project in the `start` directory. 
+This project is a multi-module Maven project that is made up of the `system` and `inventory` microservices. Each microservice is located in its own corresponding directory, `system` and `inventory`.
 
 To try out the microservices by using Maven, run the following Maven goal to build the `system` microservice and run it inside Open Liberty:
 [role='command']
@@ -101,9 +102,9 @@ The defaultServer server is ready to run a smarter planet.
 
 To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems^].
 
-The `system` service shows the system properties of the running JVM and can be found at  http://localhost:9080/system/properties[^].
+To access the `system` service, which shows the system properties of the running JVM, see http://localhost:9080/system/properties[^].
 
-The system properties of your localhost can be added to the `inventory` service at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
+You can add the system properties of your localhost to the `inventory` service at http://localhost:9081/inventory/systems/localhost[http://localhost:9081/inventory/systems/localhost^].
 endif::[]
 
 // cloud-hosted guide instructions:
@@ -166,7 +167,7 @@ mvn -pl inventory liberty:stop
 {: codeblock}
 endif::[]
 
-Run the Maven `package` goal to build the application `.war` files from the `start` directory so that the `.war` files reside in the `system/target` and `inventory/target` directories.
+To package your microservices, run the Maven package goal to build the application `.war` files from the start directory so that the `.war` files are in the `system/target` and `inventory/target` directories.
 [role='command']
 ```
 mvn package
@@ -192,6 +193,14 @@ Learn more about Docker on the https://www.docker.com/what-docker[official Docke
 === Creating your Dockerfiles
 You will be creating two Docker images to run the `inventory` service and `system` service. The first step is to create Dockerfiles for both services.
 
+In this guide, you're using an official image from the IBM Container Registry (ICR), `icr.io/appcafe/open-liberty:full-java11-openj9-ubi`, as your parent image. This image is tagged with the word `full`, meaning it includes all Liberty features.
+`full` images are recommended for development only because they significantly expand the image size with features that are not required by the application.
+
+To minimize your image footprint in production, you can use one of the `kernel-slim` images, such as `icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`. 
+This image installs the basic server. You can then add all the necessary features for your application with the usage pattern that is detailed in the Open Liberty https://github.com/OpenLiberty/ci.docker#building-an-application-image[container image documentation^].
+To use the default image that comes with the Open Liberty runtime, define the `FROM` instruction as `FROM icr.io/appcafe/open-liberty`. 
+You can find all official images on the Open Liberty https://github.com/OpenLiberty/ci.docker#container-images[container image repository^].
+
 [role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the `Dockerfile` for the inventory service.#
@@ -205,15 +214,6 @@ include::finish/inventory/Dockerfile[]
 ----
 
 The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the built image. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a base image. 
-
-In this guide, you're using an official image from the IBM Container Registry (ICR), `icr.io/appcafe/open-liberty:full-java11-openj9-ubi`, as your parent image. This image is tagged with the word `full`, meaning it includes all Liberty features.
-`full` images are recommended for development only, because they significantly expand the image size with features that are not required by the application.
-
-In production, to minimize your image footprint, it is recommended that you use one of the `kernel-slim` images. For example, `icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`.
-This will install the basic server, to which you can then add all the necessary features for your application via the usage pattern detailed in the Open Liberty https://github.com/OpenLiberty/ci.docker#building-an-application-image[container image documentation^].
-To use the default image that comes with the Open Liberty runtime, define the `FROM` instruction as `FROM icr.io/appcafe/open-liberty`. 
-You can find all the https://github.com/OpenLiberty/ci.docker/blob/master/docs/icr-images.md[official universal base images (ubi)^] that
-are available from the IBM Container Registry (ICR).
 
 It is also recommended to label your Docker images with the [hotspot=label file=0]`LABEL` command, as the label information can help you manage your images. For more information, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#label[Best practices for writing Dockerfiles^].
 
@@ -271,7 +271,7 @@ Or, run the `docker images` command with `--filter` option to list your images:
 docker images -f "label=org.opencontainers.image.authors=Your Name"
 ```
 
-Your two images, `inventory` and `system`, should appear in the list of all Docker images:
+Your `inventory` and `system` images appear in the list of all Docker images:
 
 [role="no_copy"]
 ----
@@ -282,7 +282,7 @@ system        1.0-SNAPSHOT    1dff6d0b4f31    5 minutes ago    470MB
 
 
 == Running your microservices in Docker containers
-Now that you have your two images built, you will run your microservices in Docker containers:
+Now that your two images are built, you will run your microservices in Docker containers:
 
 [role='command']
 ```
@@ -290,7 +290,7 @@ docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
 docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
 ```
 
-The flags are described in the table below: 
+The following table describes the flags in these commands:
 
 [cols="15, 100", options="header"]
 |===
@@ -339,22 +339,22 @@ curl -s http://localhost:9081/inventory/systems | jq
 {: codeblock}
 endif::[]
 
-Next, retrieve the `system` container's IP address by using the `system` container's name that is defined when it ran the Docker containers. 
-Run the following command to retrieve the `system` IP address:
+Next, retrieve the `system` container's IP address by running the following:
 
 [role='command']
 ```
 docker inspect -f "{{.NetworkSettings.IPAddress }}" system
 ```
 
-You find the `system` container's IP address:
+The command returns the system container IP address:
 
 [role="no_copy"]
 ----
 172.17.0.2
 ----
 
-In this case, the IP address for the `system` service is `172.17.0.2`. Take note of this IP address to add the system properties to the `inventory` service. 
+In this case, the IP address for the `system` service is `172.17.0.2`. 
+Take note of this IP address to construct the URL to view the system properties. 
 
 // static guide instructions:
 ifndef::cloud-hosted[]
@@ -412,15 +412,8 @@ In the [hotspot file=0]`inventory/server.xml` file,
 the [hotspot=httpPort file=0]`default.http.port` variable is declared and is used in the
 [hotspot=httpEndpoint file=0]`httpEndpoint` element to define the service
 endpoint. The default value of the [hotspot=httpPort file=0]`default.http.port`
-variable is `9081`. However, this value is only used if no other value is
-specified. To find a value for this variable, Open Liberty looks for the
-following environment variables, in order:
-
-* `default.http.port`
-* `default_http_port`
-* `DEFAULT_HTTP_PORT`
-
-When you previously ran the `inventory` container, none of the environment variables mentioned were defined and thus the default value of `9081` was used.
+variable is `9081`. However, this value is only used if no other value is specified. 
+You can replace this value in the container by using the -e flag for the podman run command. 
 
 Run the following commands to stop and remove the `inventory` container and rerun it with the `default.http.port` environment variable set:
 
@@ -518,7 +511,7 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 * The [hotspot=testHostRegistration file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly.
 * The [hotspot=testSystemPropertiesMatch file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory` service.
 * The [hotspot=testUnknownHost file=1]`testUnknownHost()` method checks that an error is raised if an unknown host name is being added into the `inventory` service.
-* The [hotspot=systemServiceIp file=1]`systemServiceIp` variable has the same value as what you retrieved in the previous section when manually adding the `system` service into the `inventory` service. This value of the IP address is passed in when you run the tests.
+* The [hotspot=systemServiceIp file=1]`systemServiceIp` variable has the same value as the IP address that you retrieved in the previous section when you manually added the `system` service into the `inventory` service. This value of the IP address is passed in when you run the tests.
 
 === Running the tests
 // static guide instructions
@@ -544,7 +537,7 @@ mvn failsafe:integration-test -Dsystem.ip="$SYSTEM_IP" -Dinventory.http.port=909
 {: codeblock}
 endif::[]
 
-If the tests pass, you see a similar output as the following:
+If the tests pass, you see output similar to the following example:
 
 [role="no_copy"]
 ----
