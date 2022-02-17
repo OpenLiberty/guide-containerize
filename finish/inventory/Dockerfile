@@ -37,7 +37,7 @@ COPY --chown=1001:0 \
 COPY --chown=1001:0 \
 # end::war-userID[]
     # tag::inventory-war[]
-    target/inventory.war \
+    target/guide-containerize-inventory.war \
     # end::inventory-war[]
     # tag::config-apps[]
     /config/apps
