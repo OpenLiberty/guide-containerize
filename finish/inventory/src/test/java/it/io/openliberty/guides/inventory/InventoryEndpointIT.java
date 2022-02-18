@@ -79,7 +79,7 @@ public class InventoryEndpointIT {
         int expected = 0;
         int actual = obj.getInt("total");
         assertEquals(expected, actual,
-                        "The inventory should be empty on application start but it wasn't");
+                    "The inventory should be empty on application start but it wasn't");
 
         response.close();
     }
