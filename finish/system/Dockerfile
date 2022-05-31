@@ -1,4 +1,6 @@
+# tag::kernel-slim[]
 FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi
+# end::kernel-slim[]
 
 ARG VERSION=1.0
 ARG REVISION=SNAPSHOT
@@ -22,7 +24,9 @@ LABEL \
 
 COPY --chown=1001:0 src/main/liberty/config /config/
 
+# tag::features[]
 RUN features.sh
+# end::features[]
 
 # tag::copy-war[]
 COPY --chown=1001:0 target/guide-containerize-system.war /config/apps

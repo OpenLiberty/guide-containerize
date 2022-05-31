@@ -1,6 +1,6 @@
-# tag::from[]
+# tag::kernel-slim[]
 FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi
-# end::from[]
+# end::kernel-slim[]
 
 ARG VERSION=1.0
 ARG REVISION=SNAPSHOT
@@ -32,7 +32,9 @@ COPY --chown=1001:0 \
     # end::config[]
 # end::copy-config[]
 
+# tag::features[]
 RUN features.sh
+# end::features[]
 
 # tag::copy-war[]
 # tag::war-userID[]

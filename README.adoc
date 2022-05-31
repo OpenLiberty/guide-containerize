@@ -396,8 +396,11 @@ You can externalize the configuration of more than just the port numbers. To lea
 
 As mentioned when you were building the Docker images, the parent image you are using is the `full` tag which includes all the features for the `OpenLiberty` server but when deploying to production it is recommended to use a parent image with the `kernel-slim` tag to provide a bare minimum server.
 
-Run the following command to see your containers and their corresponding sizes:
-`docker container ls -s`
+To your development containers and their corresponding sizes run the following command:
+[role='command']
+```
+docker container ls -s
+```
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -411,9 +414,11 @@ inventory/Dockerfile
 include::finish/inventory/Dockerfile[]
 ----
 
-You are replacing `icr.io/appcafe/open-liberty:full-java11-openj9-ubi` with `icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` which will use the `kernel-slim` tag in the Docker images. Since the server will be the bare minimum, you must include `features.sh` which will include all of the features that are required for your server.
+You are replacing the parent image for your container with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` which contains the `kernel-slim` tag indicating that this image is intended for production use.
 
-You must do the same for the system service as well.
+Place the [hotspot=features file=0]`RUN feature.sh` between the two copy commands in your Dockerfile. The `features/sh` script will be able to include all the required features that is needed by your `OpenLiberty` server.
+
+Repeat the same instructions that were done on the `inventory` service for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -435,7 +440,7 @@ docker stop inventory system
 docker rm inventory system
 ```
 
-Now, run the following to rebuild your Docker containers with the `kernel-slim` image:
+Now, run the following commands to rebuild your Docker containers with the `kernel-slim` image:
 
 [role='command']
 ```
@@ -443,7 +448,7 @@ docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
-Once your updated containers are built, then run the following commands to start your containers:
+Once your updated containers are built, then run the following to start them:
 
 [role='command']
 ```
@@ -451,12 +456,14 @@ docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
 docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
 ```
 
-After the containers have been started, you are able to check the size of the ne container with the following command:
+To see the newly launched containers and their new sizes, run the following:
 
 [role='command']
 ```
 docker container ls -s
 ```
+
+To ensure your containers are up and working properly visit `http://localhost:9081/inventory/systems` to check the `inventory` service, you should see `this`. Do the same for the `system` service by going to `http://localhost:9081/inventory/systems` and you should see `this but for system`.
 
 == Testing the microservices
 
