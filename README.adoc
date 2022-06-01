@@ -184,7 +184,7 @@ To minimize your image footprint in production, you can use one of the `kernel-s
 inventory/Dockerfile
 [source, Text, linenums, indent=0, role="code_column"]
 ----
-include::finish/inventory/Dockerfile[]
+include::finish/inventory/Dockerfile-full[]
 ----
 
 The [hotspot=from file=0]`FROM` instruction initializes a new build stage, which indicates the parent image of the built image. If you don't need a parent image, then you can use `FROM scratch`, which makes your image a base image. 
@@ -208,7 +208,7 @@ The `Dockerfile` for the `system` service follows the same instructions as the `
 system/Dockerfile
 [source, Text, linenums, indent=0, role="code_column"]
 ----
-include::finish/system/Dockerfile[]
+include::finish/system/Dockerfile-full[]
 ----
 
 
@@ -394,13 +394,7 @@ You can externalize the configuration of more than just the port numbers. To lea
 
 == Optimizing the build
 
-As mentioned when you were building the Docker images, the parent image you are using is the `full` tag which includes all the features for the `OpenLiberty` server but when deploying to production it is recommended to use a parent image with the `kernel-slim` tag to provide a bare minimum server.
-
-To your development containers and their corresponding sizes run the following command:
-[role='command']
-```
-docker container ls -s
-```
+As mentioned previously, the parent image you are using in the Dockerfiles contains the `full` tag which includes all the available features for the `OpenLiberty` server. This is recommended when in development but when deploying to production it is recommended to use a parent image with the `kernel-slim` tag to provide a bare minimum server with the ability to add features as needed.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -413,12 +407,11 @@ inventory/Dockerfile
 ----
 include::finish/inventory/Dockerfile[]
 ----
+The parent image, [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`, contains the kernel-slim tag which you will use for your production image.
 
-You are replacing the parent image for your container with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` which contains the `kernel-slim` tag indicating that this image is intended for production use.
+Place [hotspot=features file=0]`RUN feature.sh` between the `COPY` commands in the Dockerfile. The `features.sh` script will be able to include all the required features needed for your `OpenLiberty` server.
 
-Place the [hotspot=features file=0]`RUN feature.sh` between the two copy commands in your Dockerfile. The `features/sh` script will be able to include all the required features that is needed by your `OpenLiberty` server.
-
-Repeat the same instructions that were done on the `inventory` service for the `system` service.
+Repeat the same instructions for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -432,7 +425,7 @@ system/Dockerfile
 include::finish/system/Dockerfile[]
 ----
 
-Run the following commands to stop and delete your Docker containers that are using the `full` image:
+Now, run the following commands to stop and remove your Docker containers using the `full` image:
 
 [role='command']
 ```
@@ -440,30 +433,52 @@ docker stop inventory system
 docker rm inventory system
 ```
 
-Now, run the following commands to rebuild your Docker containers with the `kernel-slim` image:
+Next, build your new Docker images with the `kernel-slim` tag:
 
 [role='command']
 ```
-docker build -t system:1.0-SNAPSHOT system/.
-docker build -t inventory:1.0-SNAPSHOT inventory/.
+docker build -t system-slim:1.0-SNAPSHOT system/.
+docker build -t inventory-slim:1.0-SNAPSHOT inventory/.
 ```
 
-Once your updated containers are built, then run the following to start them:
-
-[role='command']
-```
-docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
-docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
-```
-
-To see the newly launched containers and their new sizes, run the following:
+To verify that the images are built, run the `docker images` command to list all local Docker images.
 
 [role='command']
 ```
-docker container ls -s
+docker images
 ```
 
-To ensure your containers are up and working properly visit `http://localhost:9081/inventory/systems` to check the `inventory` service, you should see `this`. Do the same for the `system` service by going to `http://localhost:9081/inventory/systems` and you should see `this but for system`.
+Alternatively, run `docker images` with the `--filter` option to list your images:
+[role='command']
+```
+docker images -f "label=org.opencontainers.image.authors=Your Name"
+```
+
+There will be the `full` and `kernel-slim` iamges for both `inventory` and `system` services in the list of all Docker images. Note the size difference between the `full` images and the `kernel-slim` images:
+----
+REPOSITORY		TAG				IMAGE ID       CREATED       	SIZE
+inventory-slim  1.0-SNAPSHOT    d5a3d1b2c20e   4 minutes ago	705MB
+system-slim     1.0-SNAPSHOT    6346cf87eae0   5 minutes ago	701MB
+inventory       1.0-SNAPSHOT    5b0f25cee9c5   14 minutes ago 	1.01GB
+system          1.0-SNAPSHOT    df4518f27d1e   14 minutes ago	1.01GB
+----
+
+Run the following to start the `kernel-slim` images:
+
+[role='command']
+```
+docker run -d --name system -p 9080:9080 system-slim:1.0-SNAPSHOT
+docker run -d --name inventory -p 9081:9081 inventory-slim:1.0-SNAPSHOT
+```
+
+To ensure your containers are working properly, try accessing the `inventory` service, which displays the current contents of the inventory. See 
+http://localhost:9081/inventory/systems
+
+Then, try accessing the `system` service, which shows the system properites of the running JVM. See
+http://localhost:9080/system/properties
+
+Your able to add the system properties of your localhost to the `inventory` service at
+http://localhost:9081/inventory/systems/localhost
 
 == Testing the microservices
 
