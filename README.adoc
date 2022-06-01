@@ -394,7 +394,7 @@ You can externalize the configuration of more than just the port numbers. To lea
 
 == Optimizing the image size
 
-As mentioned previously, the parent image used in each `Dockerfile` contains the `full` tag that includes all of the Liberty features. This is recommended for development but when deploying to production it's recommended to use a parent image with the `kernel-slim` tag to provide a bare minimum server and only add features required by the application.
+As mentioned previously, the parent image used in each `Dockerfile` contains the `full` tag that includes all of the Liberty features. This is recommended for development but when deploying to production it's recommended to use a parent image with the `kernel-slim` tag to provide a bare minimum server with the ability to add features that the application requires.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -412,7 +412,7 @@ Replace the parent image with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-l
 
 Place [hotspot=features file=0]`RUN feature.sh` between the `COPY` commands in the `Dockerfile`. The `features.sh` script adds the Liberty features that your application is utilizing to maintain the smaller image size.
 
-Repeat the instructions for the `system` service.
+Repeat these instructions again for the `system`.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -426,7 +426,7 @@ system/Dockerfile
 include::finish/system/Dockerfile[]
 ----
 
-Now, run the following commands to stop and remove your `Docker` containers using the `full` parent image:
+Continue by running the following commands to stop and remove your current `Docker` containers that are using the `full parent image:
 
 [role='command']
 ```
@@ -442,7 +442,7 @@ docker build -t system-slim:1.0-SNAPSHOT system/.
 docker build -t inventory-slim:1.0-SNAPSHOT inventory/.
 ```
 
-To verify that the images are built, run the following command to list all local `Docker` images.
+Verify that the images built by executing the following command to list all local `Docker` images.
 
 [role='command']
 ```
@@ -455,16 +455,16 @@ Alternatively, run `docker images` with the `--filter` option to list your image
 docker images -f "label=org.opencontainers.image.authors=Your Name"
 ```
 
-There is the `full` and `kernel-slim` images for both `inventory` and `system` services in the list of all Docker images. Note the size difference between the `full` images and the `kernel-slim` images:
+Notice that both the `full` and the `kernel-slim` images for both of the `inventory` and `system` services are in the list of all Docker images. Concurrently, you can note the size difference between the two sets of images:
 ----
-REPOSITORY		TAG				IMAGE ID		CREATED			SIZE
-inventory-slim	1.0-SNAPSHOT	d5a3d1b2c20e	4 minutes ago	705MB
-system-slim		1.0-SNAPSHOT	6346cf87eae0	5 minutes ago	701MB
-inventory		1.0-SNAPSHOT	5b0f25cee9c5	14 minutes ago	1.01GB
-system			1.0-SNAPSHOT	df4518f27d1e	14 minutes ago	1.01GB
+REPOSITORY  TAG IMAGE ID    CREATED SIZE
+inventory-slim  1.0-SNAPSHOT	d5a3d1b2c20e    4 minutes ago	705MB
+system-slim     1.0-SNAPSHOT	6346cf87eae0	5 minutes ago	701MB
+inventory       1.0-SNAPSHOT	5b0f25cee9c5	14 minutes ago	1.01GB
+system          1.0-SNAPSHOT	df4518f27d1e	14 minutes ago	1.01GB
 ----
 
-Run the following to start the `kernel-slim` images:
+After confirming that the images have been built, run the following commands to launch the `Docker` containers:
 
 [role='command']
 ```
@@ -475,10 +475,10 @@ docker run -d --name inventory -p 9081:9081 inventory-slim:1.0-SNAPSHOT
 To ensure your containers are working properly, try accessing the `system` service, which shows the system properites of the running JVM. 
 See http://localhost:9080/system/properties
 
-Your able to add the system properties of your localhost to the `inventory` service at:
+Add the system properties of your localhost to the your `inventory` service by visiting:
 http://localhost:9081/inventory/systems/localhost
 
-Then, try accessing the `inventory` service, which displays the current contents of the inventory. 
+Then verify the addition of your localhost's system properties by accessing the `inventory` service. 
 See http://localhost:9081/inventory/systems
 
 == Testing the microservices
