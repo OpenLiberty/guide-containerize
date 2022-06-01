@@ -392,9 +392,9 @@ endif::[]
 
 You can externalize the configuration of more than just the port numbers. To learn more about Open Liberty server configuration, check out the https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html[Server Configuration Overview^] docs. 
 
-== Optimizing the build
+== Optimizing the image size
 
-As mentioned previously, the parent image you are using in the Dockerfiles contains the `full` tag which includes all the available features for the `OpenLiberty` server. This is recommended when in development but when deploying to production it is recommended to use a parent image with the `kernel-slim` tag to provide a bare minimum server with the ability to add features as needed.
+As mentioned previously, the parent image used in each `Dockerfile` contains the `full` tag that includes all of the Liberty features. This is recommended for development but when deploying to production it's recommended to use a parent image with the `kernel-slim` tag to provide a bare minimum server and only add features required by the application.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -407,11 +407,12 @@ inventory/Dockerfile
 ----
 include::finish/inventory/Dockerfile[]
 ----
-The parent image, [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`, contains the kernel-slim tag which you will use for your production image.
 
-Place [hotspot=features file=0]`RUN feature.sh` between the `COPY` commands in the Dockerfile. The `features.sh` script will be able to include all the required features needed for your `OpenLiberty` server.
+Replace the parent image with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` at the top of your Dockerfile. This image contains the `kernel-slim` tag that's recommended when deploying to production.
 
-Repeat the same instructions for the `system` service.
+Place [hotspot=features file=0]`RUN feature.sh` between the `COPY` commands in the `Dockerfile`. The `features.sh` script adds the Liberty features that your application is utilizing to maintain the smaller image size.
+
+Repeat the instructions for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -425,7 +426,7 @@ system/Dockerfile
 include::finish/system/Dockerfile[]
 ----
 
-Now, run the following commands to stop and remove your Docker containers using the `full` image:
+Now, run the following commands to stop and remove your `Docker` containers using the `full` parent image:
 
 [role='command']
 ```
@@ -433,7 +434,7 @@ docker stop inventory system
 docker rm inventory system
 ```
 
-Next, build your new Docker images with the `kernel-slim` tag:
+Next, build your new `Docker` images with the `kernel-slim` parent image:
 
 [role='command']
 ```
@@ -441,7 +442,7 @@ docker build -t system-slim:1.0-SNAPSHOT system/.
 docker build -t inventory-slim:1.0-SNAPSHOT inventory/.
 ```
 
-To verify that the images are built, run the `docker images` command to list all local Docker images.
+To verify that the images are built, run the following command to list all local `Docker` images.
 
 [role='command']
 ```
@@ -454,13 +455,13 @@ Alternatively, run `docker images` with the `--filter` option to list your image
 docker images -f "label=org.opencontainers.image.authors=Your Name"
 ```
 
-There will be the `full` and `kernel-slim` iamges for both `inventory` and `system` services in the list of all Docker images. Note the size difference between the `full` images and the `kernel-slim` images:
+There is the `full` and `kernel-slim` images for both `inventory` and `system` services in the list of all Docker images. Note the size difference between the `full` images and the `kernel-slim` images:
 ----
-REPOSITORY		TAG				IMAGE ID       CREATED       	SIZE
-inventory-slim  1.0-SNAPSHOT    d5a3d1b2c20e   4 minutes ago	705MB
-system-slim     1.0-SNAPSHOT    6346cf87eae0   5 minutes ago	701MB
-inventory       1.0-SNAPSHOT    5b0f25cee9c5   14 minutes ago 	1.01GB
-system          1.0-SNAPSHOT    df4518f27d1e   14 minutes ago	1.01GB
+REPOSITORY		TAG				IMAGE ID		CREATED			SIZE
+inventory-slim	1.0-SNAPSHOT	d5a3d1b2c20e	4 minutes ago	705MB
+system-slim		1.0-SNAPSHOT	6346cf87eae0	5 minutes ago	701MB
+inventory		1.0-SNAPSHOT	5b0f25cee9c5	14 minutes ago	1.01GB
+system			1.0-SNAPSHOT	df4518f27d1e	14 minutes ago	1.01GB
 ----
 
 Run the following to start the `kernel-slim` images:
@@ -471,14 +472,14 @@ docker run -d --name system -p 9080:9080 system-slim:1.0-SNAPSHOT
 docker run -d --name inventory -p 9081:9081 inventory-slim:1.0-SNAPSHOT
 ```
 
-To ensure your containers are working properly, try accessing the `inventory` service, which displays the current contents of the inventory. See 
-http://localhost:9081/inventory/systems
+To ensure your containers are working properly, try accessing the `system` service, which shows the system properites of the running JVM. 
+See http://localhost:9080/system/properties
 
-Then, try accessing the `system` service, which shows the system properites of the running JVM. See
-http://localhost:9080/system/properties
-
-Your able to add the system properties of your localhost to the `inventory` service at
+Your able to add the system properties of your localhost to the `inventory` service at:
 http://localhost:9081/inventory/systems/localhost
+
+Then, try accessing the `inventory` service, which displays the current contents of the inventory. 
+See http://localhost:9081/inventory/systems
 
 == Testing the microservices
 
