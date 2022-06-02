@@ -442,7 +442,7 @@ docker build -t system-slim:1.0-SNAPSHOT system/.
 docker build -t inventory-slim:1.0-SNAPSHOT inventory/.
 ```
 
-Verify that the images have built by executing the following command to list all the local `Docker` images.
+Verify that the images have built by executing the following command to list all the local `Docker` images:
 
 [role='command']
 ```
@@ -475,14 +475,14 @@ docker run -d --name inventory -p 9081:9081 inventory-slim:1.0-SNAPSHOT
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-To ensure your containers are working properly, try accessing the `system` service, which shows the system properties of the running JVM in JSON format. 
-See http://localhost:9080/system/properties
+To ensure your containers are working properly, try accessing the `system` service to show the system properties of the running JVM.
+See http://localhost:9080/system/properties[http://localhost:9080/system/properties]
 
 Next, replace `[system-ip-address]` with the IP address that you obtained earlier and add your localhost system properties to the `inventory` service by visting:
-http://localhost:9081/inventory/systems/[system-ip-address]
+http://localhost:9081/inventory/systems/[http://localhost:9081/inventory/systems/[system-ip-address]]
 
 Then verify the addition of your localhost system properties to your `inventory` service. 
-See http://localhost:9081/inventory/systems
+See http://localhost:9081/inventory/systems[http://localhost:9081/inventory/systems]
 endif::[]
 
 // cloud-hosted guide instructions:
