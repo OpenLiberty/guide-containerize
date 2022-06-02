@@ -410,9 +410,9 @@ include::finish/inventory/Dockerfile[]
 
 Replace the parent image with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` at the top of your Dockerfile. This image contains the `kernel-slim` tag that's recommended when deploying to production.
 
-Place [hotspot=features file=0]`RUN feature.sh` between the `COPY` commands in the `Dockerfile`. The `features.sh` script adds the Liberty features that your application is required to use.
+Place [hotspot=features file=0]`RUN features.sh` between the `COPY` commands in the `Dockerfile`. The `features.sh` script adds the Liberty features that your application is required to operate.
 
-Ensure that you repeat these instructions again for the `system`.
+Ensure that you repeat these instructions again for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -458,10 +458,10 @@ docker images -f "label=org.opencontainers.image.authors=Your Name"
 Notice that both the `full` and the `kernel-slim` images for both of the `inventory` and `system` services are in the list of all Docker images. Concurrently, you can note the size difference between the two sets of images:
 ----
 REPOSITORY      TAG             IMAGE ID        CREATED         SIZE
-inventory-slim  1.0-SNAPSHOT	d5a3d1b2c20e    4 minutes ago   705MB
-system-slim     1.0-SNAPSHOT    6346cf87eae0    5 minutes ago   701MB
-inventory       1.0-SNAPSHOT    5b0f25cee9c5    14 minutes ago  1.01GB
-system          1.0-SNAPSHOT    df4518f27d1e    14 minutes ago  1.01GB
+inventory-slim  1.0-SNAPSHOT	d5a3d1b2c20e    4 minutes ago	705MB
+system-slim     1.0-SNAPSHOT	6346cf87eae0	5 minutes ago	701MB
+inventory       1.0-SNAPSHOT	5b0f25cee9c5	14 minutes ago	1.01GB
+system          1.0-SNAPSHOT	df4518f27d1e	14 minutes ago	1.01GB
 ----
 
 After confirming that the images have been built, run the following commands to start the `Docker` containers:
@@ -475,10 +475,10 @@ docker run -d --name inventory -p 9081:9081 inventory-slim:1.0-SNAPSHOT
 To ensure your containers are working properly, try accessing the `system` service, which shows the system properties of the running JVM in JSON format. 
 See http://localhost:9080/system/properties
 
-Next, add the system properties of your localhost to the your `inventory` service by visiting:
-http://localhost:9081/inventory/systems/localhost
+Next, replace `[system-ip-address]` with the IP address that you obtained earlier and add your system's properties to the `inventory` service by visting:
+http://localhost:9081/inventory/systems/[system-ip-address]
 
-Then verify the addition of your localhost's system properties to the `inventory` service by accessing. 
+Then verify the addition of your system's properties to your 	`inventory` service. 
 See http://localhost:9081/inventory/systems
 
 == Testing the microservices
