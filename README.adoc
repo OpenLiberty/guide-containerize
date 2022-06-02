@@ -472,14 +472,37 @@ docker run -d --name system -p 9080:9080 system-slim:1.0-SNAPSHOT
 docker run -d --name inventory -p 9081:9081 inventory-slim:1.0-SNAPSHOT
 ```
 
+
+// static guide instructions:
+ifndef::cloud-hosted[]
 To ensure your containers are working properly, try accessing the `system` service, which shows the system properties of the running JVM in JSON format. 
 See http://localhost:9080/system/properties
 
-Next, replace `[system-ip-address]` with the IP address that you obtained earlier and add your system's properties to the `inventory` service by visting:
+Next, replace `[system-ip-address]` with the IP address that you obtained earlier and add your localhost system properties to the `inventory` service by visting:
 http://localhost:9081/inventory/systems/[system-ip-address]
 
-Then verify the addition of your system's properties to your 	`inventory` service. 
+Then verify the addition of your localhost system properties to your `inventory` service. 
 See http://localhost:9081/inventory/systems
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+The **system** service which shows the system properties of the running JVM, is now available to be accessed at **http://localhost:9080/system/properties**. Run the following curl command:
+```bash
+curl -s http://localhost:9080/system/properties | jq
+```
+
+Next, you can add your local system properties at the **http://localhost:9081/inventory/systems/[system-ip-address]** URL by replacing **[system-ip-address]** with the IP address that you obtained in the previous section. Run the following commands:
+```bash
+SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
+curl -s http://localhost:9081/inventory/systems/{$SYSTEM_IP} | jq
+```
+
+Then, verify the addition of your localhost system properties to the **inventory** service at **http://localhost:9081/inventory/systems** . Run the following curl command:
+```bash
+curl -s http://localhost:9081/inventory/systems | jq
+```
+endif::[]
 
 == Testing the microservices
 
