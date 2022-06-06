@@ -410,7 +410,7 @@ include::finish/inventory/Dockerfile[]
 
 Replace the parent image with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` at the top of your Dockerfile. This image contains the `kernel-slim` tag that's recommended when deploying to production.
 
-Place [hotspot=features file=0]`RUN features.sh` between the `COPY` commands in the `Dockerfile`. The `features.sh` script adds the Liberty features that your application is required to operate.
+Place [hotspot=features file=0]`RUN features.sh` command after the `COPY` command that the configuration file is copied to the `/config/` destination directory . The `features.sh` script adds the Liberty features that your application is required to operate.
 
 Ensure that you repeat these instructions again for the `system` service.
 
@@ -438,8 +438,8 @@ Next, build your new `Docker` images with the `kernel-slim` parent image:
 
 [role='command']
 ```
-docker build -t system-slim:1.0-SNAPSHOT system/.
-docker build -t inventory-slim:1.0-SNAPSHOT inventory/.
+docker build -t system:1.0-SNAPSHOT system/.
+docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
 Verify that the images have built by executing the following command to list all the local `Docker` images:
@@ -449,29 +449,39 @@ Verify that the images have built by executing the following command to list all
 docker images
 ```
 
-Alternatively, run `docker images` with the `--filter` option to list your images:
-[role='command']
-```
-docker images -f "label=org.opencontainers.image.authors=Your Name"
-```
-
-Notice that both the `full` and the `kernel-slim` images for both of the `inventory` and `system` services are in the list of all Docker images. Concurrently, you can note the size difference between the two sets of images:
+Notice that both the `full` and the `kernel-slim` images for both of the `inventory` and `system` services are in the list of all `Docker` images. Concurrently, you can note the size difference between the two sets of images:
 ----
 REPOSITORY      TAG             IMAGE ID        CREATED         SIZE
-inventory-slim  1.0-SNAPSHOT	d5a3d1b2c20e    4 minutes ago	705MB
-system-slim     1.0-SNAPSHOT	6346cf87eae0	5 minutes ago	701MB
-inventory       1.0-SNAPSHOT	5b0f25cee9c5	14 minutes ago	1.01GB
-system          1.0-SNAPSHOT	df4518f27d1e	14 minutes ago	1.01GB
+inventory       1.0-SNAPSHOT	d5a3d1b2c20e    4 minutes ago	682MB
+system          1.0-SNAPSHOT	6346cf87eae0	5 minutes ago	694MB
 ----
 
 After confirming that the images have been built, run the following commands to start the `Docker` containers:
 
 [role='command']
 ```
-docker run -d --name system -p 9080:9080 system-slim:1.0-SNAPSHOT
-docker run -d --name inventory -p 9081:9081 inventory-slim:1.0-SNAPSHOT
+docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
+docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
 ```
 
+Once your Docker containers are running, run the following command to see the list of the required features installed by `features.sh`:
+
+[role='command']
+```
+docker exec -it system /opt/ol/wlp/bin/productInfo featureInfo
+```
+
+Your list should be similar to the following:
+----
+jndi-1.0
+servlet-5.0
+cdi-3.0
+concurrent-2.0
+jsonb-2.0
+jsonp-2.0
+restfulWS-3.0
+restfulWSClient-3.0
+----
 
 // static guide instructions:
 ifndef::cloud-hosted[]
