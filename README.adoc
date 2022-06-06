@@ -449,7 +449,7 @@ Verify that the images have built by executing the following command to list all
 docker images
 ```
 
-Notice that both the `full` and the `kernel-slim` images for both of the `inventory` and `system` services are in the list of all `Docker` images. Concurrently, you can note the size difference between the two sets of images:
+Notice that the images for the `inventory` and `system` services now have a reduced image size.
 ----
 REPOSITORY      TAG             IMAGE ID        CREATED         SIZE
 inventory       1.0-SNAPSHOT	d5a3d1b2c20e    4 minutes ago	682MB
@@ -464,14 +464,14 @@ docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
 docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
 ```
 
-Once your Docker containers are running, run the following command to see the list of the required features installed by `features.sh`:
+Once your `Docker` containers are running, run the following command to see the list of the required features installed by `features.sh`:
 
 [role='command']
 ```
 docker exec -it system /opt/ol/wlp/bin/productInfo featureInfo
 ```
 
-Your list should be similar to the following:
+Your list of Liberty features should be similar to the following:
 ----
 jndi-1.0
 servlet-5.0
