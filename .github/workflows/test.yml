@@ -55,15 +55,15 @@ jobs:
     - run: unset _JAVA_OPTIONS
     - name: Run tests
       run: |
-        logsPath=$(find . -name "console.log");
-        grep Launching < "$logsPath"
+        sudo ../scripts/testAppFinish.sh
+        sudo ../scripts/testAppStart.sh
     - name: Post tests
       if: always()
       run: | 
         sudo docker images
         cd ../start
-        logsPath=$(sudo find . -name "console.log" | grep inventory);
-        sudo cat $logsPath | sudo grep Launching
+        logsPath=$(find . -name "console.log");
+        grep Launching < "$logsPath"
     - name: Archive server logs if failed
       if: failure()
       uses: actions/upload-artifact@v2
