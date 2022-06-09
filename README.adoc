@@ -394,7 +394,7 @@ You can externalize the configuration of more than just the port numbers. To lea
 
 == Optimizing the image size
 
-As previously mentioned, the parent image used in each `Dockerfile` contains the `full` tag which includes all of the Liberty features. This is recommended for development but when deploying to production it's recommended to use a parent image with the `kernel-slim` tag to provide a bare minimum server with the ability to add the features required by the application.
+As previously mentioned, the parent image used in each `Dockerfile` contains the `full` tag which includes all of the Liberty features. This is recommended for development but when deploying to production it's recommended to use a parent image with the `kernel-slim` tag. The `kernel-slim` tag provides a bare minimum server with the ability to add the features required by the application.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -410,7 +410,7 @@ include::finish/inventory/Dockerfile[]
 
 Replace the parent image with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` at the top of your Dockerfile. This image contains the `kernel-slim` tag that's recommended when deploying to production.
 
-Place [hotspot=features file=0]`RUN features.sh` command after the `COPY` command that the configuration file is copied to the `/config/` destination directory . The `features.sh` script adds the Liberty features that your application is required to operate.
+Place [hotspot=features file=0]`RUN features.sh` command after the `COPY` command that the configuration file is copied to the `/config/` destination directory. The `features.sh` script adds the Liberty features that your application is required to operate.
 
 Ensure that you repeat these instructions again for the `system` service.
 
@@ -468,7 +468,7 @@ Once your `Docker` containers are running, run the following command to see the 
 
 [role='command']
 ```
-docker exec -it system /opt/ol/wlp/bin/productInfo featureInfo
+docker exec -it inventory /opt/ol/wlp/bin/productInfo featureInfo
 ```
 
 Your list of Liberty features should be similar to the following:
@@ -479,6 +479,7 @@ cdi-3.0
 concurrent-2.0
 jsonb-2.0
 jsonp-2.0
+mpConfig-3.0
 restfulWS-3.0
 restfulWSClient-3.0
 ----
