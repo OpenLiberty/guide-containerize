@@ -509,7 +509,7 @@ SYSTEM_IP=`docker inspect -f "{{.NetworkSettings.IPAddress }}" system`
 curl -s http://localhost:9081/inventory/systems/{$SYSTEM_IP} | jq
 ```
 
-Then, verify the addition of your localhost system properties to the **inventory** service at **http://localhost:9081/inventory/systems** . Run the following curl command:
+Then, verify the addition of your localhost system properties to the **inventory** service at **http://localhost:9081/inventory/systems**. Run the following curl command:
 ```bash
 curl -s http://localhost:9081/inventory/systems | jq
 ```
