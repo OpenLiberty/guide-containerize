@@ -408,7 +408,7 @@ inventory/Dockerfile
 include::finish/inventory/Dockerfile[]
 ----
 
-Replace the parent image with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` at the top of your Dockerfile. This image contains the `kernel-slim` tag that's recommended when deploying to production.
+Replace the parent image with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi` at the top of your `Dockerfile`. This image contains the `kernel-slim` tag that is recommended when deploying to production.
 
 Place [hotspot=features file=0]`RUN features.sh` command after the `COPY` command that the configuration file is copied to the `/config/` destination directory. The `features.sh` script adds the Liberty features that your application is required to operate.
 
