@@ -486,7 +486,7 @@ restfulWSClient-3.0
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-To ensure your containers are working properly, try accessing the `system` service to show the system properties of the running JVM.
+To ensure that your containers are working properly, try accessing the `system` service to show the system properties of the running JVM.
 See http://localhost:9080/system/properties[http://localhost:9080/system/properties]
 
 Next, replace `[system-ip-address]` with the IP address that you obtained earlier and add your localhost system properties to the `inventory` service by visting:
