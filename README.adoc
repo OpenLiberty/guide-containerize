@@ -498,7 +498,7 @@ endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-The **system** service which shows the system properties of the running JVM, is now available to be accessed at **http://localhost:9080/system/properties**. Run the following curl command:
+The **system** service which shows the system properties of the running JVM is now available to be accessed at **http://localhost:9080/system/properties**. Run the following curl command:
 ```bash
 curl -s http://localhost:9080/system/properties | jq
 ```
