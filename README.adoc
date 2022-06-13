@@ -442,7 +442,7 @@ docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
-Verify that the images have built by executing the following command to list all the local `Docker` images:
+Verify that the images have been built by executing the following command to list all the local `Docker` images:
 
 [role='command']
 ```
