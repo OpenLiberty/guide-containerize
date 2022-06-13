@@ -489,7 +489,7 @@ ifndef::cloud-hosted[]
 To ensure that your containers are working properly, try accessing the `system` service to show the system properties of the running JVM.
 See http://localhost:9080/system/properties[http://localhost:9080/system/properties]
 
-Next, replace `[system-ip-address]` with the IP address that you obtained earlier and add your localhost system properties to the `inventory` service by visting:
+Next, replace `[system-ip-address]` with the IP address that you obtained earlier and add your localhost system properties to the `inventory` service by visiting:
 `\http://localhost:9081/inventory/systems/pass:c[[system-ip-address]]`
 
 Then, verify the addition of your localhost system properties to your `inventory` service. 
