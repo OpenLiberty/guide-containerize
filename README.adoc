@@ -412,7 +412,7 @@ Replace the parent image with [hotspot=kernel-slim file=0]`icr.io/appcafe/open-l
 
 Place [hotspot=features file=0]`RUN features.sh` command after the `COPY` command that copies the local `/config/` directory into the `Docker` image. The `features.sh` script adds the Liberty features that your application is required to operate.
 
-Ensure that you repeat these instructions again for the `system` service.
+Ensure that you repeat these instructions for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
