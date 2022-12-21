@@ -3,21 +3,21 @@ set -euxo pipefail
 
 cd ../start
 
-mvn -Dhttp.keepAlive=false \
+mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q clean package
-mvn -Dhttp.keepAlive=false \
+mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q -pl system liberty:create liberty:install-feature liberty:deploy
-mvn -Dhttp.keepAlive=false \
+mvn -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q -pl inventory liberty:create liberty:install-feature liberty:deploy
 
-mvn -pl system liberty:start
-mvn -pl inventory liberty:start
+mvn -ntp -pl system liberty:start
+mvn -ntp -pl inventory liberty:start
 
 systemStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9080/system/properties/")"
 inventoryStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9081/inventory/systems/")"
@@ -34,6 +34,6 @@ else
   exit 1
 fi
 
-mvn -pl system liberty:stop
-mvn -pl inventory liberty:stop
+mvn -ntp -pl system liberty:stop
+mvn -ntp -pl inventory liberty:stop
 
