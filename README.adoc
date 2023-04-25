@@ -106,15 +106,15 @@ cd /home/project/guide-containerize/start
 mvn -pl inventory liberty:run
 ```
 
-Select **Terminal** > **New Terminal** from the menu of the IDE to open a new command-line session. To access the **inventory** service, which displays the current contents of the inventory, run the following curl command: 
-```bash
-curl -s http://localhost:9081/inventory/systems | jq
-```
-
 After you see the following message in both command-line sessions, both of your services are ready:
 
 ```
 The defaultServer server is ready to run a smarter planet.
+```
+
+Select **Terminal** > **New Terminal** from the menu of the IDE to open a new command-line session. To access the **inventory** service, which displays the current contents of the inventory, run the following curl command: 
+```bash
+curl -s http://localhost:9081/inventory/systems | jq
 ```
 
 The **system** service shows the system properties of the running JVM and can be found by running the following curl command:
