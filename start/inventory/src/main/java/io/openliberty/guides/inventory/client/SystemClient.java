@@ -11,7 +11,7 @@
 // end::copyright[]
 package io.openliberty.guides.inventory.client;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -24,7 +24,7 @@ import java.util.Properties;
 import java.net.URI;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-@ApplicationScoped
+@RequestScoped
 public class SystemClient {
 
     // Constants for building URI to the system service.
