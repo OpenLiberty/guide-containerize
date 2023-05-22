@@ -28,8 +28,8 @@ Sure! Here's an index for your README.md:
    - [4.2 Test the changed port](#42-test-the-changed-port)
 5. [Optimizing the image size](#5-optimizing-the-image-size)
 6. [Services Tests](#6-services-tests)
-7. [Include mvn package in Build Stage --> Multistage](#7-include-mvn-package-in-build-stage----multistage)
-   - [7.1 Multistage](#71-multistage)
+7. [Include mvn package in Build Stage --> multi-stage](#7-include-mvn-package-in-build-stage----multi-stage)
+   - [7.1 multi-stage](#71-multi-stage)
    - [7.2 Base images with Maven](#72-base-images-with-maven)
      - [7.2.1 System Service modifications](#721-system-service-modifications)
      - [7.2.2 Inventory Service modifications](#722-inventory-service-modifications)
@@ -382,13 +382,13 @@ mvn failsafe:integration-test -Dsystem.ip=[system-ip-address] -Dinventory.http.p
 - **failsafe:** Run the Maven failsafe goal to test the services that are running in the Docker containers
 - **-Dxxx:** env vars used to check the correct funcioning. Replace [system-ip-address] by your
 
-## 7. Include mvn package in Build Stage --> Multistage
+## 7. Include mvn package in Build Stage --> Multi-stage
 
 You could want to execute all build process in the build stage, following the Dockerfile instructions and avoiding the need for the development team to perform an mvn package. So, you have to include the order / orders in Dockerfile.
 
 But, the parent liberty image, does not contains the binary mvn, so it is not possible to execute a mvn package inside the FROM.
 
-### 7.1 Multistage
+### 7.1 Multi-stage
 
 With multi-stage builds, you use multiple FROM statements in your Dockerfile. Each `FROM` instruction can use a different base, and each of them begins a new stage of the build. You can selectively copy artifacts from one stage to another, leaving behind everything you don’t want in the final image.
 
