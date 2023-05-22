@@ -2,12 +2,12 @@
 
 ## 0. Content
 
-Sure! Here's an index for the README.md:
+Sure! Here's an index for your README.md:
 
 1. [Introduction](#1-introduction)
    - 1.1 [What you'll learn](#11-what-youll-learn)
-     - 1.1.1 [Service Containerization from development to production](#111-service-containerization-from-development-to-production)
-     - 1.1.2 [Communication between services](#112-communication-between-services)
+      - 1.1.1 [Service Containerization from development to production](#111-service-containerization-from-development-to-production)
+      - 1.1.2 [Communication between services](#112-communication-between-services)
    - 1.2 [Prerequisites](#12-prerequisites)
    - 1.3 [Repository Structure](#13-repository-structure)
    - 1.4 [system service at high level](#14-system-service-at-high-level)
@@ -16,16 +16,27 @@ Sure! Here's an index for the README.md:
    - 2.1 [Test the running services](#21-test-the-running-services)
 3. [Build & Run Liberty Services with Docker](#3-build--run-liberty-services-with-docker)
    - 3.1 [Defining Dockerfiles](#31-defining-dockerfiles)
-     - 3.1.1 [What is Dockerfile?](#311-what-is-dockerfile)
-     - 3.1.2 [Liberty base image used](#312-liberty-base-image-used)
+      - 3.1.1 [What is Dockerfile?](#311-what-is-dockerfile)
+      - 3.1.2 [Liberty base image used](#312-liberty-base-image-used)
    - 3.2 [Building services images](#32-building-services-images)
-     - 3.2.1 [Maven package](#321-maven-package)
-     - 3.2.2 [Dockerfiles](#322-dockerfiles)
+      - 3.2.1 [Maven package](#321-maven-package)
+      - 3.2.2 [Dockerfiles](#322-dockerfiles)
    - 3.3 [Running your microservices in Docker containers](#33-running-your-microservices-in-docker-containers)
    - 3.4 [Checking docker running services](#34-checking-docker-running-services)
 4. [Externalising server configuration](#4-externalising-server-configuration)
-
-Please note that the last section is marked as "TODO" and requires further information. You can replace the "TODO" with the relevant content once it's available.
+   - [4.1 External configuration of the HTTP port number of the inventory service](#41-external-configuration-of-the-http-port-number-of-the-inventory-service)
+   - [4.2 Test the changed port](#42-test-the-changed-port)
+5. [Optimizing the image size](#5-optimizing-the-image-size)
+6. [Services Tests](#6-services-tests)
+7. [Include mvn package in Build Stage --> Multistage](#7-include-mvn-package-in-build-stage----multistage)
+   - [7.1 Multistage](#71-multistage)
+   - [7.2 Base images with Maven](#72-base-images-with-maven)
+     - [7.2.1 System Service modifications](#721-system-service-modifications)
+     - [7.2.2 Inventory Service modifications](#722-inventory-service-modifications)
+   - [7.3 Test](#73-test)
+     - [7.3.1 Build](#731-build)
+     - [7.3.2 Run](#732-run)
+     - [7.3.3 Test](#733-test)
 
 ## 1. Introduction
 
@@ -35,7 +46,7 @@ Please note that the last section is marked as "TODO" and requires further infor
 
 From development to production, and across your DevOps environments, you can deploy your microservices in a lightweight and portable manner by using containers. You can run a container from a container image. Each container image is a package of what you need to run your microservice or application, from the code to its dependencies and configuration.
 
-You’ll learn how to build container images and run containers using Docker for your microservices. You’ll learn about the Open Liberty container images and how to use them for your containerized applications. You’ll construct `Dockerfile` files, create and run Docker images. 
+You’ll learn how to build container images and run containers using Docker for your microservices. You’ll learn about the Open Liberty container images and how to use them for your containerized applications. You’ll construct `Dockerfile` files, create and run Docker images.
 
 #### 1.1.2 Communication between services
 
@@ -49,7 +60,7 @@ Comunication between services: The two microservices that you’ll be working wi
 
 ### 1.3 Repository Structure
 
-```
+```info
 ├── mvn_ready/ --> multi-module liberty mvn project ready to build and run with mvn
 |    ├── inventory/ --> inventory microservice ready to build with liberty mvn
 |    |    ├── src/main/ --> microservice code
@@ -76,7 +87,7 @@ Little java app which shows one time the system properties of the running JVM in
 - At port 9080 (managed by pom.xml and server.xml)
 - At path: /system/properties (managed by jakarta.ws)
 
-```
+```json
 {"awt.toolkit":"sun.awt.X11.XToolkit","java.specification.version":"11","com.ibm.ws.beta.edition":"false","sun.jnu.encoding":"UTF-8","wlp.install.dir":"/opt/ol/wlp/","wlp.workarea.dir":"workarea/","sun.arch.data.model":"64","com.ibm.vm.bitmode":"64","java.vendor.url":"https://www.ibm.com/semeru-runtimes","server.output.dir":"/opt/ol/wlp/output/defaultServer/","sun.boot.library.path":"/opt/java/openjdk/lib/default:/opt/java/openjdk/lib",
 ...}
 ```
@@ -88,8 +99,8 @@ More complex java app, based on MVC (Model-View-Controller) which serves an inve
 - At port 9081 (managed by pom.xml and server.xml)
 - At path: /inventory/systems (managed by jakarta.ws)
     --> Returns the requests made
-- At path: /inventory/systems/<system-ip-address> (managed by jakarta.ws)
-    --> Add the <system-ip-address> request to inventory
+- At path: /inventory/systems/SYSTEM_IP_ADRESS (managed by jakarta.ws)
+    --> Add the SYSTEM_IP_ADRESS request to inventory
 
 To learn more about RESTful web services and how to build them, see [Restful Service with Open Liberty](https://openliberty.io/guides/rest-intro.html) for details about how to build the `system` service. The `inventory` service is built in a similar way.
 
@@ -121,7 +132,7 @@ mvn -pl inventory liberty:run
 
 > After you see the following message in both command-line sessions, both of your services are ready:
 >
->```
+>```info
 >The defaultServer server is ready to run a smarter planet.
 >```
 
@@ -134,22 +145,22 @@ Now 2 liberty services are running on different ports on your localhost:
 | system  | 9080  | [mvn_ready/system/pom.xml](mvn_ready/system/pom.xml) & [mvn_ready/system/src/main/liberty/config/server.xml](mvn_ready/system/src/main/liberty/config/server.xml)  |
 | inventory  | 9081  | [mvn_ready/inventory/pom.xml](mvn_ready/inventory/pom.xml) & [mvn_ready/inventory/src/main/liberty/config/server.xml](mvn_ready/inventory/src/main/liberty/config/server.xml)  |
 
-* To acces main page of `system` see or curl http://localhost:9080
+- To acces main page of `system` see or curl <http://localhost:9080>
+- To access the `system` service, which shows the system properties of the running JVM, see <http://localhost:9080/system/properties>
 
-* To access the `system` service, which shows the system properties of the running JVM, see http://localhost:9080/system/properties
 ```bash
 curl http://localhost:9080/system/properties
 ```
 
-* To acces main page of `inventory` see or curl http://localhost:9081
+- To acces main page of `inventory` see or curl <http://localhost:9081>
 
-* To access the `inventory` service, which displays the current contents of the inventory, see http://localhost:9081/inventory/systems
+- To access the `inventory` service, which displays the current contents of the inventory, see <http://localhost:9081/inventory/systems>
 
 ```bash
 curl http://localhost:9081/inventory/systems
 ```
 
-* You can add the system properties of your localhost to the `inventory` service at http://localhost:9081/inventory/systems/localhost
+- You can add the system properties of your localhost to the `inventory` service at <http://localhost:9081/inventory/systems/localhost>
 
 ```bash
 curl http://localhost:9081/inventory/systems/localhost
@@ -157,7 +168,7 @@ curl http://localhost:9081/inventory/systems/localhost
 
 After you are finished checking out the microservices, stop the Open Liberty servers by pressing `CTRL+C` in the command-line sessions where you ran the servers. Alternatively, you can run the `liberty:stop` goal in another command-line session:
 
-```
+```bash
 mvn -pl system liberty:stop
 mvn -pl inventory liberty:stop
 ```
@@ -192,7 +203,7 @@ To build and run liberty services in docker, compiled java artifacts are needed 
 
 To package your microservices, run the Maven package goal to build the application .war files from the `mvn_ready` directory so that the .war files are in the system/target and inventory/target directories. This is needed to run them with Docker.
 
-```
+```bash
 mvn package
 ```
 
@@ -222,7 +233,7 @@ To verify that the images are built, run the docker images command to list all l
 docker images -f "label=org.opencontainers.image.authors=Your Name"
 ```
 
-```
+```info
 REPOSITORY    TAG             IMAGE ID        CREATED          SIZE
 inventory     1.0-SNAPSHOT    08fef024e986    4 minutes ago    1GB
 system        1.0-SNAPSHOT    1dff6d0b4f31    5 minutes ago    977MB
@@ -242,11 +253,11 @@ docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
 
 Next, run the `docker ps` command to verify that your containers are started:
 
-```
+```bash
 docker ps
 ```
 
-```
+```info
 CONTAINER ID    IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                        NAMES
 2b584282e0f5    inventory:1.0-SNAPSHOT  "/opt/ol/helpers/run…"   2 seconds ago    Up 1 second     9080/tcp, 9443/tcp, 0.0.0.0:9081->9081/tcp   inventory
 99a98313705f    system:1.0-SNAPSHOT     "/opt/ol/helpers/run…"   3 seconds ago    Up 2 seconds    0.0.0.0:9080->9080/tcp, 9443/tcp             system
@@ -256,9 +267,9 @@ If a problem occurs and your containers exit prematurely, the containers don't a
 
 ### 3.4 Checking docker running services
 
-Exactly the same as [2.1 Test the running services](#21-test-the-running-services). 
+Exactly the same as [2.1 Test the running services](#21-test-the-running-services).
 
-With the add. To access the `inventory` service, which displays the current contents of the server inventory, see http://localhost:9081/inventory/systems
+With the add. To access the `inventory` service, which displays the current contents of the server inventory, see <http://localhost:9081/inventory/systems>
 
 ```bash
 curl http://localhost:9081/inventory/systems
@@ -274,13 +285,13 @@ docker inspect -f "{{.NetworkSettings.IPAddress }}" system
 
 Expected output:
 
-```
+```info
 172.17.0.2
 ```
 
-In this case, the IP address for the `system` service is `172.17.0.2`. Take note of this IP address to construct the URL to view the system properties. 
+In this case, the IP address for the `system` service is `172.17.0.2`. Take note of this IP address to construct the URL to view the system properties.
 
-Go to the http://localhost:9081/inventory/systems/<system-ip-address> URL by replacing `<system-ip-address>` with the IP address that you obtained earlier. You see a result in JSON format with the system properties of your local JVM. When you go to this URL, these system properties are automatically stored in the inventory. Go back to the http://localhost:9081/inventory/systems) URL and you see a new entry for `[system-ip-address]`.
+Go to the <http://localhost:9081/inventory/systems/SYSTEM_IP_ADRESS> URL by replacing `SYSTEM_IP_ADRESS` with the IP address that you obtained earlier. You see a result in JSON format with the system properties of your local JVM. When you go to this URL, these system properties are automatically stored in the inventory. Go back to the <http://localhost:9081/inventory/systems>) URL and you see a new entry for `[system-ip-address]`.
 
 Once your Docker containers are running, run the following command to see the list of required features installed by features.sh:
 
@@ -290,7 +301,7 @@ docker exec -it inventory /opt/ol/wlp/bin/productInfo featureInfo
 
 Your list of Liberty features should be similar to the following:
 
-```
+```info
 jndi-1.0
 servlet-5.0
 cdi-3.0
@@ -315,6 +326,7 @@ Imagine a scenario where you are developing an Open Liberty application on port 
 In the [inventory/.../server.xml](docker_ready/inventory/src/main/liberty/config/server.xml) file, the default.http.port variable is declared and is used in the httpEndpoint element to define the service endpoint. The default value of the default.http.port variable is 9081. However, this value is only used if no other value is specified. You can replace this value in the container by using the `-e` flag for the `docker run command`.
 
 Run the following commands to stop and remove the inventory container and rerun it with the default.http.port environment variable set:
+
 ```bash
 docker stop inventory
 ```
@@ -333,7 +345,7 @@ Now, when the service is starting up, Open Liberty finds the default.http.port e
 
 ### 4.2 Test the changed port
 
-The inventory service is now available on the new port number that you specified. You can see the contents of the inventory at the http://localhost:9091/inventory/systems URL. 
+The inventory service is now available on the new port number that you specified. You can see the contents of the inventory at the <http://localhost:9091/inventory/systems> URL.
 
 You can externalize the configuration of more than just the port numbers. To learn more about [Open Liberty server configuration](https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html), check out the Server Configuration Overview docs.
 
@@ -341,19 +353,19 @@ You can externalize the configuration of more than just the port numbers. To lea
 
 As mentioned previously, the base image that is used in each Dockerfile contains the kernel-slim tag which provides a bare minimum server with the ability to add the features required by the application, including all of the Liberty features. The full Open liberty server has the full tag, and this parent image is recommended for development, but while deploying to production it is recommended to use a slimmer image.
 
-* Heavy Service Images:
-    - [system/Dockerfile-full](docker_ready/system/Dockerfile-full)
-    - [inventory/Dockerfile-full](docker_ready/inventory/Dockerfile-full)
-* Slim Service Images:
-    - [system/Dockerfile](docker_ready/system/Dockerfile)
-    - [inventory/Dockerfile](docker_ready/inventory/Dockerfile)
+- Heavy Service Images:
+  - [system/Dockerfile-full](docker_ready/system/Dockerfile-full)
+  - [inventory/Dockerfile-full](docker_ready/inventory/Dockerfile-full)
+- Slim Service Images:
+  - [system/Dockerfile](docker_ready/system/Dockerfile)
+  - [inventory/Dockerfile](docker_ready/inventory/Dockerfile)
 
 ## 6. Services Tests
 
 You can test your microservices manually by hitting the endpoints or with automated tests included in the services development that check your running Docker containers.
 
-* [system test](docker_ready/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java)
-* [inventory test](docker_ready/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointIT.java)
+- [system test](docker_ready/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java)
+- [inventory test](docker_ready/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointIT.java)
 
 These tests use env vars configuration to check the correct function of the two services.
 
@@ -367,17 +379,122 @@ mvn package
 mvn failsafe:integration-test -Dsystem.ip=[system-ip-address] -Dinventory.http.port=9081 -Dsystem.http.port=9080
 ```
 
-* **failsafe:** Run the Maven failsafe goal to test the services that are running in the Docker containers
-* **-Dxxx:** env vars used to check the correct funcioning. Replace [system-ip-address] by your 
+- **failsafe:** Run the Maven failsafe goal to test the services that are running in the Docker containers
+- **-Dxxx:** env vars used to check the correct funcioning. Replace [system-ip-address] by your
 
-## 7. Include mvn package in Build Stage
+## 7. Include mvn package in Build Stage --> Multistage
 
-We want to execute all build process in the build stage, following the Dockerfile instructions and avoiding the need for the development team to perform an mvn package. So, we have to include the order / orders in Dockerfile.
+You could want to execute all build process in the build stage, following the Dockerfile instructions and avoiding the need for the development team to perform an mvn package. So, you have to include the order / orders in Dockerfile.
 
-But, the parent liberty image, does not contains the binary mvn, so it is not possible to execute a mvn package
+But, the parent liberty image, does not contains the binary mvn, so it is not possible to execute a mvn package inside the FROM.
 
-## TODO
+### 7.1 Multistage
+
+With multi-stage builds, you use multiple FROM statements in your Dockerfile. Each `FROM` instruction can use a different base, and each of them begins a new stage of the build. You can selectively copy artifacts from one stage to another, leaving behind everything you don’t want in the final image.
+
+By default, the stages aren’t named, and you refer to them by their integer number, starting with 0 for the first FROM instruction. However, you can name your stages, by adding an `AS <NAME>` to the FROM instruction. This helps to reference the stage in other stages orders (`COPY` for example)
+
+```Dockerfile
+FROM maven:3.0.0 AS base
+...
+```
+
+When you build your image, you don’t necessarily need to build the entire Dockerfile including every stage. You can specify a target build stage. The following command assumes you are using the previous Dockerfile but stops at the stage named `maven`:
+
+```bash
+docker build --target package -t system:1.0-SNAPSHOT system/.
+```
+
+For more information check [oficial documentation](https://docs.docker.com/build/building/multi-stage/)
+
+### 7.2 Base images with Maven
+
+We will use the `docker_package_ready` directory. We have modified the Dockerfile to a multi-stage Dockerfile, which uses two base images:
+
+- mvn: to package the project
+- appcafe/open-liberty: to run liberty service
+
+### 7.2.1 System Service modifications
+
+Code added:
+
+```Dockerfile
+# Using mvn base image to compile project
+FROM maven AS package
+COPY --chown=1001:0 pom.xml pom.xml
+COPY --chown=1001:0 src src
+RUN mvn package
+
+# Using Slim Java Liberty base image tu run liberty service
+FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi
+
+# Copying our .war generated by mvn package
+COPY --from=package --chown=1001:0 target/guide-containerize-system.war /config/apps
+...
+```
+
+The full file: [docker_package_ready/system/Dockerfile](docker_package_ready/system/Dockerfile)
+
+### 7.2.2 Inventory Service modifications
+
+Same as service, check the full file in [docker_package_ready/inventory/Dockerfile](docker_package_ready/inventory/Dockerfile)
+
+### 7.3 Test
+
+#### 7.3.1 Build
+
+```bash
+cd docker_package_ready
+```
+
+```bash
+docker build -t system:1.0-SNAPSHOT system/.
+```
+
+```info
+=> [stage-1 5/5] RUN configure.sh
+=> exporting to image
+=> => exporting layers
+=> => writing image sha256:5e647b2bde7a7a88a859372c1eb1e85fd76abed30a47c84f66c998972kclajd9
+=> => naming to docker.io/library/system:1.0-SNAPSHOT
+```
+
+```bash
+docker build -t inventory:1.0-SNAPSHOT inventory/.
+```
+
+```info
+=> [stage-1 5/5] RUN configure.sh
+=> exporting to image
+=> => exporting layers
+=> => writing image sha256:5e647b2bde7a7a88a859372c1eb1e85fd76abed30a47c84f66c110648ebc51d2 
+=> => naming to docker.io/library/inventory:1.0-SNAPSHOT
+```
+
+#### 7.3.2 Run
+
+```bash
+docker run -d --name system -p 9080:9080 system:1.0-SNAPSHOT
+```
+
+```bash
+docker run -d --name inventory -p 9081:9081 inventory:1.0-SNAPSHOT
+```
+
+#### 7.3.3 Test
+
+```bash
+curl http://localhost:9080/system/properties
+```
+
+```bash
+curl http://localhost:9081/inventory/systems/172.17.0.2
+```
+
+## Great work! You’re done!
+
+## EXTRA TODO
+
 - [x] Test all documented
 - [ ] Externalizing more server configuration parameters, check [url](https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html)
-- [ ] execute mvn in one stage of Dockerfile
-- [ ] Great work! You’re done!
+- [x] execute mvn in one stage of Dockerfile
