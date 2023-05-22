@@ -1,4 +1,3 @@
-// tag::copyright[]
 /*******************************************************************************
  * Copyright (c) 2018, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,7 +7,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-// end::copyright[]
 package it.io.openliberty.guides.inventory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,9 +42,7 @@ public class InventoryEndpointIT {
         String invServPort = System.getProperty("inventory.http.port");
         String sysServPort = System.getProperty("system.http.port");
 
-        // tag::systemServiceIp[]
         systemServiceIp = System.getProperty("system.ip");
-        // end::systemServiceIp[]
 
         invUrl = "http://localhost" + ":" + invServPort + "/inventory/systems/";
         sysUrl = "http://localhost" + ":" + sysServPort + "/system/properties/";
@@ -65,8 +61,6 @@ public class InventoryEndpointIT {
         client.close();
     }
 
-    // tag::tests[]
-    // tag::testEmptyInventory[]
     @Test
     @Order(1)
     public void testEmptyInventory() {
@@ -82,9 +76,7 @@ public class InventoryEndpointIT {
 
         response.close();
     }
-    // end::testEmptyInventory[]
 
-    // tag::testHostRegistration[]
     @Test
     @Order(2)
     public void testHostRegistration() {
@@ -107,9 +99,7 @@ public class InventoryEndpointIT {
 
         response.close();
     }
-    // end::testHostRegistration[]
 
-    // tag::testSystemPropertiesMatch[]
     @Test
     @Order(3)
     public void testSystemPropertiesMatch() {
@@ -138,9 +128,7 @@ public class InventoryEndpointIT {
         invResponse.close();
         sysResponse.close();
     }
-    // end::testSystemPropertiesMatch[]
 
-    // tag::testUnknownHost[]
     @Test
     @Order(4)
     public void testUnknownHost() {
@@ -159,8 +147,6 @@ public class InventoryEndpointIT {
         response.close();
         badResponse.close();
     }
-    // end::testUnknownHost[]
-    // end::tests[]
 
     // Returns response information from the specified URL.
     private Response getResponse(String url) {

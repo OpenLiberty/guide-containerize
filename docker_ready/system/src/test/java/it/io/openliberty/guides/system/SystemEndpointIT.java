@@ -53,7 +53,6 @@ public class SystemEndpointIT {
         client.close();
     }
 
-    // tag::testGetProperties[]
     @Test
     public void testGetProperties() {
         Client client = ClientBuilder.newClient();
@@ -65,6 +64,4 @@ public class SystemEndpointIT {
             "Incorrect response code from " + clusterUrl);
         response.close();
     }
-    // end::testGetProperties[]
-
 }
