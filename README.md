@@ -191,7 +191,7 @@ You will be creating two Docker images to run the inventory service and system s
 
 In this guide, you’re using an official image from the IBM Container Registry (ICR), `icr.io/appcafe/open-liberty:full-java11-openj9-ubi`, as your parent image. This image is tagged with the word full, meaning it includes all Liberty features. full images are recommended for development only because they significantly expand the image size with features that are not required by the application.
 
->:mega: **NOTA:**
+>:mega: **NOTE:**
 >
 >To minimize your image footprint in production, you can use one of the kernel-slim images, such as `icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi`. This image installs the basic server. You can then add all the necessary features for your application with the usage pattern that is detailed in the Open Liberty container image documentation. To use the default image that comes with the Open Liberty runtime, define the `FROM` instruction as `FROM icr.io/appcafe/open-liberty`. You can find all official images on the [Open Liberty container image repository](https://openliberty.io/docs/latest/container-images.html).
 
@@ -207,7 +207,7 @@ To package your microservices, run the Maven package goal to build the applicati
 mvn package
 ```
 
->:mega: **NOTA:**
+>:mega: **NOTE:**
 >
 > Executing `mvn package` from directory `docker_ready` it stores the `.war` files into `inventory/target` and `system/target`.
 
