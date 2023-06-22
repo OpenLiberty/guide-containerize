@@ -23,6 +23,7 @@ LABEL \
 # end::summary[]
 
 COPY --chown=1001:0 src/main/liberty/config /config/
+RUN features.sh
 
 # tag::features[]
 RUN features.sh
