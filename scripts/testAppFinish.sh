@@ -14,7 +14,6 @@ mvn -Dhttp.keepAlive=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q clean package
     
-docker pull -q openliberty/open-liberty:kernel-java8-openj9-ubi
 docker pull -q icr.io/appcafe/open-liberty:full-java11-openj9-ubi
 docker pull -q icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi
 
