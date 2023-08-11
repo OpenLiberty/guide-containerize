@@ -390,7 +390,7 @@ curl -s http://localhost:9080/system/properties | jq
 ```
 endif::[]
 
-You can externalize the configuration of more than just the port numbers. To learn more about Open Liberty instance configuration, check out the https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html[Server Configuration Overview^] docs. 
+You can externalize the configuration of more than just the port numbers. To learn more about Open Liberty configuration, check out the https://openliberty.io/docs/latest/reference/config/server-configuration-overview.html[Server Configuration Overview^] docs. 
 
 == Optimizing the image size
 
