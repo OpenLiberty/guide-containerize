@@ -56,11 +56,6 @@ else
   exit 1
 fi
 
-docker logs system | grep product
-docker logs system | grep java
-docker logs inventory | grep product
-docker logs inventory | grep java
-
 docker stop inventory
 docker rm inventory
 docker run -d --name inventory -e http.port=9091 -p 9091:9091 inventory
@@ -79,7 +74,14 @@ else
   exit 1
 fi
 
-
+docker exec system cat /logs/messages.log | grep product
+docker exec system cat /logs/messages.log | grep java
+docker exec system-optimized cat /logs/messages.log | grep product
+docker exec system-optimized cat /logs/messages.log | grep java
+docker exec inventory cat /logs/messages.log | grep product
+docker exec inventory cat /logs/messages.log | grep java
+docker exec inventory-optimized cat /logs/messages.log | grep product
+docker exec inventory-optimized cat /logs/messages.log | grep java
 
 docker stop inventory system inventory-optimized system-optimized
 docker rm inventory system inventory-optimized system-optimized
