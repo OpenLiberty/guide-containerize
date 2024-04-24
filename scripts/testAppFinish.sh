@@ -74,5 +74,10 @@ else
   exit 1
 fi
 
+docker logs system | grep product
+docker logs system | grep java
+docker logs inventory | grep product
+docker logs inventory | grep java
+
 docker stop inventory system inventory-optimized system-optimized
 docker rm inventory system inventory-optimized system-optimized
