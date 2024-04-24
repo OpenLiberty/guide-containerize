@@ -74,5 +74,14 @@ else
   exit 1
 fi
 
+docker exec system cat /logs/messages.log | grep product
+docker exec system cat /logs/messages.log | grep java
+docker exec system-optimized cat /logs/messages.log | grep product
+docker exec system-optimized cat /logs/messages.log | grep java
+docker exec inventory cat /logs/messages.log | grep product
+docker exec inventory cat /logs/messages.log | grep java
+docker exec inventory-optimized cat /logs/messages.log | grep product
+docker exec inventory-optimized cat /logs/messages.log | grep java
+
 docker stop inventory system inventory-optimized system-optimized
 docker rm inventory system inventory-optimized system-optimized
