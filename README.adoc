@@ -336,6 +336,7 @@ system        1.0-SNAPSHOT    1dff6d0b4f31    5 minutes ago    977MB
 
 
 == Running your microservices in Docker containers
+
 Now that your two images are built, you will run your microservices in Docker containers:
 
 [role='command']
@@ -638,12 +639,6 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 ifndef::cloud-hosted[]
 Run the Maven `package` goal to compile the test classes. Run the Maven `failsafe` goal to test the services that are running in the Docker containers by replacing the `[system-ip-address]` with the IP address that you determined previously.
 
-[role='command']
-```
-mvn package
-mvn failsafe:integration-test -Dsystem.ip=[system-ip-address] -Dinventory.http.port=9081 -Dsystem.http.port=9080
-```
-endif::[]
 include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section]
