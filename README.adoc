@@ -201,6 +201,7 @@ mvnw.cmd -pl inventory liberty:stop
 ./mvnw -pl inventory liberty:stop
 ```
 --
+endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
