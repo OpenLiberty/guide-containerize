@@ -667,6 +667,7 @@ mvnw.cmd failsafe:integration-test -Dsystem.ip=[system-ip-address] -Dinventory.h
 ./mvnw failsafe:integration-test -Dsystem.ip=[system-ip-address] -Dinventory.http.port=9081 -Dsystem.http.port=9080
 ```
 --
+endif::[]
 
 // cloud-hosted guide instructions
 ifdef::cloud-hosted[]
