@@ -213,7 +213,7 @@ cd /home/project/guide-containerize/start
 ```
 endif::[]
 
-To package your microservices, run the Maven package goal to build the application `.war` files from the start directory so that the `.war` files are in the `system/target` and `inventory/target` directories.
+To package your microservices, run the Maven package goal to build the application `.war` files from the `start` directory so that the `.war` files are in the `system/target` and `inventory/target` directories.
 include::{common-includes}/os-tabs.adoc[]
 
 [.tab_content.windows_section]
