@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
+./mvnw -version
 
 ##############################################################################
 ##
@@ -9,7 +10,7 @@ set -euxo pipefail
 
 cd ../finish
 
-mvn -Dhttp.keepAlive=false \
+./mvnw -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q clean package
