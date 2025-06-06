@@ -1,23 +1,24 @@
 #!/bin/bash
 set -euxo pipefail
+./mvnw -version
 
 cd ../start
 
-mvn -ntp -Dhttp.keepAlive=false \
+./mvnw -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q clean package
-mvn -ntp -Dhttp.keepAlive=false \
+./mvnw -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q -pl system liberty:create liberty:install-feature liberty:deploy
-mvn -ntp -Dhttp.keepAlive=false \
+./mvnw -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q -pl inventory liberty:create liberty:install-feature liberty:deploy
 
-mvn -ntp -pl system liberty:start
-mvn -ntp -pl inventory liberty:start
+./mvnw -ntp -pl system liberty:start
+./mvnw -ntp -pl inventory liberty:start
 
 systemStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9080/system/properties/")"
 inventoryStatus="$(curl --write-out "%{http_code}\n" --silent --output /dev/null "http://localhost:9081/inventory/systems/")"
@@ -34,6 +35,6 @@ else
   exit 1
 fi
 
-mvn -ntp -pl system liberty:stop
-mvn -ntp -pl inventory liberty:stop
+./mvnw -ntp -pl system liberty:stop
+./mvnw -ntp -pl inventory liberty:stop
 
